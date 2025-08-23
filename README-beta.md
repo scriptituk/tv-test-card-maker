@@ -1161,8 +1161,9 @@ The following are currently supported[^19]:
 > This form of Y′CbCr is used primarily for older standard-definition television systems,
   as it uses an RGB model that fits the phosphor emission characteristics of older CRTs[^20].
 
-To extend YUV conversions, add a matrix procedure like `YUVDSD` in `Resource/ProcSet/tcm-colour.ps`
-with constants $G_y$ $R_v$ $G_u$ $G_v$ $B_u$ $Y_o$ $C_o$
+To extend YUV conversions, add a matrix procedure like `YUVDSD` in [tcm-colour.ps](Resource/ProcSet/tcm-colour.ps)
+to convert *Y* *C*<sub>b</sub> *C*<sub>r</sub> components to *R* *G* *B*
+with constants *G*<sub>y</sub> *R*<sub>v</sub> *G*<sub>u</sub> *G*<sub>v</sub> *B*<sub>u</sub> *Y*<sub>o</sub> *C*<sub>o</sub>
 for the matrix:
 
 ```math
