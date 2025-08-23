@@ -1013,10 +1013,10 @@ Unlike custom shapes and text, images cannot be distorted, but like shapes they 
 
 (`#` is the image element index number)
 
-> ![Tip](assets/octicons/light-bulb-16.svg) Tip\
+> ![Tip](assets/octicons/tip16.svg) <mark>Tip</mark>\
 > Use auto-scaling to centre the offset point, then rotate and scale.
 
-> ![Note](assets/octicons/info-16.svg) Note\
+> ![Note](assets/octicons/note16.svg) <mark>Note</mark>\
 > PNG images with an alpha channel are not supported.\
   EPS `/syntaxerror` can be fixed using the GS utility [ps2epsi](https://ghostscript.readthedocs.io/en/latest/Ps2epsi.html) for DSC conformance[^12].
 
@@ -1125,10 +1125,10 @@ Grey shades are specified as a value from 0 to 255.
 
 *Example:* `128` for mid-grey
 
-> ![Tip](assets/octicons/light-bulb-16.svg) Tip\
+> ![Tip](assets/octicons/tip16.svg) <mark>Tip</mark>\
 > Colour component values need not be integers, e.g. `127.5` is more accurate for mid-grey.
 
-> ![Note](assets/octicons/info-16.svg) Note\
+> ![Note](assets/octicons/note16.svg) <mark>Note</mark>\
 > Regardless how a colour is specified,
   if it produces grey then the PostScript colour space is set to Gray,
   otherwise it is converted to RGB.\
@@ -1223,7 +1223,7 @@ Therefore TCM also accepts UI values for all colour components, with automatic U
 
 *Example:* `[0.806 0.6 0.9]HSB` (equivalent to `[290 60 90]HSB`)
 
-> ![Note](assets/octicons/info-16.svg) Note\
+> ![Note](assets/octicons/note16.svg) <mark>Note</mark>\
 > UI detection interprets colour component value 1 as maximum,
   therefore it can be ambiguous when all component values are 1 or less.
   For instance greyscale `1` is white but `1.001` computes to almost black (1.001/255) because it is greater than 1.
