@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="85.81" height="15.98" viewBox="0 0 85.81 15.98">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="86.81" height="15.98" viewBox="0 0 86.81 15.98">
 <defs>
 <clipPath id="clip-0">
-<path clip-rule="nonzero" d="M 0 0 L 85.808594 0 L 85.808594 15.980469 L 0 15.980469 Z M 0 0 "/>
+<path clip-rule="nonzero" d="M 0 0 L 86 0 L 86 15.980469 L 0 15.980469 Z M 0 0 "/>
 </clipPath>
 </defs>
 <g clip-path="url(#clip-0)">
