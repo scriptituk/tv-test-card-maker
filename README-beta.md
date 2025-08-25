@@ -2,21 +2,6 @@
 
 ### authentic replicas &bull; easily customised &bull; vector and raster formats &bull; cross-platform
 
-> [!NOTE]
-> Useful information that users should know, even when skimming content.
-
-> [!TIP]
-> Helpful advice for doing things better or more easily.
-
-> [!IMPORTANT]
-> Key information users need to know to achieve their goal.
-
-> [!WARNING]
-> Urgent info that needs immediate user attention to avoid problems.
-
-> [!CAUTION]
-> Advises about risks or negative outcomes of certain actions.
-
 ## Summary
 
 Digital imitations of TV test patterns are plentiful
@@ -112,7 +97,7 @@ For instance, captions are custom-text elements and the Carole Hersee image is a
 </details>
 
 > [!NOTE]
-> The nomenclature here only relates to this implementation.
+> This nomenclature only relates to this implementation.
 
 ## Installing
 
@@ -151,7 +136,7 @@ Further info: [GS User Guide: Installing](https://ghostscript.readthedocs.io/en/
 
 ## PostScript basics
 
-All you need to know to tweak TCM patterns are the [objects](#object-types) and [operators](#ps-operators) below and these basic concepts:
+All you need to know to tweak TCM patterns are the [objects](#objects) and [operators](#operators) below and these basic concepts:
 
 - PostScript uses *postfix* notation, a.k.a. Reverse Polish, where operands preceed operators –
 like Forth[^6].
@@ -159,13 +144,12 @@ like Forth[^6].
 - everything is an *object* (all data and procedures, that is)
 
 
-<details><summary>objects and operators</summary>
+The following tables show basic PS object types and operations to make and modify test cards using TCM.
+They are by no means exhaustive but you shouldn’t need to dig further.
 
-### <ins>Objects and operators</ins>
+<details><summary>objects</summary>
 
-These tables show PS basics needed to make and modify test cards using TCM; they are by no means exhaustive.
-
-### Object types
+### <ins>Objects</ins>
 
 | type | examples | comment |
 | :--- | :--- | :--- |
@@ -179,32 +163,49 @@ These tables show PS basics needed to make and modify test cards using TCM; they
 
 Further info: [PLRM 3.3: Data Types and Objects](https://www.adobe.com/jp/print/postscript/pdfs/PLRM.pdf#page=48)
 
-### PS Operators
+</details>
 
-| PS operator | example | comment |
-| ---: | :---: | :--- |
-| `add` `sub` `mul` `div` `sqrt` `sin` `cos` `atan` `dup` | <code>1 2 add</code> | many more but too numerous to list |
+<details><summary>operators</summary>
 
-Further info: [PLRM 8: Operators](https://www.adobe.com/jp/print/postscript/pdfs/PLRM.pdf#page=519)
-
-### TCM Operators
+### <ins>Operators</ins>
 
 | TCM operator | example | comment |
 | ---: | :---: | :--- |
-| <code>_num_ **mul2** _product_</code> | <code>Gsz **mul2**</code> | return <code>_num_ × 2</code> |
-| <code>_num_ **div2** _quotient_</code> | <code>Glw **div2**</code> | return <code>_num_ ÷ 2</code> |
-| <code>_num_ **sq** _square_</code> | <code>CCr **sq**</code> | return <code>_num_<sup>2</sup></code> |
-| <code>_leg<sub>1</sub>_ _leg<sub>2</sub>_ **hypot** _hypot_</code> | <code>TCw TCh **hypot**</code> | return hypotenuse (root sum of squares) |
-| <code>_hypot_ _leg<sub>1</sub>_ **leg** _leg<sub>2</sub>_</code> | <code>Gsz mul2 Gsz **leg**</code> | return leg (cathetus, root difference of squares) |
-| <code>_num_ **xGsz** _product_</code> | <code>3 **xGsz**</code> | return <code>_num_ × Gsz</code> (multiply by grid size, see [scaling](#scaling)) |
-| <code>**hGsz** _size_</code> | <code>**hGsz** Glw sub</code> | return <code>Gsz ÷ 2</code> (half grid size) |
-| <code>_num_ **xGlw** _product_</code> | <code>0.6 **xGlw**</code> | return <code>_num_ × Glw</code> (multiply by grid linewidth) |
-| <code>**hGlw** _width_</code> | <code>hGsz **hGlw** add</code> | return <code>Glw ÷ 2</code> (half grid linewidth) |
-| <code>_freq_ **mhz** _width_</code> | <code>2.5 **mhz**</code> | return period width corresponding to MHz in active line time |
-| <code>_time_ **us** _width_</code> | <code>0.25 **us**</code> | return width corresponding to μs in active line time |
-| <code>_num_ **lines** _height_</code> | <code>7 **lines**</code> | return height corresponding to number of scan lines |
-| <code>_name_ _value_ **arg** –</code> | <code>/IDh hGsz **arg**</code> | define argument (name-object pair) iff not already defined |
-| <code>_name<sub>to</sub>_ _name<sub>from</sub>_ **merge** –</code> | <code>/T7 /T4 **merge**</code> | define undefined args from another custom element of same type |
+| <code>_num<sub>1</sub>_ _num<sub>2</sub>_ **add** _sum_</code> | <code>1.2 3.4 **add**</code> | return <code>_num<sub>1</sub>_ + _num<sub>2</sub>_</code> |
+| <code>_num<sub>1</sub>_ _num<sub>2</sub>_ **sub** _difference_</code> | <code>9.8 7.6 **sub**</code> | return <code>_num<sub>1</sub>_ - _num<sub>2</sub>_</code> |
+| <code>_num<sub>1</sub>_ _num<sub>2</sub>_ **mul** _product_</code> | <code>0.5 -4 **mul**</code> | return <code>_num<sub>1</sub>_ × _num<sub>2</sub>_</code> |
+| <code>_num_ **mul2** _product_</code><sup>※</sup> | <code>Gsz **mul2**</code> | return <code>_num_ × 2</code> |
+| <code>_num<sub>1</sub>_ _num<sub>2</sub>_ **div** _product_</code> | <code>5.6 3 **div**</code> | return <code>_num<sub>1</sub>_ ÷ _num<sub>2</sub>_</code> |
+| <code>_num<sub>1</sub>_ _num<sub>2</sub>_ **mod** _remainder_</code> | <code>/S7x rand TCw **mod**</code> | return remainder of <code>_num<sub>1</sub>_ ÷ _num<sub>2</sub>_</code> |
+| <code>_num_ **div2** _quotient_</code><sup>※</sup> | <code>Glw **div2**</code> | return <code>_num_ ÷ 2</code> |
+| <code>_num_ **sqrt** _num_</code> | <code>TCy **sqrt**</code> | return <code>√<em>num</em></code> (square root) |
+| <code>_num_ **sq** _num_</code><sup>※</sup> | <code>CCr **sq**</code> | return <code>_num_<sup>2</sup></code> |
+| <code>_num_ **neg** _num_</code> | <code>123 **neg**</code> | return <code>-_num_</code> |
+| <code>_num_ **abs** _num_</code> | <code>-99 **abs**</code> | return <code>\|_num_\|</code> (absolute value) |
+| <code>_leg<sub>1</sub>_ _leg<sub>2</sub>_ **hypot** _hypot_</code><sup>※</sup> | <code>TCw TCh **hypot**</code> | return hypotenuse (root sum of squares) |
+| <code>_hypot_ _leg<sub>1</sub>_ **leg** _leg<sub>2</sub>_</code><sup>※</sup> | <code>Gsz mul2 Gsz **leg**</code> | return leg (cathetus, root difference of squares) |
+| <code>_angle_ **sin** _num_</code> | <code>-20 **sin**</code> | return sine of <code>_angle_</code> degrees |
+| <code>_angle_ **cos** _num_</code> | <code>110 **cos**</code> | return cosine of <code>_angle_</code> degrees |
+| <code>_angle_ **tan** _num_</code><sup>※</sup> | <code>70 **tan**</code> | return tangent of <code>_angle_</code> degrees |
+| <code>_y_ _x_ **atan** _angle_</code> | <code>123 234 **atan**</code> | return arctangent of <code>_y_ ÷ _x_</code> in degrees |
+| <code>_num<sub>1</sub>_ _num<sub>2</sub>_ **min** _num_</code><sup>※</sup> | <code>1.2 3.4 **min**</code> | return minimum of <code>_num<sub>1</sub>_</code>,<code>_num<sub>2</sub>_</code> |
+| <code>_num<sub>1</sub>_ _num<sub>2</sub>_ **max** _num_</code><sup>※</sup> | <code>1.2 3.4 **max**</code> | return maximum of <code>_num<sub>1</sub>_</code>,<code>_num<sub>2</sub>_</code> |
+| <code>_array_ **length** _int_</code> | <code>SWc **length**</code> | return length of <code>_array_</code> |
+| <code>_num_ **xGsz** _product_</code><sup>※</sup> | <code>3 **xGsz**</code> | return <code>_num_ × Gsz</code> (multiply by grid size, see [scaling](#scaling)) |
+| <code>**hGsz** _size_</code><sup>※</sup> | <code>**hGsz** Glw sub</code> | return <code>Gsz ÷ 2</code> (half grid size) |
+| <code>_num_ **xGlw** _product_</code><sup>※</sup> | <code>0.6 **xGlw**</code> | return <code>_num_ × Glw</code> (multiply by grid linewidth) |
+| <code>**hGlw** _width_</code><sup>※</sup> | <code>hGsz **hGlw** add</code> | return <code>Glw ÷ 2</code> (half grid linewidth) |
+| <code>_freq_ **mhz** _width_</code><sup>※</sup> | <code>2.5 **mhz**</code> | return period width corresponding to MHz in active line time |
+| <code>_time_ **us** _width_</code><sup>※</sup> | <code>0.25 **us**</code> | return width corresponding to μs in active line time |
+| <code>_num_ **lines** _height_</code><sup>※</sup> | <code>7 **lines**</code> | return height corresponding to number of scan lines |
+| <code>– **rand** _int_</code>| <code>/S7x **rand** TCw mod arg</code> | return random number <code>_int_</code> |
+| <code>_int_ **srand** —</code> | <code>23 **srand**</code> | seed the random number generator with <code>_int_</code> |
+| <code>_name_ _value_ **arg** –</code><sup>※</sup> | <code>/IDh hGsz **arg**</code> | define argument (name-object pair) iff not already defined |
+| <code>_to_ _from_ **merge** –</code><sup>※</sup> | <code>/T7 /T4 **merge**</code> | define undefined args from another custom element of same type |
+
+<sup>※</sup> TCM operators, as opposed to built-in PS operators
+
+Further info: [PLRM 8: Operators](https://www.adobe.com/jp/print/postscript/pdfs/PLRM.pdf#page=519)
 
 </details>
 
@@ -320,7 +321,7 @@ Inheritance: `/BBC-A` <— /Blank
 | `/IDx` | `TCx` | ident horizontal centre |
 | `/IDy` | `TCy 5.95 xGsz sub` | ident vertical centre |
 | ***/FB…*** | — | ***frequency bars arguments*** |
-| `/FBh` | `3.2 xGsz` | freq bar height |
+| `/FBh` | `3.2 xGsz` | freq bars height |
 | `/FBc` | `/black` | freq bars colours: grating between surround |
 | `/FBx` | `TCx 5.2 xGsz sub` | freq bars horizontal centre |
 | `/FBf` | `[ [1 6 -1 /T-2 1] [1.5 6 1 /T-3 1] [2 6 -1 /T-4 -1] [2.5 6 0 /T-1 0] [3 6 1 /T-5 -1] ]` | frequencies: [MHz nbars antiphase] |
@@ -384,7 +385,7 @@ Inheritance: `/BBC-C-early` <— /Blank
 | `/Cc` | `2` | caption rectangle columns (# graticule columns) |
 | `/Cch` | `1` | caption rectangle clip height scale factor |
 | ***/CC…*** | — | ***centre circles arguments*** |
-| `/CCf?` | `true` | false for no fill (transparent) |
+| `/CCf?` | `true` | false for no fill (empty) |
 | `/CClw` | `0.1 xGsz` | centre circles stroke width |
 | `/CCr` | `Gsz mul2` | white circle stroke radius |
 | `/CCbr` | `CCr CClw add` | black circle stroke radius: 0 for none |
@@ -402,7 +403,7 @@ Inheritance: `/BBC-C-early` <— /Blank
 | `/FB2?` | `true` | true for 2 sets (D, E), false for 1 |
 | `/FBoh` | `SPh` | freq bar outer height |
 | `/FBow` | `SWw` | freq bar outer width |
-| `/FBh` | `0.505 xGsz` | freq bar height |
+| `/FBh` | `0.505 xGsz` | freq bars height |
 | `/FBg` | `0` | freq bars gap size (>0 for D/E) |
 | `/FBp` | `0.012 xGsz` | freq bars padding |
 | `/FBc` | `[0 1 1]` | freq bars colours: grating between surround |
@@ -427,10 +428,10 @@ Inheritance: `/BBC-C-early` <— /Blank
 | `/CShf` | `0.9` | corner stripes horizontal fundamental MHz |
 | `/CSlw` | `CShf mhz div2 1 TCar atan sin mul` | corner stripes linewidth at normal aspect ratio |
 | `/CSnl` | `10` | corner stripes number of lines |
-| `/CSs?` | `false` | true for sinusoidal corner stripes false for square |
 | `/CSep` | `Glw` | corner stripes end padding |
 | `/CSbp` | `Bw 1.3 mul` | corner stripes border padding (clipped) |
 | `/CSc` | `[/black /white]` | corner stripes colours: grating surround |
+| `/CSs?` | `false` | true for sinusoidal corner stripes false for square |
 
 </details>
 
@@ -461,7 +462,7 @@ Inheritance: `/BBC-C` <— [`/BBC-C-early`](#bbc-c-early-arguments) <— /Blank
 | ***/CC…*** | — | ***centre circles arguments*** |
 | `/CCor` | `CCr CClw 1.9 mul add` | outer circle stroke radius: 0 for none |
 | ***/FB…*** | — | ***frequency bars arguments*** |
-| `/FBh` | `0.53 xGsz` | freq bar height |
+| `/FBh` | `0.53 xGsz` | freq bars height |
 | `/FBp` | `0.02 xGsz` | freq bars padding |
 | ***/B…*** | — | ***border arguments*** |
 | `/Bw` | `0.29 xGsz` | border width |
@@ -508,7 +509,7 @@ Inheritance: `/BBC-C-625` <— [`/BBC-C`](#bbc-c-arguments) <— [`/BBC-C-early`
 | `/SWc` | `[0 0.33 0.5 0.8 1]` | step wedge colours, bottom to top |
 | ***/FB…*** | — | ***frequency bars arguments*** |
 | `/FBow` | `0.60 xGsz` | freq bar outer width |
-| `/FBh` | `0.525 xGsz` | freq bar height |
+| `/FBh` | `0.525 xGsz` | freq bars height |
 | `/FBg` | `0` | freq bars gap size (>0 for D/E) |
 | `/FBp` | `0.023 xGsz` | freq bars padding |
 | `/FBoh` | `3 xGsz Glw add` | freq bar outer height |
@@ -577,7 +578,7 @@ Inheritance: `/BBC-D-early` <— [`/BBC-C-early`](#bbc-c-early-arguments) <— /
 | `/SWds` | `1.6 xGlw` | step wedge dot size 0 for none, diameter or [width height] array |
 | ***/FB…*** | — | ***frequency bars arguments*** |
 | `/FBow` | `Gsz Glw sub` | freq bar outer width |
-| `/FBh` | `0.53 xGsz` | freq bar height |
+| `/FBh` | `0.53 xGsz` | freq bars height |
 | `/FBoh` | `1.8 xGsz` | freq bar outer height |
 | `/FBx` | `TCx 1.58 xGsz sub FBow div2 add` | freq bars horizontal centre |
 | `/FBg` | `FBoh FBh 3 mul sub div2` | freq bars gap size (>0 for D/E) |
@@ -636,7 +637,7 @@ Inheritance: `/BBC-E` <— [`/BBC-D-early`](#bbc-d-early-arguments) <— [`/BBC-
 | ***/SW…*** | — | ***step wedge arguments*** |
 | `/SWds` | `1.3 xGlw` | step wedge dot size 0 for none, diameter or [width height] array |
 | ***/FB…*** | — | ***frequency bars arguments*** |
-| `/FBh` | `0.55 xGsz` | freq bar height |
+| `/FBh` | `0.55 xGsz` | freq bars height |
 | `/FBc` | `[ 0.2 0.95 0.75 ]` | freq bars colours: grating between surround |
 | `/FBf` | `[ [1.5 5 0] [2.5 9 0] [3.5 11 0] [4 13 0] [4.5 15 0] [5.25 17 0] ]` | frequencies: [MHz nbars antiphase] |
 | `/FBs?` | `true` | true for sinusoidal frequency gratings, false for square |
@@ -677,7 +678,7 @@ Inheritance: `/BBC-F-early` <— [`/BBC-E`](#bbc-e-arguments) <— [`/BBC-D-earl
 | ***/C…*** | — | ***caption arguments*** |
 | `/Ct` | `[]` | caption custom text element names |
 | ***/CC…*** | — | ***centre circles arguments*** |
-| `/CCf?` | `false` | false for no fill (transparent) |
+| `/CCf?` | `false` | false for no fill (empty) |
 | `/CClw` | `0.9 xGlw` | centre circles stroke width |
 | `/CCr` | `2.5 xGsz 0.8 xGlw sub` | white circle stroke radius |
 | `/CCbr` | `0` | black circle stroke radius: 0 for none |
@@ -691,7 +692,7 @@ Inheritance: `/BBC-F-early` <— [`/BBC-E`](#bbc-e-arguments) <— [`/BBC-D-earl
 | ***/FB…*** | — | ***frequency bars arguments*** |
 | `/FB2?` | `false` | true for 2 sets (D, E), false for 1 |
 | `/FBow` | `SWw` | freq bar outer width |
-| `/FBh` | `SWoh SWc length div` | freq bar height |
+| `/FBh` | `SWoh SWc length div` | freq bars height |
 | `/FBx` | `TCx SWx sub TCx add` | freq bars horizontal centre |
 | `/FBg` | `0` | freq bars gap size (>0 for D/E) |
 | `/FBp` | `0` | freq bars padding |
@@ -954,12 +955,14 @@ pattern *BBC-D-early* with 17 custom elements
 
 ### Layering
 
-Each CE is assigned an index number for layering visually, like `z-index` in CSS[^8].
+Each CE is assigned an index number for visual layering, like `z-index` in CSS[^8].
 CEs with identical index but different type are also layered but have lower priority:
-shapes (`S`) then images (`I`) then text (`T`).
+shapes (`S`) under images (`I`) under text (`T`).
 For instance if CEs `T7`, `I3`, `S3`, `T5` are defined in any order,
 they are layered `S3`, `I3`, `T5`, `T7` with `T7` on top.
 This provides CE overlap control.
+
+With a bit of scripting you can have thousands of CEs, either ordered or random using the `rand` [operator](#operators).
 
 CEs with a negative index are not layered; they are for TCM use only, for replica elements.
 
@@ -969,8 +972,8 @@ CEs with a negative index are not layered; they are for TCM use only, for replic
 Shapes are currently limited to lines, concave polygons, rectangles and ellipses, squares and circles.
 They are calculated to fit a unit square[^9] at the specified rotation then scaled.
 Odd-sided polygons are oriented with a vertex at top-centre and a horizontal base,
-using constant width Reuleaux[^10] curve fitting,
-where the centroid is offset from the specified centre to facilitate rotation within the bounds.
+placed using constant width Reuleaux[^10] curve fitting to facilitate rotation within the bounds,
+so the centroid is offset from the specified centre.
 All shapes can be rotated and distorted, filled and/or stroked, and mirrored in all quadrants.
 See also [colour syntax](#colour-syntax).
 
@@ -1028,10 +1031,10 @@ Unlike custom shapes and text, images cannot be distorted, but like shapes they 
 
 (`#` is the image element index number)
 
-> ![Tip](assets/icons/tip16.svg) <mark>Tip</mark>\
+> ![Tip](assets/icons/tip-16.svg)\
 > Use auto-scaling to centre the offset point, then rotate and scale.
 
-> ![Note](assets/icons/note16.svg) <mark>Note</mark>\
+> ![Important](assets/icons/important-16.svg)\
 > PNG images with an alpha channel are not supported.\
   EPS `/syntaxerror` can be fixed using the GS utility [ps2epsi](https://ghostscript.readthedocs.io/en/latest/Ps2epsi.html) for DSC conformance[^12].
 
@@ -1140,10 +1143,10 @@ Grey shades are specified as a value from 0 to 255.
 
 *Example:* `128` for mid-grey
 
-> ![Tip](assets/icons/tip16.svg) <mark>Tip</mark>\
+> ![Tip](assets/icons/tip-16.svg)\
 > Colour component values need not be integers, e.g. `127.5` is more accurate for mid-grey.
 
-> ![Note](assets/icons/note16.svg) <mark>Note</mark>\
+> ![Note](assets/icons/note-16.svg)\
 > Regardless how a colour is specified,
   if it produces grey then the PostScript colour space is set to Gray,
   otherwise it is converted to RGB.\
@@ -1176,6 +1179,7 @@ The following are currently supported[^19]:
 > This form of Y′CbCr is used primarily for older standard-definition television systems,
   as it uses an RGB model that fits the phosphor emission characteristics of older CRTs[^20].
 
+<!-- Math in <details> bug: avoid $G_y$, see https://github.com/orgs/community/discussions/57950 -->
 To extend YUV conversions, add a matrix procedure like `YUVDSD` in [tcm-colour.ps](Resource/ProcSet/tcm-colour.ps)
 to convert *Y* *C*<sub>b</sub> *C*<sub>r</sub> components to *R* *G* *B*
 with constants *G*<sub>y</sub> *R*<sub>v</sub> *G*<sub>u</sub> *G*<sub>v</sub> *B*<sub>u</sub> *Y*<sub>o</sub> *C*<sub>o</sub>
@@ -1239,7 +1243,7 @@ Therefore TCM also accepts UI values for all colour components, with automatic U
 
 *Example:* `[0.806 0.6 0.9]HSB` (equivalent to `[290 60 90]HSB`)
 
-> ![Note](assets/icons/note16.svg) <mark>Note</mark>\
+> ![Note](assets/icons/note-16.svg)\
 > UI detection interprets colour component value 1 as maximum,
   therefore it can be ambiguous when all component values are 1 or less.
   For instance greyscale `1` is white but `1.001` computes to almost black (1.001/255) because it is greater than 1.
