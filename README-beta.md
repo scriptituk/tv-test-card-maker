@@ -4,22 +4,21 @@
 
 ## Summary
 
-Digital imitations of TV test patterns are plentiful
-but accurate high-resolution and vector graphic replicas quite scarce,
-and those produced by drawing tools cannot be altered
-because their master files are unavailable.
+Digital imitations of vintage TV test patterns are plentiful,
+but accurate high-resolution and vector graphic replicas are quite scarce,
+and those produced by drawing tools cannot be altered because of unavailable master files.
 
 This test card maker (TCM) recreates memorable TV test patterns
 with a high level of empirical accuracy.
 It exposes rendering parameters for customisation
-and enables custom elements – shapes, images and text – to be placed anywhere.
-
-Hopefully TCM may prove useful to retro TV enthusiasts and the amateur TV community,
-and perhaps spark wider interest too.
+and enables custom elements – shapes, images and text – to be superimposed anywhere.
 
 As a novel PostScript application,
 TCM demonstrates precision control of vector graphics creation
-and some interesting coding paradigms that add structure and facilitate pattern changes.
+and some interesting coding paradigms that add structure and adaptability.
+
+Hopefully TCM may prove useful to retro TV enthusiasts and the amateur TV community,
+and perhaps spark wider interest as a framework for generic pattern generation.
 
 This project is dedicated to the memory of **Gordon J. King** whose technical writings inspired so many budding electronics enthusiasts – see [dedication](#in-memoriam).
 
@@ -47,9 +46,9 @@ This project is dedicated to the memory of **Gordon J. King** whose technical wr
 ## Implementation
 
 Test patterns, a.k.a. test cards, consist of graphical [elements](#template-elements)
-rendered according to [arguments](#template-arguments)
+rendered according to [arguments](#element-arguments)
 and composited according to a [group](#compositing-groups) layout.
-Pattern [templates](#pattern-templates) are element sets arranged to replicate historic patterns.
+Pattern [templates](#pattern-templates) are element sets that replicate historic patterns.
 All element arguments can be overridden to customise pattern features
 and additional [custom elements](#custom-elements) can be layered on top.
 
@@ -82,11 +81,11 @@ The command-line interface (CLI) for TCM is the GS CLI,
 and the PS code uses GS-specific procedures,
 therefore other interpreters will not work without modification.
 
-This implementation makes it easy without PS or GS expertise to modify patterns just by changing [arguments](#template-arguments) that control composition:
+This implementation makes it easy without PS or GS expertise to modify patterns just by changing [arguments](#element-arguments) that control composition:
 dimensions, coordinates, colours, text, frequencies, element switches, imported resources.
-Arguments can be specified as command line options or read from file,
+Arguments can be specified as command line options or read from file
 and follow basic PS dictionary syntax.
-To achieve this in a structured way without the benefits of object-oriented features[^4], a simple argument inheritance paradigm has been devised.
+To achieve this in a structured way without the benefits of object-oriented features[^4] a simple argument inheritance paradigm has been devised.
 
 Custom elements, namely [custom shapes](#custom-shapes), [custom images](#custom-images) and [custom text](#custom-text),
 are a major design feature which enable graphic shapes, images, EPS[^5] vector graphics and text objects to be placed anywhere,
@@ -136,7 +135,7 @@ Further info: [GS User Guide: Installing](https://ghostscript.readthedocs.io/en/
 
 ## PostScript basics
 
-All you need to know to tweak TCM patterns are the [objects](#objects) and [operators](#operators) below and these basic concepts:
+All you need to grasp to tweak TCM patterns are the [objects](#objects) and [operators](#operators) detailed below and three basic concepts:
 
 - PostScript uses *postfix* notation, a.k.a. Reverse Polish, where operands preceed operators –
 like Forth[^6].
@@ -144,8 +143,11 @@ like Forth[^6].
 - everything is an *object* (all data and procedures, that is)
 
 
-The following tables show basic PS object types and operations to make and modify test cards using TCM.
-They are by no means exhaustive but you shouldn’t need to dig further.
+The following tables show basic object types and operators needed to modify test cards.
+They are mostly intuitive and by no means exhaustive
+but you really shouldn’t need to dig any further.
+Many of the examples take [element arguments](#element-arguments) as operands,
+for example the [`BBC-C`](#bbc-c-arguments) set.
 
 <details><summary>objects</summary>
 
@@ -153,15 +155,15 @@ They are by no means exhaustive but you shouldn’t need to dig further.
 
 | type | examples | comment |
 | :--- | :--- | :--- |
-| boolean | `true` `false` | |
-| numeric | `1` `-2.3` `4.5e3` | |
+| boolean | `true` `false` | these are keywords |
+| numeric | `1` `-2.3` `4.5e3` | integers and reals |
 | string | `(Hello)` | enclose string in `(` and `)` |
 | name | `/TCh` <br> `TCh 4 div` <br> `/CCf?` | names have a slash `/` <br> drop the `/` to get named objects <br> names can have any characters |
 | array | `[]` <br> `[ 1 2 3 ]` <br> `[ true 4.5 (Hi) /Lo [6 7] ]` | empty array <br> array of numbers <br> array of mixed objects |
 | dictionary | `/Is? true def` <br> `/Value 8.9 def` <br> `/Text (Bye) def` <br> `/Colour /Red def` <br> `/Numbers [1 2 3] def` | these are name-object pairs <br> `def` is the *define* operator |
-| null | `null` | undefined value |
+| null | `null` | empty or missing value |
 
-Further info: [PLRM 3.3: Data Types and Objects](https://www.adobe.com/jp/print/postscript/pdfs/PLRM.pdf#page=48)
+Further info: [PLRM §3.3: Data Types and Objects](https://www.adobe.com/jp/print/postscript/pdfs/PLRM.pdf#page=48)
 
 </details>
 
@@ -169,43 +171,43 @@ Further info: [PLRM 3.3: Data Types and Objects](https://www.adobe.com/jp/print/
 
 ### <ins>Operators</ins>
 
-| TCM operator | example | comment |
+| operator | example | comment |
 | ---: | :---: | :--- |
 | <code>_num<sub>1</sub>_ _num<sub>2</sub>_ **add** _sum_</code> | <code>1.2 3.4 **add**</code> | return <code>_num<sub>1</sub>_ + _num<sub>2</sub>_</code> |
 | <code>_num<sub>1</sub>_ _num<sub>2</sub>_ **sub** _difference_</code> | <code>9.8 7.6 **sub**</code> | return <code>_num<sub>1</sub>_ - _num<sub>2</sub>_</code> |
 | <code>_num<sub>1</sub>_ _num<sub>2</sub>_ **mul** _product_</code> | <code>0.5 -4 **mul**</code> | return <code>_num<sub>1</sub>_ × _num<sub>2</sub>_</code> |
 | <code>_num_ **mul2** _product_</code><sup>※</sup> | <code>Gsz **mul2**</code> | return <code>_num_ × 2</code> |
 | <code>_num<sub>1</sub>_ _num<sub>2</sub>_ **div** _product_</code> | <code>5.6 3 **div**</code> | return <code>_num<sub>1</sub>_ ÷ _num<sub>2</sub>_</code> |
-| <code>_num<sub>1</sub>_ _num<sub>2</sub>_ **mod** _remainder_</code> | <code>/S7x rand TCw **mod**</code> | return remainder of <code>_num<sub>1</sub>_ ÷ _num<sub>2</sub>_</code> |
 | <code>_num_ **div2** _quotient_</code><sup>※</sup> | <code>Glw **div2**</code> | return <code>_num_ ÷ 2</code> |
-| <code>_num_ **sqrt** _num_</code> | <code>TCy **sqrt**</code> | return <code>√<em>num</em></code> (square root) |
+| <code>_num<sub>1</sub>_ _num<sub>2</sub>_ **mod** _remainder_</code> | <code>/S7x rand TCw **mod**</code> | return remainder of <code>_num<sub>1</sub>_ ÷ _num<sub>2</sub>_</code> |
 | <code>_num_ **sq** _num_</code><sup>※</sup> | <code>CCr **sq**</code> | return <code>_num_<sup>2</sup></code> |
+| <code>_num_ **sqrt** _num_</code> | <code>TCy **sqrt**</code> | return <code>√<em>num</em></code> (square root) |
 | <code>_num_ **neg** _num_</code> | <code>123 **neg**</code> | return <code>-_num_</code> |
 | <code>_num_ **abs** _num_</code> | <code>-99 **abs**</code> | return <code>\|_num_\|</code> (absolute value) |
 | <code>_leg<sub>1</sub>_ _leg<sub>2</sub>_ **hypot** _hypot_</code><sup>※</sup> | <code>TCw TCh **hypot**</code> | return hypotenuse (root sum of squares) |
-| <code>_hypot_ _leg<sub>1</sub>_ **leg** _leg<sub>2</sub>_</code><sup>※</sup> | <code>Gsz mul2 Gsz **leg**</code> | return leg (cathetus, root difference of squares) |
-| <code>_angle_ **sin** _num_</code> | <code>-20 **sin**</code> | return sine of <code>_angle_</code> degrees |
-| <code>_angle_ **cos** _num_</code> | <code>110 **cos**</code> | return cosine of <code>_angle_</code> degrees |
-| <code>_angle_ **tan** _num_</code><sup>※</sup> | <code>70 **tan**</code> | return tangent of <code>_angle_</code> degrees |
+| <code>_hypot_ _leg<sub>1</sub>_ **leg** _leg<sub>2</sub>_</code><sup>※</sup> | <code>Gsz mul2 Gsz **leg**</code> | return leg (cathetus, root absolute difference of squares) |
+| <code>_angle_ **sin** _real_</code> | <code>-20 **sin**</code> | return sine of <code>_angle_</code> degrees |
+| <code>_angle_ **cos** _real_</code> | <code>110 **cos**</code> | return cosine of <code>_angle_</code> degrees |
+| <code>_angle_ **tan** _real_</code><sup>※</sup> | <code>70 **tan**</code> | return tangent of <code>_angle_</code> degrees |
 | <code>_y_ _x_ **atan** _angle_</code> | <code>123 234 **atan**</code> | return arctangent of <code>_y_ ÷ _x_</code> in degrees |
 | <code>_num<sub>1</sub>_ _num<sub>2</sub>_ **min** _num_</code><sup>※</sup> | <code>1.2 3.4 **min**</code> | return minimum of <code>_num<sub>1</sub>_</code>,<code>_num<sub>2</sub>_</code> |
 | <code>_num<sub>1</sub>_ _num<sub>2</sub>_ **max** _num_</code><sup>※</sup> | <code>1.2 3.4 **max**</code> | return maximum of <code>_num<sub>1</sub>_</code>,<code>_num<sub>2</sub>_</code> |
 | <code>_array_ **length** _int_</code> | <code>SWc **length**</code> | return length of <code>_array_</code> |
 | <code>_num_ **xGsz** _product_</code><sup>※</sup> | <code>3 **xGsz**</code> | return <code>_num_ × Gsz</code> (multiply by grid size, see [scaling](#scaling)) |
-| <code>**hGsz** _size_</code><sup>※</sup> | <code>**hGsz** Glw sub</code> | return <code>Gsz ÷ 2</code> (half grid size) |
+| <code>– **hGsz** _size_</code><sup>※</sup> | <code>**hGsz** Glw sub</code> | return <code>Gsz ÷ 2</code> (half grid size) |
 | <code>_num_ **xGlw** _product_</code><sup>※</sup> | <code>0.6 **xGlw**</code> | return <code>_num_ × Glw</code> (multiply by grid linewidth) |
-| <code>**hGlw** _width_</code><sup>※</sup> | <code>hGsz **hGlw** add</code> | return <code>Glw ÷ 2</code> (half grid linewidth) |
-| <code>_freq_ **mhz** _width_</code><sup>※</sup> | <code>2.5 **mhz**</code> | return period width corresponding to MHz in active line time |
-| <code>_time_ **us** _width_</code><sup>※</sup> | <code>0.25 **us**</code> | return width corresponding to μs in active line time |
+| <code>– **hGlw** _width_</code><sup>※</sup> | <code>hGsz **hGlw** add</code> | return <code>Glw ÷ 2</code> (half grid linewidth) |
+| <code>_freq_ **mhz** _width_</code><sup>※</sup> | <code>2.5 **mhz**</code> | return period width corresponding to MHz of active line time |
+| <code>_time_ **us** _width_</code><sup>※</sup> | <code>0.25 **us**</code> | return width corresponding to μs of active line time |
 | <code>_num_ **lines** _height_</code><sup>※</sup> | <code>7 **lines**</code> | return height corresponding to number of scan lines |
 | <code>– **rand** _int_</code>| <code>/S7x **rand** TCw mod arg</code> | return random number <code>_int_</code> |
 | <code>_int_ **srand** —</code> | <code>23 **srand**</code> | seed the random number generator with <code>_int_</code> |
 | <code>_name_ _value_ **arg** –</code><sup>※</sup> | <code>/IDh hGsz **arg**</code> | define argument (name-object pair) iff not already defined |
 | <code>_to_ _from_ **merge** –</code><sup>※</sup> | <code>/T7 /T4 **merge**</code> | define undefined args from another custom element of same type |
 
-<sup>※</sup> TCM operators, as opposed to built-in PS operators
+<sup>※</sup> TCM operators, as opposed to PS built-in operators
 
-Further info: [PLRM 8: Operators](https://www.adobe.com/jp/print/postscript/pdfs/PLRM.pdf#page=519)
+Further info: [PLRM §8: Operators](https://www.adobe.com/jp/print/postscript/pdfs/PLRM.pdf#page=519)
 
 </details>
 
@@ -253,7 +255,7 @@ but many modern digital test patterns exist already.
 
 ## Compositing groups
 
-A compositing group is a set of visibly similar templates that share a common layout of graphic [elements](#template-elements) and their respective [arguments](#template-arguments).
+A compositing group is a set of visibly similar templates that share a common layout of graphic [elements](#template-elements) and their respective [arguments](#element-arguments).
 Each group has its own procedure resource for compositing all patterns in the group.
 Grouping enables TCM to generate widely differing patterns and provides extensibility.
 
@@ -263,8 +265,8 @@ Grouping enables TCM to generate widely differing patterns and provides extensib
 
 | group | patterns | templates |
 | :--- | :--- | :--- |
-| `BBCbw` | black and white BBC patterns | A (B *TBD*) |
-| `BBCgc` | greyscale and colour BBC patterns | C, D, E, F, J (W, X *TBD*) |
+| `BBCbw` | black and white BBC patterns | BBC A (B *TBD*) |
+| `BBCgc` | greyscale and colour BBC patterns | BBC C, D, E, F, J (W, X *TBD*) |
 | `Philips` | Philips circle pattern[^7] | BBC pattern G (*TBD*) |
 
 
@@ -272,26 +274,28 @@ Grouping enables TCM to generate widely differing patterns and provides extensib
 
 ## Template elements
 
+ +#
 <details><summary>group <code>BBCbw</code> elements</summary>
 
-#### <ins>Group <code>BBCbw</code> elements</ins>
+### <ins>Group <code>BBCbw</code> elements</ins>
 </details>
 
 <details><summary>group <code>BBCgc</code> elements</summary>
 
-#### <ins>Group <code>BBCgc</code> elements</ins>
+### <ins>Group <code>BBCgc</code> elements</ins>
 </details>
 
 <details><summary>group <code>Philips</code> elements</summary>
 
-#### <ins>Group <code>Philips</code> elements</ins>
+### <ins>Group <code>Philips</code> elements</ins>
 </details>
 
-## Template arguments
+## Element arguments
 
+ +#
 <details><summary><code>BBC-A</code> arguments</summary>
 
-#### <ins><code>BBC-A</code> arguments</ins>
+### <ins><code>BBC-A</code> arguments</ins>
 
 Inheritance: `/BBC-A` <— /Blank
 | arg | value | description |
@@ -336,7 +340,7 @@ Inheritance: `/BBC-A` <— /Blank
 
 <details><summary><code>BBC-C-early</code> arguments</summary>
 
-#### <ins><code>BBC-C-early</code> arguments</ins>
+### <ins><code>BBC-C-early</code> arguments</ins>
 
 Inheritance: `/BBC-C-early` <— /Blank
 | arg | value | description |
@@ -391,7 +395,7 @@ Inheritance: `/BBC-C-early` <— /Blank
 | `/CCbr` | `CCr CClw add` | black circle stroke radius: 0 for none |
 | `/CCor` | `CCr CClw mul2 add` | outer circle stroke radius: 0 for none |
 | ***/CP…*** | — | ***centre picture arguments*** |
-| `/CPi` | `null` | picture custom image element, null for no image |
+| `/CPi` | `null` | picture custom image element name, null for no image |
 | ***/SW…*** | — | ***step wedge arguments*** |
 | `/SWx` | `TCx` | step wedge horizontal centre |
 | `/SWw` | `0.5 xGsz` | step wedge width |
@@ -410,7 +414,7 @@ Inheritance: `/BBC-C-early` <— /Blank
 | `/FBs?` | `false` | true for sinusoidal frequency gratings, false for square |
 | `/FBx` | `TCx CCr CClw 0.4 mul sub FBoh div2 leg sub FBow div2 add` | freq bars horizontal centre |
 | `/FBf` | `[ [1 4 0] [1.5 6 0] [2 8 0] [2.5 10 0] [3 12 0] ]` | frequencies: [MHz nbars antiphase] |
-| `/FBt` | `null` | freq custom text element template, null for no text |
+| `/FBt` | `null` | custom text element name for freq text template, null for no text |
 | ***/B…*** | — | ***border arguments*** |
 | `/Bw` | `0.26 xGsz` | border width |
 | `/Ba?` | `false` | false for no arrows |
@@ -437,7 +441,7 @@ Inheritance: `/BBC-C-early` <— /Blank
 
 <details><summary><code>BBC-C</code> arguments</summary>
 
-#### <ins><code>BBC-C</code> arguments</ins>
+### <ins><code>BBC-C</code> arguments</ins>
 
 Inheritance: `/BBC-C` <— [`/BBC-C-early`](#bbc-c-early-arguments) <— /Blank
 | arg | value | description |
@@ -475,7 +479,7 @@ Inheritance: `/BBC-C` <— [`/BBC-C-early`](#bbc-c-early-arguments) <— /Blank
 
 <details><summary><code>BBC-C-625</code> arguments</summary>
 
-#### <ins><code>BBC-C-625</code> arguments</ins>
+### <ins><code>BBC-C-625</code> arguments</ins>
 
 Inheritance: `/BBC-C-625` <— [`/BBC-C`](#bbc-c-arguments) <— [`/BBC-C-early`](#bbc-c-early-arguments) <— /Blank
 | arg | value | description |
@@ -515,7 +519,7 @@ Inheritance: `/BBC-C-625` <— [`/BBC-C`](#bbc-c-arguments) <— [`/BBC-C-early`
 | `/FBoh` | `3 xGsz Glw add` | freq bar outer height |
 | `/FBx` | `TCx CCr CClw 0.1 mul sub FBoh div2 leg sub FBow div2 add` | freq bars horizontal centre |
 | `/FBf` | `[ [1.5 4 0] [2.5 7 0] [3.75 10 0] [4.5 12 0] [5.25 14 0] ]` | frequencies: [MHz nbars antiphase] |
-| `/FBt` | `/T-1` | freq custom text element template, null for no text |
+| `/FBt` | `/T-1` | custom text element name for freq text template, null for no text |
 | ***/CS…*** | — | ***corner stripes arguments*** |
 | `/CSol` | `3.11 xGsz` | corner stripes outer length from corner |
 | `/CShf` | `1.3` | corner stripes horizontal fundamental MHz |
@@ -529,7 +533,7 @@ Inheritance: `/BBC-C-625` <— [`/BBC-C`](#bbc-c-arguments) <— [`/BBC-C-early`
 
 <details><summary><code>BBC-D-early</code> arguments</summary>
 
-#### <ins><code>BBC-D-early</code> arguments</ins>
+### <ins><code>BBC-D-early</code> arguments</ins>
 
 Inheritance: `/BBC-D-early` <— [`/BBC-C-early`](#bbc-c-early-arguments) <— /Blank
 | arg | value | description |
@@ -602,7 +606,7 @@ Inheritance: `/BBC-D-early` <— [`/BBC-C-early`](#bbc-c-early-arguments) <— /
 
 <details><summary><code>BBC-D-improved</code> arguments</summary>
 
-#### <ins><code>BBC-D-improved</code> arguments</ins>
+### <ins><code>BBC-D-improved</code> arguments</ins>
 
 Inheritance: `/BBC-D-improved` <— [`/BBC-D-early`](#bbc-d-early-arguments) <— [`/BBC-C-early`](#bbc-c-early-arguments) <— /Blank
 | arg | value | description |
@@ -618,7 +622,7 @@ Inheritance: `/BBC-D-improved` <— [`/BBC-D-early`](#bbc-d-early-arguments) <�
 
 <details><summary><code>BBC-E</code> arguments</summary>
 
-#### <ins><code>BBC-E</code> arguments</ins>
+### <ins><code>BBC-E</code> arguments</ins>
 
 Inheritance: `/BBC-E` <— [`/BBC-D-early`](#bbc-d-early-arguments) <— [`/BBC-C-early`](#bbc-c-early-arguments) <— /Blank
 | arg | value | description |
@@ -648,7 +652,7 @@ Inheritance: `/BBC-E` <— [`/BBC-D-early`](#bbc-d-early-arguments) <— [`/BBC-
 
 <details><summary><code>BBC-F-early</code> arguments</summary>
 
-#### <ins><code>BBC-F-early</code> arguments</ins>
+### <ins><code>BBC-F-early</code> arguments</ins>
 
 Inheritance: `/BBC-F-early` <— [`/BBC-E`](#bbc-e-arguments) <— [`/BBC-D-early`](#bbc-d-early-arguments) <— [`/BBC-C-early`](#bbc-c-early-arguments) <— /Blank
 | arg | value | description |
@@ -660,7 +664,7 @@ Inheritance: `/BBC-F-early` <— [`/BBC-E`](#bbc-e-arguments) <— [`/BBC-D-earl
 | `/Glw` | `8 lines` | grid linewidth |
 | `/Golw` | `0.42 xGlw` | grid outline width: 0 for no outline (F/J/W/X pattern) |
 | ***/CP…*** | — | ***centre picture arguments*** |
-| `/CPi` | `/I-1` | picture custom image element, null for no image |
+| `/CPi` | `/I-1` | picture custom image element name, null for no image |
 | ***/LB…*** | — | ***letterbox arguments*** |
 | `/LBow` | `3.45 xGsz` | letterbox outer width |
 | `/LBoh` | `0.9 xGsz` | letterbox outer height |
@@ -700,7 +704,7 @@ Inheritance: `/BBC-F-early` <— [`/BBC-E`](#bbc-e-arguments) <— [`/BBC-D-earl
 | `/FBf` | `[ [1.5 6 0] [2.5 9 0] [3.5 13 0] [4 15 0] [4.5 17 0] [5.25 20 0] ]` | frequencies: [MHz nbars antiphase] |
 | `/FBs?` | `false` | true for sinusoidal frequency gratings, false for square |
 | `/FBoh` | `FBh FBf length mul` | freq bar outer height |
-| `/FBt` | `/T-1` | freq custom text element template, null for no text |
+| `/FBt` | `/T-1` | custom text element name for freq text template, null for no text |
 | ***/CS…*** | — | ***corner stripes arguments*** |
 | `/CSow` | `1.1 xGsz` | corner stripes outer width |
 | `/CSol` | `2.73 xGsz` | corner stripes outer length from corner |
@@ -715,7 +719,7 @@ Inheritance: `/BBC-F-early` <— [`/BBC-E`](#bbc-e-arguments) <— [`/BBC-D-earl
 
 <details><summary><code>BBC-F-optical</code> arguments</summary>
 
-#### <ins><code>BBC-F-optical</code> arguments</ins>
+### <ins><code>BBC-F-optical</code> arguments</ins>
 
 Inheritance: `/BBC-F-optical` <— [`/BBC-F-early`](#bbc-f-early-arguments) <— [`/BBC-E`](#bbc-e-arguments) <— [`/BBC-D-early`](#bbc-d-early-arguments) <— [`/BBC-C-early`](#bbc-c-early-arguments) <— /Blank
 | arg | value | description |
@@ -738,13 +742,13 @@ Inheritance: `/BBC-F-optical` <— [`/BBC-F-early`](#bbc-f-early-arguments) <—
 | ***/CC…*** | — | ***centre circles arguments*** |
 | `/CCr` | `2.5 xGsz 0.88 xGlw sub` | white circle stroke radius |
 | ***/FB…*** | — | ***frequency bars arguments*** |
-| `/FBt` | `null` | freq custom text element template, null for no text |
+| `/FBt` | `null` | custom text element name for freq text template, null for no text |
 
 </details>
 
 <details><summary><code>BBC-F-electronic</code> arguments</summary>
 
-#### <ins><code>BBC-F-electronic</code> arguments</ins>
+### <ins><code>BBC-F-electronic</code> arguments</ins>
 
 Inheritance: `/BBC-F-electronic` <— [`/BBC-F-optical`](#bbc-f-optical-arguments) <— [`/BBC-F-early`](#bbc-f-early-arguments) <— [`/BBC-E`](#bbc-e-arguments) <— [`/BBC-D-early`](#bbc-d-early-arguments) <— [`/BBC-C-early`](#bbc-c-early-arguments) <— /Blank
 | arg | value | description |
@@ -781,7 +785,7 @@ Inheritance: `/BBC-F-electronic` <— [`/BBC-F-optical`](#bbc-f-optical-argument
 | ***/FB…*** | — | ***frequency bars arguments*** |
 | `/FBf` | `[ [1.5 6 0] [2.5 10 0] [3.5 13 1] [4 15 0] [4.5 17 0] [5.25 20 0] ]` | frequencies: [MHz nbars antiphase] |
 | `/FBs?` | `true` | true for sinusoidal frequency gratings, false for square |
-| `/FBt` | `null` | freq custom text element template, null for no text |
+| `/FBt` | `null` | custom text element name for freq text template, null for no text |
 | ***/CS…*** | — | ***corner stripes arguments*** |
 | `/CSow` | `1.05 xGsz` | corner stripes outer width |
 | `/CSol` | `2.7 xGsz` | corner stripes outer length from corner |
@@ -793,13 +797,21 @@ Inheritance: `/BBC-F-electronic` <— [`/BBC-F-optical`](#bbc-f-optical-argument
 
 ## Custom elements
 
-<a href='assets/custom-elements.png'><img src='assets/custom-elements-thumb.png' alt='custom elements' align='right'></a>
-
 Custom elements (CE) are
 [custom shape](#custom-shapes), [custom image](#custom-images) and [custom text](#custom-text)
 elements layered over the composite pattern.
-CEs are best explained by example,
-so here is a rather garish one created by the arguments below (click thumbnail).
+Each CE has a name formed from a type letter and an element number, e.g. `/S4` (shape 4), `/I23` (image 23), `/T17` (text 17).
+
+With a bit of scripting you can have hundreds of CEs, positioned in an orderly fashion or at random using the `rand` [operator](#operators).
+
+CEs with a negative element number are not layered; they are for TCM use only, for replica elements.
+
+### CEs by example
+
+<a href='assets/custom-elements.png'><img src='assets/custom-elements-thumb.png' alt='custom elements' align='right'></a>
+
+Here is a somewhat garish example to illustrate the concept (click thumbnail).
+It is created from the arguments file below.
 Unspecified arguments take default values –
 see [shape arguments](#shape-arguments), [image arguments](#image-arguments), [text arguments](#text-arguments).
 
@@ -824,6 +836,7 @@ pattern *BBC-D-early* with 17 custom elements
 /T12h Gsz 3 div arg % height
 /T12c /ForestGreen arg % colour
 /T12y TCh 0.8 xGsz sub arg % horizontal centre
+/T12z 30 arg % z-index
 
 % custom shape element 12 (light purple filled ellipse with sky blue stroke)
 /S12s /Ellipse arg % shape
@@ -834,18 +847,20 @@ pattern *BBC-D-early* with 17 custom elements
 /S12y T12y arg % horizontal centre
 /S12t 2 lines arg % stroke thickness
 /S12d [5 xGlw Glw] arg % stroke dash
+/S12z 30 arg % z-index
 
 % custom text element 10 (blue block-inverted caption)
 /T10s (Custom Elements) arg % string
 /T10f /Helvetica-Bold arg % font
 /T10h Gsz div2 arg % height
 /T10w 6.5 xGsz arg % width
-/T10z 1.2 arg % horizontal padding multiplier
+/T10o 1.2 arg % horizontal padding multiplier
 /T10y Cy arg % vertical centre
 /T10a /J arg % alignment
 /T10c /Blue arg % colour
 /T10b true arg % block-inverted
 /T10r 0.1 arg % corner radius (fraction of height)
+/T10z 10 arg % z-index
 
 % custom image element 2 (Art Nouveau corner ornament, Dan X. Solo, 1982)
 /I2f (DanXSolo-ArtNouveauCornerOrnament.eps) arg % image filename
@@ -854,6 +869,7 @@ pattern *BBC-D-early* with 17 custom elements
 /I2w 1.5 xGsz arg % width
 /I2h 1.5 xGsz arg % height
 /I2q true arg % mirror image in other quadrants
+/I2z 10 arg % z-index
 
 % custom shape element 3-4 (dark grey stroked rectangles)
 /S3s /Rectangle arg % shape
@@ -864,6 +880,7 @@ pattern *BBC-D-early* with 17 custom elements
 /S3w Gsz arg % width
 /S3t Glw arg % stroke thickness
 /S3j /R arg % rounded corners
+/S3z 20 arg % z-index
 /S4s /Rectangle arg % shape
 /S4x TCw S3x sub arg % horizontal centre
 /S4 /S3 merge % copy remaining args from shape 3
@@ -880,6 +897,7 @@ pattern *BBC-D-early* with 17 custom elements
 /S20c /Green arg % fill colour
 /S20k null arg % no stroke
 /S20q true arg % mirror shape in other quadrants
+/S20z 30 arg % z-index
 
 % custom shape elements 5-8 (red & cyan filled triangles)
 /S5s /Polygon arg % shape
@@ -892,6 +910,7 @@ pattern *BBC-D-early* with 17 custom elements
 /S5x S5w div2 arg % horizontal centre
 /S5y TCy arg % vertical centre
 /S5t 1 lines arg % stroke thickness
+/S5z 10 arg % z-index
 /S6s /P arg % shape
 /S6a -90 arg % rotate clockwise
 /S6x TCw S5x sub arg % horizontal centre
@@ -915,6 +934,7 @@ pattern *BBC-D-early* with 17 custom elements
 /S1h Gsz arg % height
 /S1a 90 arg % rotate anticlockwise
 /S1t Glw arg % stroke thickness
+/S1z 10 arg % z-index
 /S2s /Line arg % shape
 /S2x TCw Gsz sub arg % horizontal centre
 /S2 /S1 merge % copy remaining args from shape 1
@@ -925,6 +945,7 @@ pattern *BBC-D-early* with 17 custom elements
 /S14c null arg % no fill
 /S14h 6 xGsz arg % diameter
 /S14t CClw mul2 arg % stroke thickness
+/S14z 10 arg % z-index
 
 % custom shape element 15 (red stroked polygon)
 /S15s /Polygon arg % shape
@@ -934,6 +955,7 @@ pattern *BBC-D-early* with 17 custom elements
 /S15h S14h arg % height
 /S15w S15h arg % width
 /S15t 1 lines arg % stroke thickness
+/S15z 20 arg % z-index
 /S15 /S14 merge % copy remaining args from shape 14
 
 % custom shape element 10 (chocolate brown stroked rectangle)
@@ -943,11 +965,13 @@ pattern *BBC-D-early* with 17 custom elements
 /S10h 8 xGsz arg % height
 /S10w 11 xGsz arg % width
 /S10t Glw arg % stroke thickness
+/S10z 20 arg % z-index
 
 % custom image element 5 (On White II, Kandinsky, 1923)
 /I5f (Kandinsky-OnWhiteII.png) arg % image filename
 /I5h CCr mul2 CClw sub arg % image diameter
 /I5w 0 arg % crop image to circle
+/I5z 10 arg % z-index
 
 } def % leave this line intact
 ```
@@ -955,16 +979,12 @@ pattern *BBC-D-early* with 17 custom elements
 
 ### Layering
 
-Each CE is assigned an index number for visual layering, like `z-index` in CSS[^8].
-CEs with identical index but different type are also layered but have lower priority:
+Each CE has an index for visual layering, like `z-index` in CSS[^8].
+CEs with identical index but different type are also layered but have a lower priority:
 shapes (`S`) under images (`I`) under text (`T`).
-For instance if CEs `T7`, `I3`, `S3`, `T5` are defined in any order,
-they are layered `S3`, `I3`, `T5`, `T7` with `T7` on top.
-This provides CE overlap control.
-
-With a bit of scripting you can have thousands of CEs, either ordered or random using the `rand` [operator](#operators).
-
-CEs with a negative index are not layered; they are for TCM use only, for replica elements.
+For instance CEs with z-indices `I3z=40`, `T5z=70`, `S3z=40`, `T7z=10`
+are layered `T7`, `S3`, `I3`, `T5` with `T5` on top.
+This provides CE overlap control but is only needed when elements overlap.
 
 
 ### Custom shapes
@@ -997,6 +1017,7 @@ See also [colour syntax](#colour-syntax).
 | `/S#t` | `1` | stroke thickness |
 | `/S#j` | `/M` | stroke line join: /M(itre), /R(ound), /B(evel) |
 | `/S#q` | `false` | true to mirror in every quadrant |
+| `/S#z` | `0` | z-index for layering |
 | `/S#?` | `true` | true to show this custom shape element |
 
 (`#` is the shape element index number)
@@ -1027,6 +1048,7 @@ Unlike custom shapes and text, images cannot be distorted, but like shapes they 
 | `/I#i` | `0` | horizontal offset from x at auto-fit scaling |
 | `/I#j` | `0` | vertical offset from y at auto-fit scaling |
 | `/I#q` | `false` | true to mirror in every quadrant |
+| `/I#z` | `0` | z-index for layering |
 | `/I#?` | `true` | true to show this custom image element |
 
 (`#` is the image element index number)
@@ -1067,11 +1089,12 @@ See also [font resources](#font-resources) and [colour syntax](#colour-syntax).
 | `/T#b` | `false` | true to block-invert characters (cameo/stencil style) |
 | `/T#m` | `0` | block monospace width (fraction of height or a character e.g. /M): 0 for no monospace |
 | `/T#p` | `0.1` | block padding (fraction of height) |
-| `/T#z` | `1` | block horizontal padding multiplier |
+| `/T#o` | `1` | block horizontal padding multiplier |
 | `/T#r` | `0` | block corner radius (fraction of height): 0 for none, 1 for maximum rounding |
 | `/T#g` | `0` | block gap for whitespace (fraction of height): 0 for auto (use advance width) |
 | `/T#i` | `null` | italic angle (degrees anticlockwise): null for auto (use font-embedded ItalicAngle) |
-| `/T#-` | `false` | true for no reversepath of blocked charpath (TODO: investigate why needed for FontForge TT) |
+| `/T#-` | `false` | true for no reversepath of blocked charpath (TODO: needed for FontForge TT, why? ) |
+| `/T#z` | `0` | z-index for layering |
 | `/T#?` | `true` | true to show this custom text element |
 
 (`#` is the text element index number)
@@ -1092,7 +1115,7 @@ Square pixels are assumed.
 TCM takes no account of Kell factor[^17] and rounds resolutions up to even numbers
 to simplify the maths and facilitate digital video post-processing.
 So 625/50 has 575 active lines (25 frame blanking lines) but 576 is used (the default),
-and 405/50 has 377 active lines (14 frame blanking lines) corresponding to height 378.
+and 405/50 has 377 active lines (14 frame blanking lines) and height 378.
 Units are arbitrary but PostScript points are 1/72" by default, or 1 pixel for [raster format](#raster-formats) images.
 
 
@@ -1124,10 +1147,10 @@ The scaling operator for scan line heights is `lines`, computed for the active f
 
 The unit of scaling for all other graphic elements is the grid size, i.e. the length of one side of a graticule square.
 For *BBC-A* however, which has no graticule, it is the distance between adjacent vertical castellation midpoints.
-This unit is named `/Gsz`, and the main scaling operator for fixed elements is `xGsz`.
+This unit is named `/Gsz`, and the main scaling [operator](#operators) for fixed elements is `xGsz`.
 
 *Example:* *BBC-C* letterbox outer width is 2.66 grid squares, specified as\
-`/LBow 2.66 Gsz mul arg`, or `/LBow 2.66 xGsz arg` using the scaling operator `xGsz`
+`/LBow 2.66 xGsz arg`
 
 ## Colours
 
@@ -1259,7 +1282,7 @@ Unfilled areas are opaque or transparent depending on the [output format](#outpu
 For transparent PNG, use `sDEVICE=png16malpha` or `sDEVICE=pngalpha`.
 Transparent PDF is an outstanding task.
 
-Chroma keying is a useful alternative to transparency for overlays.
+[Chroma keying](#chroma-keying) is a useful alternative to transparency for overlays.
 
 ### Gradients
 
@@ -1597,7 +1620,8 @@ This year (2025) I became aware that I had been living two streets away from Mr&
 in Furzeham, Brixham, for 14 years until he died in 2010.
 In August that year soon after his funeral service I became organist at the same [church](https://youtu.be/OmLH3yhwXrQ), yet remained oblivious.
 Had I not narrowly missed meeting him perhaps we could have chatted about the heyday of analogue electronics
-and the milestone transitions from valve to semiconductor, black and white to colour, analoge to digital…
+and the milestone transitions from valve to semiconductor, monochrome to colour, analoge to digital…
+RIP GJK.
 
 ### Tributes
 
@@ -1616,10 +1640,11 @@ and the milestone transitions from valve to semiconductor, black and white to co
 - [A Tech Ops History](http://www.tech-ops.co.uk/) – in stories and pictures, by Bernie Newnham&#x2020;
 - [British Heritage Television](https://405-line.tv/) – 405-line demo transmissions and [A Brief History](https://405-line.tv/tv-history/)
 - [List of years in British television](https://en.wikipedia.org/wiki/List_of_years_in_British_television) – Wikipedia
+- [The Story of BBC Television Idents](https://www.bbc.com/historyofthebbc/research/bbc-idents) – the BBC's on-air look from 1936 to the present day
 - [World Radio History](https://www.worldradiohistory.com/Home-UK.htm) – UK collection of documents and publications
 - [The Transdiffusion Broadcasting System](https://transdiffusion.org/) – a broadcasting archive for research and education
 - [TVARK](https://tvark.org/) – a comprehensive TV archive of Betamax and VHS home recordings
-- [Early Television Foundation](https://earlytelevision.org/) – interesting American site
+- [Early Television Foundation](https://earlytelevision.org/) – interesting American site with a [British and European](https://earlytelevision.org/postwar_british.html) section
 
 ### Technical
 
