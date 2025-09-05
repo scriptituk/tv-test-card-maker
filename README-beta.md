@@ -4,6 +4,8 @@
 
 ## Summary
 
+<img src='assets/tv-test-card-maker.gif' alt='Summary' align='right'>
+
 Digital imitations of vintage TV test patterns are plentiful
 but accurate high-resolution and vector graphic replicas quite scarce,
 and those produced by drawing tools cannot be altered because of unavailable master files.
@@ -20,14 +22,119 @@ Indeed the implementation was key to the project rationale as an academic incent
 
 Hopefully TCM may prove useful to retro TV enthusiasts and the amateur TV community,
 and perhaps spark wider interest as a framework for generic pattern generation.
-I hope too it champions the versatility of PostScript[^1] for creating intricate graphics and layouts.
+I hope it also champions the versatility of PostScript[^1] for creating intricate graphics and layouts.
 
 This project is dedicated to the memory of **Gordon J. King** whose technical writings inspired so many budding electronics enthusiasts – see [dedication](#in-memoriam).
 
 
-<img src='assets/xfade-easing.gif' alt='Summary' align='right'>
+<details><summary>Table of Contents</summary>
+
+### <ins>Table of Contents</ins>
+
+- [Summary](#summary) &bull;
+[Table&nbsp;of&nbsp;Contents](#table-of-contents)
+- [Taster](#taster)
+- [Aims](#aims)
+- [Implementation](#implementation) &bull;
+[Overview](#overview)
+- [Installing](#installing)
+  - [Install&nbsp;TCM](#install-tcm) &bull;
+[Install&nbsp;Ghostscript](#install-ghostscript) &bull;
+[Platform&nbsp;details](#platform-details)
+- [PostScript&nbsp;basics](#postscript-basics)
+  - [Objects](#objects) &bull;
+[Operators](#operators)
+- [Making&nbsp;patterns](#making-patterns)
+  - [Setting&nbsp;parameters](#setting-parameters) &bull;
+[Examples](#examples)
+- [Pattern&nbsp;templates](#pattern-templates)
+- [Compositing&nbsp;groups](#compositing-groups)
+  - [Group&nbsp;composition](#group-composition) &bull;
+- [Template&nbsp;elements](#template-elements)
+  - [Group&nbsp;BBCbw&nbsp;elements](#group-bbcbw-elements) &bull;
+[Group&nbsp;BBCgc&nbsp;elements](#group-bbcgc-elements) &bull;
+[Group&nbsp;Philips&nbsp;elements](#group-philips-elements)
+- [Element&nbsp;arguments](#element-arguments)
+  - [BBC&#8209;A&nbsp;arguments](#bbc-a-arguments) &bull;
+[BBC&#8209;C&#8209;early&nbsp;arguments](#bbc-c-early-arguments) &bull;
+[BBC&#8209;C&nbsp;arguments](#bbc-c-arguments) &bull;
+[BBC&#8209;C&#8209;625&nbsp;arguments](#bbc-c-625-arguments) &bull;
+[BBC&#8209;D&#8209;early&nbsp;arguments](#bbc-d-early-arguments) &bull;
+[BBC&#8209;D&#8209;improved&nbsp;arguments](#bbc-d-improved-arguments) &bull;
+[BBC&#8209;E&nbsp;arguments](#bbc-e-arguments) &bull;
+[BBC&#8209;F&#8209;early&nbsp;arguments](#bbc-f-early-arguments) &bull;
+[BBC&#8209;F&#8209;optical&nbsp;arguments](#bbc-f-optical-arguments) &bull;
+[BBC&#8209;F&#8209;electronic&nbsp;arguments](#bbc-f-electronic-arguments)
+- [Custom&nbsp;elements](#custom-elements)
+  - [CEs&nbsp;by&nbsp;example](#ces-by-example) &bull;
+[CE&nbsp;example&nbsp;arguments](#ce-example-arguments)
+  - [Layering](#layering)
+  - [Custom&nbsp;shapes](#custom-shapes) &bull;
+[Shape&nbsp;arguments](#shape-arguments)
+  - [Custom&nbsp;images](#custom-images) &bull;
+[Image&nbsp;arguments](#image-arguments)
+  - [Custom&nbsp;text](#custom-text) &bull;
+[Text&nbsp;arguments](#text-arguments)
+- [Resolution](#resolution)
+- [Aspect&nbsp;ratio](#aspect-ratio)
+- [Scaling](#scaling)
+  - [Scaling&nbsp;details](#scaling-details) &bull;
+[Time&#8209;based&nbsp;scaling](#time-based-scaling) &bull;
+[Proportional&nbsp;scaling](#proportional-scaling)
+- [Colours](#colours)
+  - [Colour&nbsp;syntax](#colour-syntax) &bull;
+[Greyscale](#greyscale) &bull;
+[RGB](#rgb) &bull;
+[YUV](#yuv) &bull;
+[HSL](#hsl) &bull;
+[HSB](#hsb) &bull;
+[Named&nbsp;colours](#named-colours) &bull;
+[Chroma&nbsp;keying](#chroma-keying) &bull;
+[Unit&nbsp;interval&nbsp;colour&nbsp;components](#unit-interval-colour-components) &bull;
+[Transparency](#transparency) &bull;
+[Gradients](#gradients)
+- [Fonts](#fonts)
+  - [Font&nbsp;resources](#font-resources) &bull;
+[Listing&nbsp;fonts](#listing-fonts) &bull;
+[Adding&nbsp;fonts](#adding-fonts) &bull;
+[Editing&nbsp;fonts](#editing-fonts) &bull;
+[Block&#8209;inverted&nbsp;fonts](#block-inverted-fonts) &bull;
+[BBC&nbsp;logo&nbsp;fonts](#bbc-logo-fonts)
+- [Command&nbsp;line&nbsp;interface](#command-line-interface)
+  - [Options](#options)
+    - [Basic&nbsp;options](#basic-options) &bull;
+[Environment&nbsp;variables](#environment-variables) &bull;
+[Finding&nbsp;files](#finding-files)
+  - [Output&nbsp;formats](#output-formats)
+    - [Vector&nbsp;formats](#vector-formats) &bull;
+[PDF](#pdf) &bull;
+[EPS](#eps) &bull;
+[SVG](#svg)
+    - [Raster&nbsp;formats](#raster-formats) &bull;
+[PNG](#png) &bull;
+[JPEG,&nbsp;TIFF,&nbsp;BMP](#jpeg-tiff-bmp) &bull;
+[WEBM,&nbsp;GIF](#webm-gif)
+    - [Video&nbsp;formats](#video-formats) &bull;
+- [Video&nbsp;effects](#video-effects)
+- [Test&nbsp;card&nbsp;sources](#test-card-sources)
+  - [Originals](#originals) &bull;
+[Reconstructions](#reconstructions)
+- [In&nbsp;memoriam](#in-memoriam)
+  - [Gordon&nbsp;J.&nbsp;King](#gordon-j-king) &bull;
+[Tributes](#tributes)
+- [Further&nbsp;reading](#further-reading)
+  - [Television&nbsp;history](#television-history) &bull;
+[Technical](#technical) &bull;
+[Test&nbsp;cards](#test-cards) &bull;
+[Community](#community) &bull;
+[Related&nbsp;projects](#related-projects)
+  - [Footnotes](#footnotes)
+
+</details>
 
 ## Taster
+
+TODO
 
 ## Aims
 
@@ -144,6 +251,7 @@ All you need to grasp to tweak TCM patterns are the [objects](#objects) and [ope
 like Forth[^7].
 - PostScript is *stack-based*, where operands and intermediate results are stored on a stack
 - everything is an *object* (all data and procedures, that is)
+- seperate tokens with whitespace; comments begin with %
 
 
 The following tables show basic object types and operators needed to modify test cards.
@@ -985,7 +1093,7 @@ pattern *BBC-D-early* with 17 custom elements
 
 Each CE has an index for visual layering, like `z-index` in CSS[^9].
 CEs with identical index but different type are also layered but have a lower priority:
-text (`T`) above images (`I`) above shapes (`S`).
+text (`T`) over images (`I`) over shapes (`S`).
 For instance CEs with z-indices `I3z=40`, `T5z=70`, `S3z=40`, `T7z=10`
 are layered `T7`, `S3`, `I3`, `T5` with `T5` on top.
 This provides CE overlap control but is only needed when elements overlap, as in the example.
@@ -998,8 +1106,8 @@ This provides CE overlap control but is only needed when elements overlap, as in
 Shapes are currently limited to lines, concave polygons, rectangles and ellipses, squares and circles.
 They are calculated to fit the unit square[^10] at the specified rotation then scaled.
 Odd-sided polygons are oriented with a vertex at top-centre and horizontal base,
-placed using constant width Reuleaux[^11] curve fitting to normalise rotation within the bounds,
-therefore the centroid is offset from the specified centre, as shown (credit: *LEMeZza/Wikimedia Commons*).
+placed using constant width Reuleaux[^11] curve fitting to normalise size and rotation within the bounds,
+therefore the centroid is offset from the specified centre as shown (credit: *LEMeZza/Wikimedia Commons*).
 All shapes can be rotated and distorted, filled and/or stroked, and mirrored in all quadrants.
 See also [colour syntax](#colour-syntax).
 
@@ -1133,11 +1241,24 @@ Units are arbitrary but PostScript points are 1/72" by default, or 1 pixel for [
 
 ## Aspect ratio
 
-Changing the aspect ratio `/TCr` will expand or contract the width accordingly,
-and the TCM drawing algorithms will compensate without distorting shapes.
+Changing the aspect ratio `/TCr` will expand or contract the width accordingly
+and the TCM drawing algorithms will compensate without distorting element shapes.
 Element positions should therefore be anchored relative to centrelines or edges or other elements.
 
+*Example:* square *BBC-F-electronic* and widescreen *BBC-D-improved*, with altered text
+
+[![square ratio](assets/ratio-sq-thumb.png)](assets/ratio-sq.png)
+&nbsp;
+[![widescreen ratio](assets/ratio-ws-thumb.png)](assets/ratio-ws.png)
+
 ## Scaling
+
+Engineering documents specify the width of certain pattern elements in terms of [time](#time-based-scaling) (MHz or μs).
+TCM scales all other dimensions relative to the grid size to maintain [proportions](#proportional-scaling).
+
+<details><summary>scaling details</summary>
+
+### <ins>Scaling details</ins>
 
 ### Time-based scaling
 
@@ -1149,13 +1270,13 @@ The scaling operator for scan line heights is `lines`, computed for the active f
 *Example:* *BBC-C* centre frequency grating is 2MHz, so the stripe width is specified as\
 `2 mhz div2` for the half period
 
-*Example:* *BBC-C-625* needle pulse width is 0.2 microseconds, specified as\
+*Example:* *BBC-C-625* needle pulse width is 0.2μs, specified as\
 `/NPw 0.2 us arg`
 
 *Example:* *BBC-F-electronic* grid width is 5 scan lines, specified as\
 `/Glw 5 lines arg`
 
-### Relative scaling
+### Proportional scaling
 
 The unit of scaling for all other graphic elements is the grid size, i.e. the length of one side of a graticule square.
 For *BBC-A* however, which has no graticule, it is the distance between adjacent vertical castellation midpoints.
@@ -1164,9 +1285,18 @@ This unit is named `/Gsz`, and the main scaling [operator](#operators) for fixed
 *Example:* *BBC-C* letterbox outer width is 2.66 grid squares, specified as\
 `/LBow 2.66 xGsz arg`
 
+</details>
+
 ## Colours
 
-Colour can be expressed as greyscale, RGB, YUV, HSL, HSB (HSV), unit interval (UI)[^19]  or named colours:
+Colour can be expressed as
+[greyscale](#greyscale),
+[RGB](#rgb),
+[YUV](#yuv),
+[HSL](#hsl),
+[HSB](#hsb) (HSV),
+[unit interval](#unit-interval-colour-components) (UI)[^19]
+or [named](#named-colours) colours:
 
 <details><summary>colour syntax</summary>
 
@@ -1305,7 +1435,11 @@ PS can paint any gradient, not necessarily continuous, by interpolation between 
 
 ## Fonts
 
-How to list, add and edit fonts, with notes about ![Block](assets/block.png) characters and historical logo fonts:
+How to
+[list](#listing-fonts),
+[add](#adding-fonts) and
+[edit](#editing-fonts) fonts,
+with notes about [![Block](assets/block.png)](#block-inverted-fonts) characters and historical [logo](#bbc-logo-fonts) fonts:
 
 <details><summary>font resources</summary>
 
@@ -1313,12 +1447,13 @@ How to list, add and edit fonts, with notes about ![Block](assets/block.png) cha
 
 ### Listing fonts
 
-Use the [ps-fonts.ps](ps-fonts.ps) script to list installed fonts known to GhostScript:
+Use the [ps-fonts.ps](ps-fonts.ps) script to list fonts available to GhostScript,
+including [added](#adding-fonts) fonts:
 
-`gs -q -IResource -sDEVICE=pdfwrite -o ps-fonts.pdf ps-fonts.ps`
-
+*Example*:\
+`gs -q -IResource -sDEVICE=pdfwrite -o ps-fonts.pdf ps-fonts.ps`\
 creates a PDF file `ps-fonts.pdf` listing the PostScript font names alphabetically with sample texts, like the sample below.
-These are the PS `FontName` values to use for font arguments.
+These are the PS `FontName` values to use for font arguments.\
 ![PS fonts](assets/ps-fonts.png)
 
 ### Adding fonts
