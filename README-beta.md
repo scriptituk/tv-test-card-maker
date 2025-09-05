@@ -1629,7 +1629,7 @@ Further info: [GS User Guide: High level devices](https://ghostscript.readthedoc
 
 </details>
 
-<details><summary>raster formats</summary>
+<details><summary>raster formatz</summary>
 
 <a name="raster-formats"></a>
 #### <ins>Raster formats</ins>
