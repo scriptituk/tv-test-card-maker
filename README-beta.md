@@ -1631,8 +1631,8 @@ Further info: [GS User Guide: High level devices](https://ghostscript.readthedoc
 
 <details><summary>raster formatz</summary>
 
-<a name="raster-formats"></a>
-#### <ins>Raster formats</ins>
+<a name="raster-formatsz"></a>
+#### Raster formats
 
 Recommended options for images are:\
 `-dTextAlphaBits=4 -dGraphicsAlphaBits=4` to improve subsample antialiasing
