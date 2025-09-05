@@ -1631,6 +1631,7 @@ Further info: [GS User Guide: High level devices](https://ghostscript.readthedoc
 
 <details><summary>raster formats</summary>
 
+<a name="raster-formats"></a>
 #### <ins>Raster formats</ins>
 
 Recommended options for images are:\
