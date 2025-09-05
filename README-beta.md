@@ -1236,7 +1236,7 @@ TCM takes no account of Kell factor[^18] and rounds resolutions up to even numbe
 to simplify the maths and facilitate digital video post-processing.
 So 625/50 has 575 active lines (25 frame blanking lines) but 576 is used (the default),
 and 405/50 has 377 active lines (14 frame blanking lines) and height 378.
-Units are arbitrary but PostScript points are 1/72" by default, or 1 pixel for [raster format](#raster-formats) images.
+Units are arbitrary but PostScript points are 1/72" by default, or 1 pixel for [raster format](#user-content-raster-formats) images.
 
 
 ## Aspect ratio
@@ -1629,9 +1629,8 @@ Further info: [GS User Guide: High level devices](https://ghostscript.readthedoc
 
 </details>
 
-<details><summary>raster formatz</summary>
+<details><summary>raster formats</summary>
 
-<a name="raster-formatsz"></a>
 #### Raster formats
 
 Recommended options for images are:\
