@@ -49,7 +49,7 @@ This project is dedicated to the memory of **Gordon J. King** whose technical wr
 [Examples](#examples)
 - [Pattern&nbsp;templates](#pattern-templates)
 - [Compositing&nbsp;groups](#compositing-groups)
-  - [Group&nbsp;composition](#user-content-group-composition) &bull;
+  - [Group&nbsp;composition](#user-content-group-composition)
 - [Template&nbsp;elements](#template-elements)
   - [Group&nbsp;BBCbw&nbsp;elements](#user-content-group-bbcbw-elements) &bull;
 [Group&nbsp;BBCgc&nbsp;elements](#user-content-group-bbcgc-elements) &bull;
@@ -114,7 +114,7 @@ This project is dedicated to the memory of **Gordon J. King** whose technical wr
 [PNG](#user-content-png) &bull;
 [JPEG,&nbsp;TIFF,&nbsp;BMP](#user-content-jpeg-tiff-bmp) &bull;
 [WEBM,&nbsp;GIF](#user-content-webm-gif)
-    - [Video&nbsp;formats](#user-content-video-formats) &bull;
+    - [Video&nbsp;formats](#user-content-video-formats)
 - [Video&nbsp;effects](#video-effects)
 - [Test&nbsp;card&nbsp;sources](#test-card-sources)
   - [Originals](#originals) &bull;
@@ -427,34 +427,34 @@ Inheritance: `BBC-A` <— Blank
 | `/TCbc` | `/white` | background colour |
 | `/TC?` | `true` | false for no pattern elements, custom elements only |
 | ***/G…*** | ![graticule](assets/elements/BBC-A-G.png) | ***graticule arguments*** |
-| `/Gsz` | `TCh 16.5 div` | grid size: datum for all measurements |
-| `/Gszh` | `TCw 20.5 div` | horizontal grid size |
+| `/Gszv` | `TCh 16.5 div` | vertical grid size |
+| `/Gsz` | `TCw 20.5 div 1.1 Gszv mul min 0.9 Gszv mul max` | grid size: datum for all measurements |
 | ***/LB…*** | ![letterbox](assets/elements/BBC-A-LB.png) | ***letterbox arguments*** |
-| `/LBiw` | `3.2 xGsz` | letterbox inner width |
-| `/LBih` | `0.55 xGsz` | letterbox inner height |
-| `/LBy` | `TCy 4.8 xGsz sub` | letterbox vertical centre |
+| `/LBiw` | `3 xGsz` | letterbox inner width |
+| `/LBih` | `0.51 xGsz` | letterbox inner height |
+| `/LBy` | `TCy 4.44 xGsz sub` | letterbox vertical centre |
 | `/LBc` | `/black` | letterbox colours: [inner outer] |
 | ***/CC…*** | ![centre circles](assets/elements/BBC-A-CC.png) | ***centre circles arguments*** |
-| `/CClw` | `0.8 xGsz` | centre circles stroke width |
-| `/CCr` | `2.79 xGsz` | white circle stroke radius |
+| `/CClw` | `0.74 xGsz` | centre circles stroke width |
+| `/CCr` | `2.6 xGsz` | white circle stroke radius |
 | ***/ID…*** | ![ident designation](assets/elements/BBC-A-ID.png) | ***ident designation arguments*** |
 | `/IDs` | `(A)` | ident string: empty for no ident |
 | `/IDf` | `/GillSans-alt` | ident font |
 | `/IDc` | `/black` | ident colour |
-| `/IDh` | `Gsz` | ident height |
+| `/IDh` | `0.89 xGsz` | ident height |
 | `/IDx` | `TCx` | ident horizontal centre |
-| `/IDy` | `TCy 5.95 xGsz sub` | ident vertical centre |
+| `/IDy` | `TCy 5.51 xGsz sub` | ident vertical centre |
 | ***/FB…*** | ![frequency bars](assets/elements/BBC-A-FB.png) | ***frequency bars arguments*** |
-| `/FBh` | `3.2 xGsz` | freq bars height |
+| `/FBh` | `LBiw` | freq bars height |
 | `/FBc` | `/black` | freq bars colours: grating between surround |
-| `/FBx` | `TCx 5.2 xGsz sub` | freq bars horizontal centre |
+| `/FBx` | `TCx 4.81 xGsz sub` | freq bars horizontal centre |
 | `/FBf` | `[ [1 6 -1 /T-2 1] [1.5 6 1 /T-3 1] [2 6 -1 /T-4 -1] [2.5 6 0 /T-1 0] [3 6 1 /T-5 -1] ]` | frequencies: [MHz nbars antiphase] array |
 | ***/NP…*** |  | ***needle pulse line arguments*** |
 | `/NPh` | `FBh` | needle pulse line height |
-| `/NPx` | `TCx 6.4 xGsz sub` | needle pulse line horizontal centre |
+| `/NPx` | `TCx 5.91 xGsz sub` | needle pulse line horizontal centre |
 | `/NPc` | `/black` |  |
 | ***/B…*** | ![border](assets/elements/BBC-A-B.png) | ***border arguments*** |
-| `/Bw` | `0.565 xGsz` | border width |
+| `/Bw` | `0.53 xGsz` | border width |
 
 </details>
 
@@ -1245,11 +1245,13 @@ Changing the aspect ratio `/TCr` will expand or contract the width accordingly
 and the TCM drawing algorithms will compensate without distorting element shapes.
 Element positions should therefore be anchored relative to centrelines or edges or other elements.
 
-*Example:* square *BBC-F-electronic* and widescreen *BBC-D-improved*, with altered text
+*Examples:* square *BBC-F-electronic* and widescreen *BBC-D-improved* with altered text and a 5:4 *BBC-A*
 
 [![square ratio](assets/ratio-sq-thumb.png)](assets/ratio-sq.png)
 &nbsp;
 [![widescreen ratio](assets/ratio-ws-thumb.png)](assets/ratio-ws.png)
+&nbsp;
+[![5:4 ratio](assets/ratio-54-thumb.png)](assets/ratio-54.png)
 
 ## Scaling
 
