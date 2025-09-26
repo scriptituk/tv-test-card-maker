@@ -342,7 +342,7 @@ makes the 625-line *BBC-C-625* pattern as a greyscale PNG file `c625.png`
 
 `gs -q -IResource -sDEVICE=pngalpha -o fo.png -dTC=/BBC-F-optical -dCPi=null tcm.ps`\
 makes the double-slide *BBC-F-optical* pattern as a PNG file `fo.png`
-with a transparent hole where the image should be (see [arguments](#user-content-bbc-f-optical-arguments))
+with a transparent hole where the image should be (see [arguments](#bbc-f-optical-arguments))
 
 ## Pattern templates
 
@@ -828,7 +828,7 @@ Inheritance: `BBC-F-early` <— [`BBC-E`](#user-content-bbc-e-arguments) <— [`
 </details>
 
 <details><summary><code>BBC-F-optical</code> arguments</summary>
-<a name='bbc-f-optical-arguments'></a>
+<a name='bbc-f-optical-arguments' data-tcm='toc'></a>
 
 Inheritance: `BBC-F-optical` <— [`BBC-F-early`](#user-content-bbc-f-early-arguments) <— [`BBC-E`](#user-content-bbc-e-arguments) <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
 | arg | value | description |
@@ -858,7 +858,7 @@ Inheritance: `BBC-F-optical` <— [`BBC-F-early`](#user-content-bbc-f-early-argu
 <details><summary><code>BBC-F-electronic</code> arguments</summary>
 
 ### <ins><code>BBC-F-electronic</code> arguments</ins>
-Inheritance: `BBC-F-electronic` <— [`BBC-F-optical`](#user-content-bbc-f-optical-arguments) <— [`BBC-F-early`](#user-content-bbc-f-early-arguments) <— [`BBC-E`](#user-content-bbc-e-arguments) <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
+Inheritance: `BBC-F-electronic` <— [`BBC-F-optical`](#bbc-f-optical-arguments) <— [`BBC-F-early`](#user-content-bbc-f-early-arguments) <— [`BBC-E`](#user-content-bbc-e-arguments) <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
 | arg | value | description |
 | ---: | :---: | :--- |
 | ***/TC…*** |  | ***test card arguments*** |
@@ -928,7 +928,7 @@ see [shape arguments](#user-content-shape-arguments), [image arguments](#user-co
 pattern *BBC-D-early* with 500 custom elements
 
 <details><summary>CE example details</summary>
-<a name='ce-example-details'></a>
+<a name='ce-example-details' data-tcm='toc'></a>
 
 
 #### CE example arguments
