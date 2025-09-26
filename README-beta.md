@@ -7,12 +7,12 @@
 <img src='assets/tv-test-card-maker.gif' alt='Summary' align='right'>
 
 Digital imitations of vintage TV test patterns are plentiful
-but accurate high-resolution and vector graphic replicas quite scarce,
-and those produced by drawing tools cannot be altered because of unavailable master files.
+but there are few accurate high-resolution and vector graphic replicas,
+and those created by drawing tools cannot be altered because master files are unavailable.
 
 This test card maker (TCM) recreates memorable TV test patterns
 with a high level of empirical accuracy.
-It exposes rendering parameters for customisation
+It exposes rendering parameters for adjustment
 and enables custom elements – shapes, images and text – to be superimposed anywhere.
 
 As a novel PostScript application,
@@ -21,8 +21,8 @@ and some interesting coding paradigms that add structure and adaptability.
 Indeed the implementation was key to the project rationale as an academic incentive.
 
 Hopefully TCM may prove useful to retro TV enthusiasts and the amateur TV community,
-and perhaps spark wider interest as a framework for generic pattern generation.
-I hope it also champions the benefits of PostScript[^1] for creating intricate graphics and layouts.
+and perhaps spark wider interest for generic pattern generation.
+Aside from TV, it champions the benefits of PostScript[^1] for creating intricate graphics programmatically.
 
 This project is dedicated to the memory of **Gordon J. King** whose technical writings inspired so many budding electronics enthusiasts – see [dedication](#in-memoriam).
 
@@ -56,7 +56,6 @@ This project is dedicated to the memory of **Gordon J. King** whose technical wr
 [Group&nbsp;Philips&nbsp;elements](#user-content-group-philips-elements)
 - [Element&nbsp;arguments](#element-arguments)
   - [BBC&#8209;A&nbsp;arguments](#user-content-bbc-a-arguments) &bull;
-[BBC&#8209;C&#8209;early&nbsp;arguments](#user-content-bbc-c-early-arguments) &bull;
 [BBC&#8209;C&nbsp;arguments](#user-content-bbc-c-arguments) &bull;
 [BBC&#8209;C&#8209;625&nbsp;arguments](#user-content-bbc-c-625-arguments) &bull;
 [BBC&#8209;D&#8209;early&nbsp;arguments](#user-content-bbc-d-early-arguments) &bull;
@@ -66,9 +65,10 @@ This project is dedicated to the memory of **Gordon J. King** whose technical wr
 [BBC&#8209;F&#8209;optical&nbsp;arguments](#user-content-bbc-f-optical-arguments) &bull;
 [BBC&#8209;F&#8209;electronic&nbsp;arguments](#user-content-bbc-f-electronic-arguments)
 - [Custom&nbsp;elements](#custom-elements)
-  - [CEs&nbsp;by&nbsp;example](#ces-by-example) &bull;
-[CE&nbsp;example&nbsp;arguments](#user-content-ce-example-arguments)
-  - [Layering](#layering)
+  - [CE&nbsp;example](#ce-example) &bull;
+[CE&nbsp;example&nbsp;arguments](#user-content-ce-example-arguments) &bull;
+[CE&nbsp;example&nbsp;notes](#user-content-ce-example-notes)
+  - [Layering&nbsp;and&nbsp;mirroring](#layering-and-mirroring)
   - [Custom&nbsp;shapes](#custom-shapes) &bull;
 [Shape&nbsp;arguments](#user-content-shape-arguments)
   - [Custom&nbsp;images](#custom-images) &bull;
@@ -90,6 +90,7 @@ This project is dedicated to the memory of **Gordon J. King** whose technical wr
 [HSB](#user-content-hsb) &bull;
 [Named&nbsp;colours](#user-content-named-colours) &bull;
 [Chroma&nbsp;keying](#user-content-chroma-keying) &bull;
+[Random&nbsp;colour](#user-content-random-colour) &bull;
 [Unit&nbsp;interval&nbsp;colour&nbsp;components](#user-content-unit-interval-colour-components) &bull;
 [Transparency](#user-content-transparency) &bull;
 [Gradients](#user-content-gradients)
@@ -128,6 +129,7 @@ This project is dedicated to the memory of **Gordon J. King** whose technical wr
 [Test&nbsp;cards](#test-cards) &bull;
 [Community](#community) &bull;
 [Related&nbsp;projects](#related-projects)
+  - [PostScript&nbsp;links](#postscript-links)
   - [Footnotes](#footnotes)
 
 </details>
@@ -148,7 +150,6 @@ TODO
 - options to alter, add content, decorate, generally customise to requirements
 - options to superimpose shapes, images and styled text anywhere
 - enable transparency
-- optionally align pattern elements to discrete analogue scanlines or digital pixels
 - be robust enough to calibrate television receivers
 - clear instructions and numerous examples
 - guidance for generating videos with audio and making ISO images and DVDs
@@ -159,13 +160,13 @@ Test patterns, a.k.a. test cards, consist of graphical [elements](#template-elem
 rendered according to [arguments](#element-arguments)
 and composited according to a [group](#compositing-groups) layout.
 Pattern [templates](#pattern-templates) are element sets that replicate historic patterns.
-All element arguments can be overridden to customise pattern features,
+All element arguments can be overridden to alter element appearance,
 and additional [custom elements](#custom-elements) can be layered on top.
 
 Patterns are created programmatically in
 [PostScript](https://en.wikipedia.org/wiki/PostScript) (PS)
 and generated on the command-line by [Ghostscript](https://www.ghostscript.com/) (GS).
-Commands simply involve passing arguments to templates following examples in this README.
+Commands simply involve passing arguments to templates following [examples](#making-patterns) in this README.
 
 <details><summary>overview</summary>
 
@@ -176,11 +177,11 @@ somewhat underappreciated now but arguably the most concise language for compute
 Being quite vintage itself[^3], it is particularly apt for making vintage test card replicas.
 Apart from its formidable control over layout and detail, it is tremendous fun!
 
-PostScript has a rich set of graphics capabilities that accomplish the [TCM aims](#aims) in a user-centric way with minimal code.
+PostScript has a rich set of graphics capabilities that accomplish the TCM [aims](#aims) in a user-centric way with minimal code.
 For instance the BBC pattern graticule, corner stripes, castellations and non-sinusoidal frequency bars are all simple dashed lines, albeit wide, accomplished with the `setdash` and `lineto` PS operators.
-Matrix transformations are also used extensively,
+Matrix transformations are used extensively,
 for instance the corner stripes are rotated to vertical then drawn horizontally,
-mirrored in the other three quadrants by translation.
+mirrored in the other three quadrants by reflection and translation.
 Gradient and sinusoidal fills use PS shading functions.
 Image imports delegate to Anastigmatix resources[^4].
 
@@ -192,8 +193,8 @@ and the PS code uses GS-specific procedures,
 therefore other interpreters will not work without modification.
 
 This implementation makes it easy without PS or GS expertise to modify pattern [elements](#template-elements) just by changing [arguments](#element-arguments) that control composition:
-dimensions, coordinates, colours, text, frequencies, element switches, imported resources.
-Arguments can be specified as command line options or read from file
+dimensions, coordinates, colours, text, frequencies, imported resources, etc.
+Arguments can be specified as command line options or read from file,
 and follow basic PS dictionary syntax.
 To achieve this in a structured way without the benefits of object-oriented features[^5] a simple argument inheritance paradigm has been devised.
 
@@ -206,7 +207,7 @@ For instance, captions are custom-text elements and the Carole Hersee image is a
 </details>
 
 > [!NOTE]
-> This nomenclature of groups, elements and arguments only relates to this implementation.
+> This nomenclature of groups, elements and arguments is TCM-specific.
 
 ## Installing
 
@@ -251,7 +252,7 @@ All you need to grasp to tweak TCM patterns are the [objects](#user-content-obje
 like Forth[^7].
 - PostScript is *stack-based*, where operands and intermediate results are stored on a stack
 - everything is an *object* (all data and procedures, that is)
-- seperate tokens with whitespace; comments begin with %
+- whitespace seperates tokens and comments follow a %
 
 
 The following tables show basic object types and operators needed to modify test cards.
@@ -268,11 +269,12 @@ for example the [`BBC-C`](#user-content-bbc-c-arguments) set.
 | :--- | :--- | :--- |
 | boolean | `true` `false` | these are keywords |
 | numeric | `1` `-2.3` `4.5e3` | integers and reals |
-| string | `(Hello)` | enclose string in `(` and `)` |
+| string | `(Hello)` | enclose text in `(` and `)` |
 | name | `/TCh` <br> `TCh 4 div` <br> `/CCf?` | names have a slash `/` <br> drop the `/` to get named objects <br> names can have any characters |
 | array | `[]` <br> `[ 1 2 3 ]` <br> `[ true 4.5 (Hi) /Lo [6 7] ]` | empty array <br> array of numbers <br> array of mixed objects |
 | dictionary | `/Is? true def` <br> `/Value 8.9 def` <br> `/Text (Bye) def` <br> `/Colour /Red def` <br> `/Numbers [1 2 3] def` | these are name-object pairs <br> `def` is the *define* operator |
 | null | `null` | empty or missing value |
+| procedure | `{ 2 sqrt }` | an executable array of tokens |
 
 Further info: [PLRM §3.3: Data Types and Objects](https://www.adobe.com/jp/print/postscript/pdfs/PLRM.pdf#page=48)
 
@@ -291,8 +293,8 @@ Further info: [PLRM §3.3: Data Types and Objects](https://www.adobe.com/jp/prin
 | <code>_num<sub>1</sub>_ _num<sub>2</sub>_ **div** _product_</code> | <code>5.6 3 **div**</code> | return <code>_num<sub>1</sub>_ ÷ _num<sub>2</sub>_</code> |
 | <code>_num_ **div2** _quotient_</code><sup>※</sup> | <code>Glw **div2**</code> | return <code>_num_ ÷ 2</code> |
 | <code>_num<sub>1</sub>_ _num<sub>2</sub>_ **mod** _remainder_</code> | <code>/S7x rand TCw **mod**</code> | return remainder of <code>_num<sub>1</sub>_ ÷ _num<sub>2</sub>_</code> |
-| <code>_num_ **sq** _num_</code><sup>※</sup> | <code>CCr **sq**</code> | return <code>_num_<sup>2</sup></code> |
-| <code>_num_ **sqrt** _num_</code> | <code>TCy **sqrt**</code> | return <code>√<em>num</em></code> (square root) |
+| <code>_num_ **sq** _num_</code><sup>※</sup> | <code>CCr **sq**</code> | return <code>_num_<sup>2</sup</code>> |
+| <code>_num_ **sqrt** _num_</code> | <code>TCy **sqrt**</code> | return <code>√<em>num</em</code>> (square root) |
 | <code>_num_ **neg** _num_</code> | <code>123 **neg**</code> | return <code>-_num_</code> |
 | <code>_num_ **abs** _num_</code> | <code>-99 **abs**</code> | return <code>\|_num_\|</code> (absolute value) |
 | <code>_leg<sub>1</sub>_ _leg<sub>2</sub>_ **hypot** _hypot_</code><sup>※</sup> | <code>TCw TCh **hypot**</code> | return hypotenuse (root sum of squares) |
@@ -301,8 +303,8 @@ Further info: [PLRM §3.3: Data Types and Objects](https://www.adobe.com/jp/prin
 | <code>_angle_ **cos** _real_</code> | <code>110 **cos**</code> | return cosine of <code>_angle_</code> degrees |
 | <code>_angle_ **tan** _real_</code><sup>※</sup> | <code>70 **tan**</code> | return tangent of <code>_angle_</code> degrees |
 | <code>_y_ _x_ **atan** _angle_</code> | <code>123 234 **atan**</code> | return arctangent of <code>_y_ ÷ _x_</code> in degrees |
-| <code>_num<sub>1</sub>_ _num<sub>2</sub>_ **min** _num_</code><sup>※</sup> | <code>1.2 3.4 **min**</code> | return minimum of <code>_num<sub>1</sub>_</code>,<code>_num<sub>2</sub>_</code> |
-| <code>_num<sub>1</sub>_ _num<sub>2</sub>_ **max** _num_</code><sup>※</sup> | <code>1.2 3.4 **max**</code> | return maximum of <code>_num<sub>1</sub>_</code>,<code>_num<sub>2</sub>_</code> |
+| <code>_num<sub>1</sub>_ _num<sub>2</sub>_ **min** _num_</code><sup>※</sup> | <code>1.2 3.4 **min**</code> | return minimum of <code>_num<sub>1</sub>_``,``_num<sub>2</sub>_</code> |
+| <code>_num<sub>1</sub>_ _num<sub>2</sub>_ **max** _num_</code><sup>※</sup> | <code>1.2 3.4 **max**</code> | return maximum of <code>_num<sub>1</sub>_``,``_num<sub>2</sub>_</code> |
 | <code>_array_ **length** _int_</code> | <code>SWc **length**</code> | return length of <code>_array_</code> |
 | <code>_num_ **xGsz** _product_</code><sup>※</sup> | <code>3 **xGsz**</code> | return <code>_num_ × Gsz</code> (multiply by grid size, see [scaling](#scaling)) |
 | <code>– **hGsz** _size_</code><sup>※</sup> | <code>**hGsz** Glw sub</code> | return <code>Gsz ÷ 2</code> (half grid size) |
@@ -311,12 +313,13 @@ Further info: [PLRM §3.3: Data Types and Objects](https://www.adobe.com/jp/prin
 | <code>_freq_ **mhz** _width_</code><sup>※</sup> | <code>2.5 **mhz**</code> | return period width corresponding to MHz of active line time |
 | <code>_time_ **us** _width_</code><sup>※</sup> | <code>0.25 **us**</code> | return width corresponding to μs of active line time |
 | <code>_num_ **lines** _height_</code><sup>※</sup> | <code>7 **lines**</code> | return height corresponding to number of scan lines |
-| <code>– **rand** _int_</code>| <code>/S7x **rand** TCw mod arg</code> | return random number <code>_int_</code> |
-| <code>_int_ **srand** —</code> | <code>23 **srand**</code> | seed the random number generator with <code>_int_</code> |
+| <code>_left_ _bot_ _rt_ _top_ **randp** _x_ _y_</code><sup>※</sup> | <code>0 0 TCw TCh **randp**</code> | return random point within bounding box |
+| <code>_any_ **cvas** _str_</code><sup>※</sup> | <code>3.14 **cvas**</code> | return number or name converted to string |
+| <code>_str<sub>1</sub>_ _str<sub>2</sub>_ **cat** _str<sub>1</sub>str<sub>2</sub>_</code><sup>※</sup> | <code>(<) IDs (>) **cat** **cat**</code> | return concatenated strings |
 | <code>_name_ _value_ **arg** –</code><sup>※</sup> | <code>/IDh hGsz **arg**</code> | define argument (name-object pair) iff not already defined |
 | <code>_to_ _from_ **merge** –</code><sup>※</sup> | <code>/T7 /T4 **merge**</code> | define undefined args from another custom element of same type |
 
-<sup>※</sup> TCM operators, as opposed to PS built-in operators
+<sup>※</sup> TCM procedures, as opposed to built-in PS operators
 
 Further info: [PLRM §8: Operators](https://www.adobe.com/jp/print/postscript/pdfs/PLRM.pdf#page=519)
 
@@ -374,11 +377,11 @@ Grouping enables TCM to generate widely differing patterns and provides extensib
 
 ### <ins>Group composition</ins>
 
-| group | patterns | templates |
+| group name | patterns | templates |
 | :--- | :--- | :--- |
-| `BBCbw` | black and white BBC patterns | BBC A (B *TBD*) |
-| `BBCgc` | greyscale and colour BBC patterns | BBC C, D, E, F, J (W, X *TBD*) |
-| `Philips` | Philips circle pattern[^8] | BBC pattern G (*TBD*) |
+| `/BBCbw` | black and white BBC patterns | BBC A (B *TBD*) |
+| `/BBCgc` | greyscale and colour BBC patterns | BBC C, D, E, F, J (W, X *TBD*) |
+| `/Philips` | Philips circle pattern[^8] | BBC pattern G (*TBD*) |
 
 
 </details>
@@ -386,7 +389,7 @@ Grouping enables TCM to generate widely differing patterns and provides extensib
 ## Template elements
 
 These are graphic components that make up the test pattern,
-such as the graticule, letterbox, step wedge, corner stripes, border.
+such as the graticule, streak box, step wedge, corner stripes, border.
 
 <details><summary>group <code>BBCbw</code> elements</summary>
 
@@ -415,7 +418,6 @@ The following tables show element arguments for each template and the hierarchy 
 <details><summary><code>BBC-A</code> arguments</summary>
 
 ### <ins><code>BBC-A</code> arguments</ins>
-
 Inheritance: `BBC-A` <— Blank
 | arg | value | description |
 | ---: | :---: | :--- |
@@ -425,15 +427,15 @@ Inheritance: `BBC-A` <— Blank
 | `/TCv` | `null` | version |
 | `/TCg` | `/BBCbw` | compositing group |
 | `/TCbc` | `/white` | background colour |
-| `/TC?` | `true` | false for no pattern elements, custom elements only |
+| `/TC?` | `true` | false for no pattern elements (custom elements only) |
 | ***/G…*** | ![graticule](assets/elements/BBC-A-G.png) | ***graticule arguments*** |
 | `/Gszv` | `TCh 16.5 div` | vertical grid size |
 | `/Gsz` | `TCw 20.5 div 1.1 Gszv mul min 0.9 Gszv mul max` | grid size: datum for all measurements |
-| ***/LB…*** | ![letterbox](assets/elements/BBC-A-LB.png) | ***letterbox arguments*** |
-| `/LBiw` | `3 xGsz` | letterbox inner width |
-| `/LBih` | `0.51 xGsz` | letterbox inner height |
-| `/LBy` | `TCy 4.44 xGsz sub` | letterbox vertical centre |
-| `/LBc` | `/black` | letterbox colours: [inner outer] |
+| ***/SB…*** | ![streak box](assets/elements/BBC-A-SB.png) | ***streak box arguments*** |
+| `/SBiw` | `3 xGsz` | streak box inner width |
+| `/SBih` | `0.51 xGsz` | streak box inner height |
+| `/SBy` | `TCy 4.44 xGsz sub` | streak box vertical centre |
+| `/SBc` | `/black` | streak box colours: [inner outer] |
 | ***/CC…*** | ![centre circles](assets/elements/BBC-A-CC.png) | ***centre circles arguments*** |
 | `/CClw` | `0.74 xGsz` | centre circles stroke width |
 | `/CCr` | `2.6 xGsz` | white circle stroke radius |
@@ -445,7 +447,7 @@ Inheritance: `BBC-A` <— Blank
 | `/IDx` | `TCx` | ident horizontal centre |
 | `/IDy` | `TCy 5.51 xGsz sub` | ident vertical centre |
 | ***/FB…*** | ![frequency bars](assets/elements/BBC-A-FB.png) | ***frequency bars arguments*** |
-| `/FBh` | `LBiw` | freq bars height |
+| `/FBh` | `SBiw` | freq bars height |
 | `/FBc` | `/black` | freq bars colours: grating between surround |
 | `/FBx` | `TCx 4.81 xGsz sub` | freq bars horizontal centre |
 | `/FBf` | `[ [1 6 -1 /T-2 1] [1.5 6 1 /T-3 1] [2 6 -1 /T-4 -1] [2.5 6 0 /T-1 0] [3 6 1 /T-5 -1] ]` | frequencies: [MHz nbars antiphase] array |
@@ -455,13 +457,9 @@ Inheritance: `BBC-A` <— Blank
 | `/NPc` | `/black` |  |
 | ***/B…*** | ![border](assets/elements/BBC-A-B.png) | ***border arguments*** |
 | `/Bw` | `0.53 xGsz` | border width |
-
 </details>
 
 <details><summary><code>BBC-C-early</code> arguments</summary>
-
-### <ins><code>BBC-C-early</code> arguments</ins>
-
 Inheritance: `BBC-C-early` <— Blank
 | arg | value | description |
 | ---: | :---: | :--- |
@@ -471,7 +469,7 @@ Inheritance: `BBC-C-early` <— Blank
 | `/TCv` | `/early` | version |
 | `/TCg` | `/BBCgc` | compositing group |
 | `/TCbc` | `0.6` | background colour |
-| `/TC?` | `true` | false for no pattern elements, custom elements only |
+| `/TC?` | `true` | false for no pattern elements (custom elements only) |
 | ***/G…*** | ![graticule](assets/elements/BBC-C-early-G.png) | ***graticule arguments*** |
 | `/Gsz` | `TCh 0.129 mul` | grid size: datum for all measurements |
 | `/Glw` | `Gsz 12 div` | grid linewidth |
@@ -479,14 +477,14 @@ Inheritance: `BBC-C-early` <— Blank
 | `/Gps?` | `false` | true to shift grid phase by half a square |
 | `/Glc` | `/white` | grid line colour |
 | `/G?` | `true` | false for no graticule |
-| ***/LB…*** | ![letterbox](assets/elements/BBC-C-early-LB.png) | ***letterbox arguments*** |
-| `/LBow` | `2.66 xGsz` | letterbox outer width |
-| `/LBoh` | `0.89 xGsz` | letterbox outer height |
-| `/LBiw` | `1.75 xGsz` | letterbox inner width |
-| `/LBih` | `0.31 xGsz` | letterbox inner height |
-| `/LBy` | `TCy 2.81 xGsz add` | letterbox vertical centre |
-| `/LBc` | `[/black /white]` | letterbox colours: [inner outer] |
-| `/LB?` | `true` | false for no letterbox |
+| ***/SB…*** | ![streak box](assets/elements/BBC-C-early-SB.png) | ***streak box arguments*** |
+| `/SBow` | `2.66 xGsz` | streak box outer width |
+| `/SBoh` | `0.89 xGsz` | streak box outer height |
+| `/SBiw` | `1.75 xGsz` | streak box inner width |
+| `/SBih` | `0.31 xGsz` | streak box inner height |
+| `/SBy` | `TCy 2.81 xGsz add` | streak box vertical centre |
+| `/SBc` | `[/black /white]` | streak box colours: [inner outer] |
+| `/SB?` | `true` | false for no streak box |
 | ***/PP…*** | ![pulse pane](assets/elements/BBC-C-early-PP.png) | ***pulse pane arguments*** |
 | `/PPw` | `2 xGsz Glw add` | pulse pane width |
 | `/PPh` | `3 xGsz Glw add` | pulse pane height |
@@ -551,35 +549,31 @@ Inheritance: `BBC-C-early` <— Blank
 | `/CSep` | `Glw` | corner stripes end padding |
 | `/CSbp` | `Glw` | corner stripes border padding (clipped) |
 | `/CSc` | `[/black /white]` | corner stripes colours: [grating surround] |
-| `/CSs?` | `false` | true for sinusoidal corner stripes false for square |
 | `/CS?` | `true` | false for no corner stripes |
 | ***/CB…*** |  | ***colour bar arguments*** |
 | `/CBh` | `0` | colour bar height: 0 for no colour bars (fraction of border width) |
-| `/CBc` | `[/white /yellow /cyan /green /magenta /red /blue /black]` | colour bar colours: [left to right] |
+| `/CBc` | `[]` | colour bar colours: [left to right] |
 | `/CBew` | `0` | colour bar end widths (fraction of uniform inner widths) |
 | ***/B…*** | ![border](assets/elements/BBC-C-early-B.png) | ***border arguments*** |
 | `/Bw` | `0.26 xGsz` | border width |
-| `/Ba?` | `false` | false for no arrows |
-| `/Bah?` | `true` | true for half-size arrows |
-| `/Bac` | `[1 0]` | arrow colours: [horizontal vertical] |
+| `/Bah` | `0` | border arrow height (fraction of border width, 0 for no arrows) |
+| `/Bac` | `[1 0]` | border arrow colours: [horizontal vertical] |
 | `/Bcc` | `[]` | castellation colours: empty or [left-red left-blue bottom-green right-yellow top-cyan] |
 | `/B?` | `true` | false for no drawn border |
-
 </details>
 
 <details><summary><code>BBC-C</code> arguments</summary>
 
 ### <ins><code>BBC-C</code> arguments</ins>
-
-Inheritance: `BBC-C` <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
+Inheritance: `BBC-C` <— [`BBC-C-early`](#bbc-c-early-arguments) <— Blank
 | arg | value | description |
 | ---: | :---: | :--- |
 | ***/TC…*** |  | ***test card arguments*** |
 | `/TCv` | `null` | version |
 | ***/G…*** | ![graticule](assets/elements/BBC-C-G.png) | ***graticule arguments*** |
 | `/Gsz` | `TCh 0.129 mul` | grid size: datum for all measurements |
-| ***/LB…*** | ![letterbox](assets/elements/BBC-C-LB.png) | ***letterbox arguments*** |
-| `/LBih` | `0.28 xGsz` | letterbox inner height |
+| ***/SB…*** | ![streak box](assets/elements/BBC-C-SB.png) | ***streak box arguments*** |
+| `/SBih` | `0.28 xGsz` | streak box inner height |
 | ***/ID…*** | ![ident designation](assets/elements/BBC-C-ID.png) | ***ident designation arguments*** |
 | `/IDf` | `/TCM-BBC_C-SemiBold` | ident font |
 | `/IDh` | `0.69 xGsz` | ident height |
@@ -600,16 +594,13 @@ Inheritance: `BBC-C` <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <
 | `/CSol` | `3.08 xGsz` | corner stripes outer length from corner |
 | ***/B…*** | ![border](assets/elements/BBC-C-B.png) | ***border arguments*** |
 | `/Bw` | `0.29 xGsz` | border width |
-| `/Ba?` | `true` | false for no arrows |
-| `/Bah?` | `true` | true for half-size arrows |
-
+| `/Bah` | `0.5` | border arrow height (fraction of border width, 0 for no arrows) |
 </details>
 
 <details><summary><code>BBC-C-625</code> arguments</summary>
 
 ### <ins><code>BBC-C-625</code> arguments</ins>
-
-Inheritance: `BBC-C-625` <— [`BBC-C`](#user-content-bbc-c-arguments) <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
+Inheritance: `BBC-C-625` <— [`BBC-C`](#user-content-bbc-c-arguments) <— [`BBC-C-early`](#bbc-c-early-arguments) <— Blank
 | arg | value | description |
 | ---: | :---: | :--- |
 | ***/TC…*** |  | ***test card arguments*** |
@@ -618,10 +609,10 @@ Inheritance: `BBC-C-625` <— [`BBC-C`](#user-content-bbc-c-arguments) <— [`BB
 | ***/G…*** | ![graticule](assets/elements/BBC-C-625-G.png) | ***graticule arguments*** |
 | `/Gsz` | `TCh 7.79 div` | grid size: datum for all measurements |
 | `/Glw` | `Gsz 12 div` | grid linewidth |
-| ***/LB…*** | ![letterbox](assets/elements/BBC-C-625-LB.png) | ***letterbox arguments*** |
-| `/LBy` | `TCy 2.8 xGsz add` | letterbox vertical centre |
-| `/LBoh` | `0.89 xGsz` | letterbox outer height |
-| `/LBow` | `2.68 xGsz` | letterbox outer width |
+| ***/SB…*** | ![streak box](assets/elements/BBC-C-625-SB.png) | ***streak box arguments*** |
+| `/SBy` | `TCy 2.8 xGsz add` | streak box vertical centre |
+| `/SBoh` | `0.89 xGsz` | streak box outer height |
+| `/SBow` | `2.68 xGsz` | streak box outer width |
 | ***/NP…*** |  | ***needle pulse line arguments*** |
 | `/NPx` | `TCx 2.74 xGsz sub` | needle pulse line horizontal centre |
 | `/NPw` | `0.2 us` | needle pulse linewidth |
@@ -653,17 +644,15 @@ Inheritance: `BBC-C-625` <— [`BBC-C`](#user-content-bbc-c-arguments) <— [`BB
 | `/CShf` | `1.3` | corner stripes horizontal fundamental MHz |
 | ***/B…*** | ![border](assets/elements/BBC-C-625-B.png) | ***border arguments*** |
 | `/Bw` | `0.29 xGsz` | border width |
-| `/Bah?` | `false` | true for half-size arrows |
+| `/Bah` | `1` | border arrow height (fraction of border width, 0 for no arrows) |
 | ***/X…*** |  | ***extra processing arguments*** |
 | `/Xp` | `{ Mcs }` | extra procs (use unique proc names and def not arg, for md) |
-
 </details>
 
 <details><summary><code>BBC-D-early</code> arguments</summary>
 
 ### <ins><code>BBC-D-early</code> arguments</ins>
-
-Inheritance: `BBC-D-early` <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
+Inheritance: `BBC-D-early` <— [`BBC-C-early`](#bbc-c-early-arguments) <— Blank
 | arg | value | description |
 | ---: | :---: | :--- |
 | ***/TC…*** |  | ***test card arguments*** |
@@ -673,12 +662,12 @@ Inheritance: `BBC-D-early` <— [`BBC-C-early`](#user-content-bbc-c-early-argume
 | `/Gsz` | `TCh 9 div` | grid size: datum for all measurements |
 | `/Glw` | `Gsz 0.1 mul` | grid linewidth |
 | `/Gps?` | `true` | true to shift grid phase by half a square |
-| ***/LB…*** | ![letterbox](assets/elements/BBC-D-early-LB.png) | ***letterbox arguments*** |
-| `/LBow` | `3.45 xGsz` | letterbox outer width |
-| `/LBoh` | `0.9 xGsz` | letterbox outer height |
-| `/LBiw` | `2.2 xGsz` | letterbox inner width |
-| `/LBih` | `0.4 xGsz` | letterbox inner height |
-| `/LBy` | `TCy 3 xGsz add` | letterbox vertical centre |
+| ***/SB…*** | ![streak box](assets/elements/BBC-D-early-SB.png) | ***streak box arguments*** |
+| `/SBow` | `3.45 xGsz` | streak box outer width |
+| `/SBoh` | `0.9 xGsz` | streak box outer height |
+| `/SBiw` | `2.2 xGsz` | streak box inner width |
+| `/SBih` | `0.4 xGsz` | streak box inner height |
+| `/SBy` | `TCy 3 xGsz add` | streak box vertical centre |
 | ***/PP…*** | ![pulse pane](assets/elements/BBC-D-early-PP.png) | ***pulse pane arguments*** |
 | `/PPw` | `Gsz Glw add` | pulse pane width |
 | `/PPh` | `2.9 xGsz Glw add` | pulse pane height |
@@ -725,17 +714,14 @@ Inheritance: `BBC-D-early` <— [`BBC-C-early`](#user-content-bbc-c-early-argume
 | `/CShf` | `1.0` | corner stripes horizontal fundamental MHz |
 | `/CSlw` | `CShf mhz div2 CSa sin mul` | corner stripes linewidth at normal aspect ratio |
 | ***/B…*** | ![border](assets/elements/BBC-D-early-B.png) | ***border arguments*** |
-| `/Bw` | `{ TCh 8 xGsz Glw add sub div2 }` | border width |
-| `/Ba?` | `true` | false for no arrows |
-| `/Bah?` | `false` | true for half-size arrows |
-
+| `/Bw` | `hGsz hGlw sub` | border width |
+| `/Bah` | `1` | border arrow height (fraction of border width, 0 for no arrows) |
 </details>
 
 <details><summary><code>BBC-D-improved</code> arguments</summary>
 
 ### <ins><code>BBC-D-improved</code> arguments</ins>
-
-Inheritance: `BBC-D-improved` <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
+Inheritance: `BBC-D-improved` <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#bbc-c-early-arguments) <— Blank
 | arg | value | description |
 | ---: | :---: | :--- |
 | ***/TC…*** |  | ***test card arguments*** |
@@ -744,14 +730,12 @@ Inheritance: `BBC-D-improved` <— [`BBC-D-early`](#user-content-bbc-d-early-arg
 | `/IDdr` | `0.07 xGsz` | ident adjacent dot radius: 0 for none |
 | ***/C…*** | ![caption](assets/elements/BBC-D-improved-C.png) | ***caption arguments*** |
 | `/Ct` | `[/T-1 /T-2]` | caption custom text element names: empty for no caption |
-
 </details>
 
 <details><summary><code>BBC-E</code> arguments</summary>
 
 ### <ins><code>BBC-E</code> arguments</ins>
-
-Inheritance: `BBC-E` <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
+Inheritance: `BBC-E` <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#bbc-c-early-arguments) <— Blank
 | arg | value | description |
 | ---: | :---: | :--- |
 | ***/TC…*** |  | ***test card arguments*** |
@@ -774,14 +758,12 @@ Inheritance: `BBC-E` <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <
 | `/FBs?` | `true` | true for sinusoidal frequency gratings, false for square |
 | ***/CS…*** | ![corner stripes](assets/elements/BBC-E-CS.png) | ***corner stripes arguments*** |
 | `/CShf` | `1.5` | corner stripes horizontal fundamental MHz |
-
 </details>
 
 <details><summary><code>BBC-F-early</code> arguments</summary>
 
 ### <ins><code>BBC-F-early</code> arguments</ins>
-
-Inheritance: `BBC-F-early` <— [`BBC-E`](#user-content-bbc-e-arguments) <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
+Inheritance: `BBC-F-early` <— [`BBC-E`](#user-content-bbc-e-arguments) <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#bbc-c-early-arguments) <— Blank
 | arg | value | description |
 | ---: | :---: | :--- |
 | ***/TC…*** |  | ***test card arguments*** |
@@ -792,11 +774,11 @@ Inheritance: `BBC-F-early` <— [`BBC-E`](#user-content-bbc-e-arguments) <— [`
 | `/Golw` | `0.42 xGlw` | grid outline width: 0 for no outline (F/J/W/X pattern) |
 | ***/CP…*** | ![centre picture](assets/elements/BBC-F-early-CP.png) | ***centre picture arguments*** |
 | `/CPi` | `/I-1` | picture custom image element name, null for no image |
-| ***/LB…*** | ![letterbox](assets/elements/BBC-F-early-LB.png) | ***letterbox arguments*** |
-| `/LBow` | `3.45 xGsz` | letterbox outer width |
-| `/LBoh` | `0.9 xGsz` | letterbox outer height |
-| `/LBiw` | `2.1 xGsz` | letterbox inner width |
-| `/LBih` | `0.45 xGsz` | letterbox inner height |
+| ***/SB…*** | ![streak box](assets/elements/BBC-F-early-SB.png) | ***streak box arguments*** |
+| `/SBow` | `3.45 xGsz` | streak box outer width |
+| `/SBoh` | `0.9 xGsz` | streak box outer height |
+| `/SBiw` | `2.1 xGsz` | streak box inner width |
+| `/SBih` | `0.45 xGsz` | streak box inner height |
 | ***/PP…*** | ![pulse pane](assets/elements/BBC-F-early-PP.png) | ***pulse pane arguments*** |
 | `/PP?` | `false` | false for no pulse panes or needle pulse lines |
 | ***/ID…*** | ![ident designation](assets/elements/BBC-F-early-ID.png) | ***ident designation arguments*** |
@@ -839,16 +821,14 @@ Inheritance: `BBC-F-early` <— [`BBC-E`](#user-content-bbc-e-arguments) <— [`
 | ***/CB…*** |  | ***colour bar arguments*** |
 | `/CBh` | `0` | colour bar height: 0 for no colour bars (fraction of border width) |
 | ***/B…*** | ![border](assets/elements/BBC-F-early-B.png) | ***border arguments*** |
-| `/Bac` | `[1 1]` | arrow colours: [horizontal vertical] |
+| `/Bac` | `[1 1]` | border arrow colours: [horizontal vertical] |
 | `/Bcc` | `[ [ 250 19 30 ] [ 27 85 157 ] [ 40 107 47 ] [ 254 203 33 ] [ 17 133 222 ] ]` | castellation colours: empty or [left-red left-blue bottom-green right-yellow top-cyan] |
-
 </details>
 
 <details><summary><code>BBC-F-optical</code> arguments</summary>
 
 ### <ins><code>BBC-F-optical</code> arguments</ins>
-
-Inheritance: `BBC-F-optical` <— [`BBC-F-early`](#user-content-bbc-f-early-arguments) <— [`BBC-E`](#user-content-bbc-e-arguments) <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
+Inheritance: `BBC-F-optical` <— [`BBC-F-early`](#user-content-bbc-f-early-arguments) <— [`BBC-E`](#user-content-bbc-e-arguments) <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#bbc-c-early-arguments) <— Blank
 | arg | value | description |
 | ---: | :---: | :--- |
 | ***/TC…*** |  | ***test card arguments*** |
@@ -861,23 +841,22 @@ Inheritance: `BBC-F-optical` <— [`BBC-F-early`](#user-content-bbc-f-early-argu
 | ***/CB…*** | ![colour bar](assets/elements/BBC-F-optical-CB.png) | ***colour bar arguments*** |
 | `/CBh` | `0.75` | colour bar height: 0 for no colour bars (fraction of border width) |
 | `/CBew` | `0.78` | colour bar end widths (fraction of uniform inner widths) |
+| `/CBc` | `[/white /yellow /cyan /green /magenta /red /blue /black]` | colour bar colours: [left to right] |
 | ***/C…*** | ![caption](assets/elements/BBC-F-optical-C.png) | ***caption arguments*** |
 | `/Ct` | `[/T-1 /T-2]` | caption custom text element names: empty for no caption |
-| ***/LB…*** | ![letterbox](assets/elements/BBC-F-optical-LB.png) | ***letterbox arguments*** |
-| `/LBih` | `0.4 xGsz` | letterbox inner height |
-| `/LBiw` | `2.23 xGsz` | letterbox inner width |
+| ***/SB…*** | ![streak box](assets/elements/BBC-F-optical-SB.png) | ***streak box arguments*** |
+| `/SBih` | `0.4 xGsz` | streak box inner height |
+| `/SBiw` | `2.23 xGsz` | streak box inner width |
 | ***/CC…*** | ![centre circles](assets/elements/BBC-F-optical-CC.png) | ***centre circles arguments*** |
 | `/CCr` | `2.5 xGsz 0.88 xGlw sub` | white circle stroke radius |
 | ***/FB…*** | ![frequency bars](assets/elements/BBC-F-optical-FB.png) | ***frequency bars arguments*** |
 | `/FBt` | `null` | custom text element name for freq text template, null for no text |
-
 </details>
 
 <details><summary><code>BBC-F-electronic</code> arguments</summary>
 
 ### <ins><code>BBC-F-electronic</code> arguments</ins>
-
-Inheritance: `BBC-F-electronic` <— [`BBC-F-optical`](#user-content-bbc-f-optical-arguments) <— [`BBC-F-early`](#user-content-bbc-f-early-arguments) <— [`BBC-E`](#user-content-bbc-e-arguments) <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
+Inheritance: `BBC-F-electronic` <— [`BBC-F-optical`](#user-content-bbc-f-optical-arguments) <— [`BBC-F-early`](#user-content-bbc-f-early-arguments) <— [`BBC-E`](#user-content-bbc-e-arguments) <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#bbc-c-early-arguments) <— Blank
 | arg | value | description |
 | ---: | :---: | :--- |
 | ***/TC…*** |  | ***test card arguments*** |
@@ -895,10 +874,10 @@ Inheritance: `BBC-F-electronic` <— [`BBC-F-optical`](#user-content-bbc-f-optic
 | ***/C…*** | ![caption](assets/elements/BBC-F-electronic-C.png) | ***caption arguments*** |
 | `/Ct` | `[/T-2 /T-3]` | caption custom text element names: empty for no caption |
 | `/Cch` | `1` | caption rectangle clip height scale factor |
-| ***/LB…*** | ![letterbox](assets/elements/BBC-F-electronic-LB.png) | ***letterbox arguments*** |
-| `/LBoh` | `0.87 xGsz` | letterbox outer height |
-| `/LBih` | `0.39 xGsz` | letterbox inner height |
-| `/LBiw` | `2.2 xGsz` | letterbox inner width |
+| ***/SB…*** | ![streak box](assets/elements/BBC-F-electronic-SB.png) | ***streak box arguments*** |
+| `/SBoh` | `0.87 xGsz` | streak box outer height |
+| `/SBih` | `0.39 xGsz` | streak box inner height |
+| `/SBiw` | `2.2 xGsz` | streak box inner width |
 | ***/CB…*** | ![colour bar](assets/elements/BBC-F-electronic-CB.png) | ***colour bar arguments*** |
 | `/CBh` | `1` | colour bar height: 0 for no colour bars (fraction of border width) |
 | `/CBew` | `0.5` | colour bar end widths (fraction of uniform inner widths) |
@@ -919,7 +898,6 @@ Inheritance: `BBC-F-electronic` <— [`BBC-F-optical`](#user-content-bbc-f-optic
 | `/CSep` | `1.5 xGlw` | corner stripes end padding |
 | ***/B…*** | ![border](assets/elements/BBC-F-electronic-B.png) | ***border arguments*** |
 | `/Bcc` | `[ [235 70 70] [70 70 235] [70 253 70] [253 253 70] [70 253 253] ]` | castellation colours: empty or [left-red left-blue bottom-green right-yellow top-cyan] |
-
 </details>
 
 ## Custom elements
@@ -935,58 +913,54 @@ Each CE has a name formed from a type letter and an element number, e.g. `/S4` (
 CEs with a negative element number are not layered, they are for replica elements,
 but they can be overridden in the normal way, for instance to change captions.
 
-### CEs by example
+### CE example
 
-<a href='assets/custom-elements.png'><img src='assets/custom-elements-thumb.png' alt='custom elements' align='right'></a>
+<a href='assets/ce-example.png'><img src='assets/ce-example-thumb.png' alt='custom elements' align='right'></a>
 
-Here is a rather garish example to illustrate the concept (click thumbnail).
-It is created from the arguments below extracted from the [args file](assets/ce-example-args.ps) used.
+Here is a 1960s themed example to illustrate the concept (click thumbnail).
+It is created from the arguments below extracted from the [args file](assets/ce-example.ps) used.
 Unspecified arguments take default values –
 see [shape arguments](#user-content-shape-arguments), [image arguments](#user-content-image-arguments), [text arguments](#user-content-text-arguments).
 
 *Example*:
-pattern *BBC-D-early* with 17 custom elements
+pattern *BBC-D-early* with 500 custom elements
 
-<details><summary>CE example arguments</summary>
+<details><summary>CE example details</summary>
 
-#### <ins>CE example arguments</ins>
+#### CE example arguments
 
 | arg | value | description |
 | :---: | :---: | :--- |
-| ***T12*** | ![T12](assets/ce/T12.png) | ***dark green TCM title*** |
+| ***T12*** | ![T12](assets/ce/T12.png) | ***dark blue TCM title*** |
 | `/T12s` | `(Test Card Maker)` | text string |
-| `/T12f` | `/Times,BoldItalic` | font |
+| `/T12f` | `/Times,BoldItalic` | font name |
+| `/T12c` | `/MidnightBlue` | colour |
 | `/T12h` | `Gsz 3 div` | height |
-| `/T12c` | `/ForestGreen` | colour |
 | `/T12y` | `TCh 0.8 xGsz sub` | horizontal centre |
 | `/T12z` | `30` | z-index |
-| ***S12*** | ![S12](assets/ce/S12.png) | ***light purple filled ellipse with sky blue stroke*** |
+| ***S12*** | ![S12](assets/ce/S12.png) | ***sky blue filled ellipse with dark green stroke*** |
 | `/S12s` | `/Ellipse` | shape |
-| `/S12c` | `/#E3D4FF` | fill colour |
-| `/S12k` | `/DeepSkyBlue` | stroke colour |
+| `/S12c` | `/LightSkyBlue` | fill colour |
+| `/S12k` | `/ForestGreen` | stroke colour |
 | `/S12h` | `0.6 xGsz` | height |
 | `/S12w` | `5 xGsz` | width |
 | `/S12y` | `T12y` | horizontal centre |
 | `/S12t` | `2 lines` | stroke thickness |
 | `/S12d` | `[5 xGlw Glw]` | stroke dash |
 | `/S12z` | `30` | z-index |
-| ***T10*** | ![T10](assets/ce/T10.png) | ***blue block-inverted caption*** |
-| `/T10s` | `(Custom Elements)` | text string |
-| `/T10f` | `/Helvetica-Bold` | font |
-| `/T10h` | `Gsz div2` | height |
-| `/T10w` | `6.5 xGsz` | width |
-| `/T10o` | `1.2` | horizontal padding multiplier |
-| `/T10y` | `Cy` | vertical centre |
-| `/T10a` | `/J` | alignment |
-| `/T10c` | `/Blue` | colour |
-| `/T10b` | `true` | block-inverted |
-| `/T10r` | `0.1` | corner radius (fraction of height) |
-| `/T10z` | `10` | z-index |
-| ***I5*** | ![I5](assets/ce/I5.png) | ***On White II, Kandinsky, 1923*** |
-| `/I5f` | `(CE/Kandinsky-OnWhiteII.png)` | image filename |
-| `/I5h` | `CCr mul2 CClw sub` | image diameter |
-| `/I5w` | `0` | crop image to circle |
-| `/I5z` | `10` | z-index |
+| ***S20*** | ![S20](assets/ce/S20.png) | ***green filled Reuleaux triangles*** |
+| `/S20s` | `/Polygon` | shape |
+| `/S20x` | `Gsz` | horizontal centre |
+| `/S20y` | `Gsz` | vertical centre |
+| `/S20h` | `Gsz` | height |
+| `/S20w` | `Gsz` | width |
+| `/S20n` | `3` | number of sides |
+| `/S20r` | `true` | Reuleaux polygon curve sides |
+| `/S20a` | `15` | rotate anticlockwise |
+| `/S20c` | `/Green` | fill colour |
+| `/S20k` | `null` | no stroke |
+| `/S20q` | `/VB` | mirror in top quadrants |
+| `/S20z` | `30` | z-index |
 | ***S15*** | ![S15](assets/ce/S15.png) | ***yellow stroked circle*** |
 | `/S15s` | `/Circle` | shape |
 | `/S15k` | `/Yellow` | stroke colour |
@@ -999,20 +973,86 @@ pattern *BBC-D-early* with 17 custom elements
 | `/S14n` | `11` | number of sides |
 | `/S14k` | `/red` | stroke colour |
 | `/S14c` | `null` | no fill |
-| `/S14h` | `S15h` | height |
-| `/S14w` | `S15h` | width |
+| `/S14h` | `S15h 1.01 mul` | height |
+| `/S14w` | `S14h` | width |
+| `/S14y` | `TCy 1.007 mul` | vertical centre |
 | `/S14t` | `1 lines` | stroke thickness |
 | `/S14z` | `20` | z-index |
-| `/S14` | `/S15 merge` | copy remaining args from shape S15 |
-| ***I2*** | ![I2](assets/ce/I2.png) | ***Art Nouveau corner ornament, Dan X. Solo, 1982*** |
-| `/I2f` | `(CE/DanXSolo-ArtNouveauCornerOrnament.eps)` | image filename |
+| `/S14` | `/S15 merge` | merge in shape S15 args |
+| ***I11*** | ![I11](assets/ce/I11.png) | ***PNG8: 1965 curved text*** |
+| `/I11f` | `(CE/1965.png)` | image filename |
+| `/I11y` | `TCy 1.2 xGsz add` | vertical centre |
+| `/I11w` | `5.3 xGsz` | width |
+| `/I11h` | `-1` | height |
+| `/I11z` | `10` | z-index |
+| ***I1*** | ![I1](assets/ce/I1.png) | ***PNG24: The Magic Roundabout*** |
+| `/I1f` | `(CE/Magic-Roundabout.png)` | image filename |
+| `/I1h` | `CCr mul2 CClw sub` | image diameter |
+| `/I1w` | `0` | circle |
+| `/I1z` | `10` | z-index |
+| ***I2*** | ![I2](assets/ce/I2.png) | ***EPS: Art Nouveau by Dan X. Solo*** |
+| `/I2f` | `(CE/ArtNouveauCornerOrnament-DXSolo.eps)` | image filename |
 | `/I2x` | `3.25 xGsz` | horizontal centre |
 | `/I2y` | `6.75 xGsz` | vertical centre |
 | `/I2w` | `1.5 xGsz` | width |
-| `/I2h` | `1.5 xGsz` | height |
-| `/I2q` | `true` | mirror image in other quadrants |
+| `/I2h` | `I2w` | height |
+| `/I2q` | `/NHVB` | mirror in other quadrants |
 | `/I2z` | `10` | z-index |
-| ***S3-4*** | ![S3-4](assets/ce/S3-4.png) | ***dark grey stroked rectangles*** |
+| ***T10*** | ![T10](assets/ce/T10.png) | ***blue block-inverted CE caption*** |
+| `/T10s` | `(Custom Elements)` | text string |
+| `/T10f` | `/Helvetica-Bold` | font name |
+| `/T10h` | `0.4 xGsz` | height |
+| `/T10w` | `5 xGsz` | width |
+| `/T10o` | `1.2` | horizontal padding multiplier |
+| `/T10y` | `Cy` | vertical centre |
+| `/T10a` | `/J` | alignment |
+| `/T10c` | `/Blue` | colour |
+| `/T10b` | `true` | block-inverted |
+| `/T10r` | `0.15` | corner radius (fraction of height) |
+| `/T10z` | `10` | z-index |
+| ***I4*** | ![I4](assets/ce/I4.png) | ***PNG8: Florence*** |
+| `/I4f` | `(CE/Florence.png)` | image filename |
+| `/I4x` | `2.9 xGsz` | horizontal centre |
+| `/I4y` | `1.4 xGsz` | vertical centre |
+| `/I4h` | `2.4 xGsz` | height |
+| `/I4w` | `-1 xGsz` | width auto |
+| `/I4z` | `31` | z-index |
+| ***I5*** | ![I5](assets/ce/I5.png) | ***PNG8: Dougal*** |
+| `/I5f` | `(CE/Dougal.png)` | image filename |
+| `/I5x` | `1.8 xGsz` | horizontal centre |
+| `/I5y` | `0.95 xGsz` | vertical centre |
+| `/I5h` | `1.3 xGsz` | height |
+| `/I5w` | `-1 xGsz` | width auto |
+| `/I5z` | `30` | z-index |
+| ***I6*** | ![I6](assets/ce/I6.png) | ***PNG8: Dylan*** |
+| `/I6f` | `(CE/Dylan.png)` | image filename |
+| `/I6x` | `1.2 xGsz` | horizontal centre |
+| `/I6y` | `1.5 xGsz` | vertical centre |
+| `/I6h` | `2.7 xGsz` | height |
+| `/I6w` | `-1` | width auto |
+| `/I6z` | `31` | z-index |
+| ***I7*** | ![I7](assets/ce/I7.png) | ***PNG8: Ermintrude*** |
+| `/I7f` | `(CE/Ermintrude.png)` | image filename |
+| `/I7x` | `TCw 1.9 xGsz sub` | horizontal centre |
+| `/I7y` | `1.4 xGsz` | vertical centre |
+| `/I7w` | `3.8 xGsz` | width |
+| `/I7h` | `-1` | height auto |
+| `/I7z` | `29` | z-index |
+| ***I8*** | ![I8](assets/ce/I8.png) | ***PNG8: Brian*** |
+| `/I8f` | `(CE/Brian.png)` | image filename |
+| `/I8x` | `TCw 1.4 xGsz sub` | horizontal centre |
+| `/I8y` | `1.1 xGsz` | vertical centre |
+| `/I8h` | `1.6 xGsz` | height |
+| `/I8w` | `-1` | width auto |
+| `/I8z` | `31` | z-index |
+| ***I9*** | ![I9](assets/ce/I9.png) | ***PNG8: Zebedee*** |
+| `/I9f` | `(CE/Zebedee.png)` | image filename |
+| `/I9x` | `TCw 1.3 xGsz sub` | horizontal centre |
+| `/I9y` | `1.9 xGsz` | vertical centre |
+| `/I9h` | `1.9 xGsz` | height |
+| `/I9w` | `-1 xGsz` | width auto |
+| `/I9z` | `30` | z-index |
+| ***S3*** | ![S3](assets/ce/S3.png) | ***dark grey stroked rectangles*** |
 | `/S3s` | `/Rectangle` | shape |
 | `/S3k` | `/DarkGrey` | stroke colour |
 | `/S3c` | `null` | no fill |
@@ -1021,24 +1061,9 @@ pattern *BBC-D-early* with 17 custom elements
 | `/S3w` | `Gsz` | width |
 | `/S3t` | `Glw` | stroke thickness |
 | `/S3j` | `/R` | rounded corners |
+| `/S3q` | `/NH` | mirror horizontally |
 | `/S3z` | `20` | z-index |
-| `/S4s` | `/Rectangle` | shape |
-| `/S4x` | `TCw S3x sub` | horizontal centre |
-| `/S4` | `/S3 merge` | copy remaining args from shape S3 |
-| ***S20*** | ![S20](assets/ce/S20.png) | ***green filled Reuleaux triangles*** |
-| `/S20s` | `/Polygon` | shape |
-| `/S20x` | `Gsz` | horizontal centre |
-| `/S20y` | `Gsz` | vertical centre |
-| `/S20h` | `Gsz` | height |
-| `/S20w` | `Gsz` | width |
-| `/S20n` | `3` | number of sides |
-| `/S20r` | `true` | Reuleaux polygon curve sides |
-| `/S20a` | `15` | rotate anticlockwise |
-| `/S20c` | `/Green` | fill colour |
-| `/S20k` | `null` | no stroke |
-| `/S20q` | `true` | mirror shape in other quadrants |
-| `/S20z` | `30` | z-index |
-| ***S5-8*** | ![S5-8](assets/ce/S5-8.png) | ***red & cyan filled triangles*** |
+| ***S5-6*** | ![S5-6](assets/ce/S5-6.png) | ***red & cyan filled triangles*** |
 | `/S5s` | `/Polygon` | shape |
 | `/S5n` | `3` | number of sides |
 | `/S5a` | `90` | rotate anticlockwise |
@@ -1049,22 +1074,16 @@ pattern *BBC-D-early* with 17 custom elements
 | `/S5x` | `S5w div2` | horizontal centre |
 | `/S5y` | `TCy` | vertical centre |
 | `/S5t` | `1 lines` | stroke thickness |
+| `/S5q` | `/NH` | mirror horizontally |
 | `/S5z` | `10` | z-index |
 | `/S6s` | `/P` | shape |
-| `/S6a` | `-90` | rotate clockwise |
-| `/S6x` | `TCw S5x sub` | horizontal centre |
-| `/S6` | `/S5 merge` | copy remaining args from shape S5 |
-| `/S7s` | `/P` | shape |
-| `/S7c` | `/Cyan` | fill colour |
-| `/S7a` | `180` | rotate anticlockwise |
-| `/S7x` | `TCx` | horizontal centre |
-| `/S7y` | `S5h div2` | vertical centre |
-| `/S7` | `/S5 merge` | copy remaining args from shape S5 |
-| `/S8s` | `/P` | shape |
-| `/S8a` | `0` | no rotation |
-| `/S8y` | `TCh S7y sub` | vertical centre |
-| `/S8` | `/S7 merge` | copy remaining args from shape S7 |
-| ***S1-2*** | ![S1-2](assets/ce/S1-2.png) | ***red stroked lines*** |
+| `/S6c` | `/Cyan` | fill colour |
+| `/S6a` | `180` | rotate anticlockwise |
+| `/S6x` | `TCx` | horizontal centre |
+| `/S6y` | `S5x` | vertical centre |
+| `/S6q` | `/NV` | mirror vertically |
+| `/S6` | `/S5 merge` | merge in shape S5 args |
+| ***S1*** | ![S1](assets/ce/S1.png) | ***red stroked lines*** |
 | `/S1s` | `/Line` | shape |
 | `/S1k` | `/Red` | stroke colour |
 | `/S1c` | `null` | no fill |
@@ -1072,10 +1091,8 @@ pattern *BBC-D-early* with 17 custom elements
 | `/S1h` | `Gsz` | height |
 | `/S1a` | `90` | rotate anticlockwise |
 | `/S1t` | `Glw` | stroke thickness |
+| `/S1q` | `/NH` | mirror horizontally |
 | `/S1z` | `10` | z-index |
-| `/S2s` | `/Line` | shape |
-| `/S2x` | `TCw Gsz sub` | horizontal centre |
-| `/S2` | `/S1 merge` | copy remaining args from shape S1 |
 | ***S10*** | ![S10](assets/ce/S10.png) | ***chocolate brown stroked rectangle*** |
 | `/S10s` | `/Rectangle` | shape |
 | `/S10k` | `/Chocolate` | stroke colour |
@@ -1084,19 +1101,63 @@ pattern *BBC-D-early* with 17 custom elements
 | `/S10w` | `11 xGsz` | width |
 | `/S10t` | `Glw` | stroke thickness |
 | `/S10z` | `20` | z-index |
+| ***T101-580*** | ![T101-580](assets/ce/T101-580.png) | ***border decoration*** |
+| `/T#f` | `/ZapfDingbats` | font name |
+| `/T#s` | a character from ``(^_`acdef)`` | random dingbat from 4 fleurons, 3 snowflakes, 1 asterisk |
+| `/T#h` | `0.1 xGsz`to `0.22 xGsz` | random height |
+| `/T#c` | a colour from `[/yellow /cyan /green /magenta /red /blue]` | random RGB primary or secondary colour |
+| `/T#x` | from `randp` | random horizontal position within border |
+| `/T#y` | from `randp` | random vertical position within border |
+| `/T#z` | `0` | z-index |
+
+(`#` is the text element number 101-580)
 
 (other arguments that lighten the background and alter the ident are not shown)
 
+#### CE example notes
+
+- `T12` & `S12`(title & frame): both CEs numbered 12 but text is layered over shapes, see [layering](#layering-and-mirroring)
+- `S20`(green triangles): drawn in quadrant Q3 at bottom-left but only painted in Q2 and Q1, see [mirroring](#layering-and-mirroring)
+- `I2`(Art Nouveau): transparent EPS, drawn in quadrant Q2 but painted in all quadrants
+- `I11`(curved text) & `I4`-`I9`(Zebedee & co.): indexed PNGs with transparency dither and matte equal to `TCbg` background colour to blend in outline and shadow effects
+- `T101`-`T580`(border decoration): 480 dingbats in random colours, sizes, characters and positions generated by PS loop constructs
+
 </details>
 
-### Layering
+> ![Aside](assets/icons/aside-16.svg)\
+> In 1965 Test Card D was amended and _The Magic Roundabout_ first aired,
+  as did _Jackanory_, _Thunderbirds_ and _Till Death Us Do Part_.
+
+### Layering and mirroring
+
+Layering provides CE overlap control but is only needed when elements actually overlap, as in the example.
 
 Each CE has an index for visual layering, like `z-index` in CSS[^9].
+Lower index CEs are painted before higher ones.
 CEs with identical index but different type are also layered but have a lower priority:
 text (`T`) over images (`I`) over shapes (`S`).
 For instance CEs with z-indices `I3z=40`, `T5z=70`, `S3z=40`, `T7z=10`
 are layered `T7`, `S3`, `I3`, `T5` with `T5` on top.
-This provides CE overlap control but is only needed when elements overlap, as in the example.
+Layering of CEs with identical index and same type is undefined.
+Layering of mirrored CEs is described next.
+
+<img src='assets/quadrants.png' alt='Quadrants' align='left'>
+
+All coordinates are relative to the origin 0,0 at bottom-left in quadrant Q3.
+By combining reflection and translation transformations,
+custom [shapes](#custom-shapes) and [images](#custom-images) (text makes no sense)
+can be mirrored as though painted relative to any corner, and get flipped over accordingly.
+
+The mirroring argument determines which quadrant corners act as the origin:
+`/N` (default Q3) the Normal origin,
+`/H` (Q4) to paint Horizontally mirrored,
+`/V` (Q2) for Vertically mirrored,
+`/B` (Q1) for Both horizontally and vertically mirrored.
+The order of the letters determines the painting order, i.e. the layering.
+For instance for `/NHBV`, a CE painted in Q3 is then mirrored in Q4 then Q1 then Q2,
+but if it paints into Q2 then it mirrors into Q1 then Q4 then Q3.
+Similarly `/HB` paints the horizontal and diagonally opposite reflections only,
+without painting from the Q3 origin at all.
 
 
 ### Custom shapes
@@ -1107,8 +1168,8 @@ Shapes are currently limited to lines, concave polygons, rectangles and ellipses
 They are calculated to fit the unit square[^10] at the specified rotation then scaled.
 Odd-sided polygons are oriented with a vertex at top-centre and horizontal base,
 placed using constant width Reuleaux[^11] curve fitting to normalise size and rotation within the bounds,
-therefore the centroid is offset from the specified centre as shown (credit: *LEMeZza/Wikimedia Commons*).
-All shapes can be rotated and distorted, filled and/or stroked, and mirrored in all quadrants.
+therefore the centroid is offset from the specified centre as this animation shows (credit: *LEMeZza/Wikimedia Commons*).
+All shapes can be rotated and distorted, filled and/or stroked, and selectively mirrored in all quadrants.
 See also [colour syntax](#user-content-colour-syntax).
 
 <details><summary>shape arguments</summary>
@@ -1130,11 +1191,11 @@ See also [colour syntax](#user-content-colour-syntax).
 | `/S#d` | `[]` | stroke dash pattern: empty for solid else dash-length gap-length pairs |
 | `/S#t` | `1` | stroke thickness |
 | `/S#j` | `/M` | stroke line join: /M(itre), /R(ound), /B(evel) |
-| `/S#q` | `false` | true to mirror in every quadrant |
+| `/S#q` | `/N` | mirroring: /N(one), /H(orizontal), /V(ertical), /B(oth) |
 | `/S#z` | `0` | z-index for layering |
 | `/S#?` | `true` | true to show this custom shape element |
 
-(`#` is the shape element index number)
+(`#` is the shape element number)
 
 </details>
 
@@ -1142,9 +1203,10 @@ See also [colour syntax](#user-content-colour-syntax).
 ### Custom images
 
 Image import accepts JPEG, PNG, EPS and JFIF formats.
-Scaling is relative to the auto-fit scale, calculated using offset translation, rotation and scaler projection[^12] to enclose the specified rectangle or circle.
+Transparency in EPS and 8-bit indexed PNG images works but 32-bit PNG images with an alpha channel are not supported.
+Scaling is relative to the auto-fit scale which is calculated using offset translation, rotation and scalar projection[^12] to enclose the specified rectangle or circle.
 Images are then clipped to that shape.
-Unlike custom shapes and text, images cannot be distorted, but like shapes they can be mirrored in all quadrants.
+Unlike custom shapes and text, images cannot be distorted, but like shapes they can be selectively mirrored in all quadrants.
 
 <details><summary>image arguments</summary>
 
@@ -1155,24 +1217,25 @@ Unlike custom shapes and text, images cannot be distorted, but like shapes they 
 | `/I#f` | `()` | image filename (required), accepts JPEG/PNG/EPS/JFIF |
 | `/I#x` | `TCx` | horizontal centre |
 | `/I#y` | `TCy` | vertical centre |
-| `/I#h` | `TCh 4 div` | height/diameter |
-| `/I#w` | `TCh 4 div` | width: 0 for circle |
+| `/I#h` | `TCh 4 div` | height/diameter: -1 to calculate from aspect ratio |
+| `/I#w` | `TCh 4 div` | width: 0 for circle, -1 to calculate from aspect ratio |
 | `/I#a` | `0` | rotation angle (degrees anticlockwise) |
 | `/I#s` | `0` | scale: 0 to auto-fit to width,height max |
 | `/I#i` | `0` | horizontal offset from x at auto-fit scaling |
 | `/I#j` | `0` | vertical offset from y at auto-fit scaling |
-| `/I#q` | `false` | true to mirror in every quadrant |
+| `/I#q` | `/N` | mirroring: /N(one), /H(orizontal), /V(ertical), /B(oth) |
 | `/I#z` | `0` | z-index for layering |
 | `/I#?` | `true` | true to show this custom image element |
 
-(`#` is the image element index number)
+(`#` is the image element number)
 
 > ![Tip](assets/icons/tip-16.svg)\
-> Use auto-scaling to centre the offset point, then rotate and scale.\
-  EPS `/syntaxerror` can be fixed using the GS utility [ps2epsi](https://ghostscript.readthedocs.io/en/latest/Ps2epsi.html) for DSC conformance[^13].
+  To position, use auto-fit scale to centre the offset point, then rotate and scale.
 
-> ![Caution](assets/icons/caution-16.svg)\
-> PNG images with an alpha channel are not supported.
+> ![Warning](assets/icons/warning-16.svg)\
+  EPS `/syntaxerror` is quite common but can be fixed using the GS utility [ps2epsi](https://ghostscript.readthedocs.io/en/latest/Ps2epsi.html) for DSC conformance[^13],\
+  e.g. `ps2epsi bad.eps good.eps` to clean the errors,\
+  then `sed '/^%%BeginPreview/,/^%%EndPreview/d' good.eps > smaller.eps` to remove the preview.
 
 
 </details>
@@ -1184,6 +1247,11 @@ and block-inverted to replicate logos like ![BBC](assets/bbc.png) (sometimes cal
 There are many arguments to control block-inversion,
 including monospacing, padding, rounded corners, tracking.
 See also [font resources](#user-content-font-resources) and [colour syntax](#user-content-colour-syntax).
+
+For styled text, create it in a word processor and export to PDF,
+then use GS to convert to EPS using\
+`gs -sDEVICE=eps2write -o text.eps text.pdf`\
+and render it as a [custom image](#custom-images) instead.
 
 <details><summary>text arguments</summary>
 
@@ -1211,7 +1279,7 @@ See also [font resources](#user-content-font-resources) and [colour syntax](#use
 | `/T#z` | `0` | z-index for layering |
 | `/T#?` | `true` | true to show this custom text element |
 
-(`#` is the text element index number)
+(`#` is the text element number)
 
 > ![Tip](assets/icons/tip-16.svg)\
 > The height `/T#h` is the overall letter height.\
@@ -1281,11 +1349,14 @@ The scaling operator for scan line heights is `lines`, computed for the active f
 ### Proportional scaling
 
 The unit of scaling for all other graphic elements is the grid size, i.e. the length of one side of a graticule square.
-For *BBC-A* however, which has no graticule, it is the distance between adjacent vertical castellation midpoints.
-This unit is named `/Gsz`, and the main scaling [operator](#user-content-operators) for fixed elements is `xGsz`.
+This unit is named `/Gsz` and the main scaling [operator](#user-content-operators) for fixed elements is `xGsz`.
 
-*Example:* *BBC-C* letterbox outer width is 2.66 grid squares, specified as\
-`/LBow 2.66 xGsz arg`
+*Example:* *BBC-C* streak box outer width is 2.66 grid squares, specified as\
+`/SBow 2.66 xGsz arg`
+
+> ![Note](assets/icons/note-16.svg)\
+> For *BBC-A*, which has no graticule, `Gsz` is the distance between adjacent horizontal castellation midpoints clamped within ±10% of the vertical ones.
+  This makes elements shrink as the aspect ratio reduces, resulting in a 5:4 version close to the early TCA shown on Arthur Dungate’s 5x4 era page, see [test card links](#test-cards) and [example](#aspect-ratio).
 
 </details>
 
@@ -1298,7 +1369,8 @@ Colour can be expressed as
 [HSL](#user-content-hsl),
 [HSB](#user-content-hsb) (HSV),
 [unit interval](#user-content-unit-interval-colour-components) (UI)[^19]
-or [named](#user-content-named-colours) colours:
+or [named](#user-content-named-colours) colours.
+There are special names for [chroma keying](#user-content-chroma-keying) and [random](#user-content-random-colour) colours.
 
 <details><summary>colour syntax</summary>
 
@@ -1311,7 +1383,7 @@ Grey shades are specified as a value from 0 to 255.
 *Example:* `128` for mid-grey
 
 > ![Tip](assets/icons/tip-16.svg)\
-> Colour component values need not be integers, e.g. `127.5` is more accurate for mid-grey.
+> Colour component values need not be integers, e.g. `127.5` is acceptable.
 
 > ![Note](assets/icons/note-16.svg)\
 > Regardless how a colour is specified,
@@ -1326,7 +1398,7 @@ RGB colours can be specified as an array of [Red Green Blue] values from 0 to 25
 
 *Example:* `[207 92 230]RGB` or just `[207 92 230]` (RGB is the default)
 
-RGB can also be specified in hexadecimal #RRGGBB notation (case-insensitive):
+RGB can also be specified in hexadecimal #RRGGBB notation (case-insensitive) as a name or a string:
 
 *Example:* `/#Cf5cE6` (name syntax), `(#Cf5cE6)` (string syntax)
 
@@ -1386,13 +1458,17 @@ Both `grey` and `gray` (US) are recognised.
 
 ### Chroma keying
 
-Colour names for chroma key compositing are:\
+Colour names for chroma key compositing (case-insensitive) are:\
 `/GreenScreen` (`[0 177 64]`)\
 `/BlueScreen` (`[0 71 187]`)\
 these seem most common but `[8 39 245]` is given as blue standard by Gerriets[^24].
 
 Green screens are generally used now but blue screens were prominent in early television[^25].
 
+
+### Random colour
+
+Use `/RandomColour` or `/RandomGrey` (case-insensitive) for a randomly generated colour or greyscale value.
 
 ### Unit interval colour components
 
@@ -1473,7 +1549,7 @@ If that fails, use a font inspector app:
 [FontForge] (open source) is good for creating, editing and converting fonts.
 The *BBC-C* ident letter **C** is a Type&nbsp;42 font made with FontForge
 because the font couldn’t be found (it’s close to a cropped circle).
-The Replica icon ![](assets/icons/replica-16.svg) is also a single-glyph Type&nbsp;42 font, extracted from TTF to obviate copyright issues.
+The Replica icon ![](assets/icons/replica-16.svg) is also a single-glyph Type&nbsp;42 font, extracted from TTF.
 And the GillSans-alt TTF is GillSans with altered weight for *BBC-A*, which also couldn’t be matched.
 
 ### Block-inverted fonts
@@ -1489,8 +1565,7 @@ See [Text arguments](#user-content-text-arguments) for all block rendering argum
 ### BBC logo fonts
 
 From inspection, websites reproducing early BBC logos are not very reliable.
-[This article](https://kecskebak.blogspot.com/2011/05/washington-post.html) by artist Dave Jeffery (DJ)
-gives the definitively name of the font as Washington, from a BBC insider,
+Dave Jeffery’s blog[^26] gives the definitively name of the font as Washington, from a BBC insider,
 which he recreates in [FontForge] from BBC specimen sheets of the metal typeface –
 perhaps like this similar
 [Doric No. 1 Italic](https://archive.org/details/1959-stephenson-blake-printing-types/page/140/mode/2up?view=theater)
@@ -1508,11 +1583,12 @@ itself digitised from 1962 drawings as
 and another digital version of Fette Kursiv Grotesk is
 [Derek AT Italic](https://fontsgeek.com/fonts/Derek-AT-Italic-Regular).
 
-TCM block-inverts Derek AT Italic for *BBC-C-625* and *BBC-D*, and DJ’s Washington Book for *BBC-F-optical*,
+TCM block-inverts Derek AT Italic for *BBC-C-625* and *BBC-D*, and Washington Book for *BBC-F-optical*,
 as they match closest in overlay tests.
 
 Other fonts are easier to identify, e.g. Gill Sans, Helvetica.
 Sanchez is used for the *BBC-F-electronic* ID.
+
 
 </details>
 
@@ -1521,7 +1597,7 @@ Sanchez is used for the *BBC-F-electronic* ID.
 Run Ghostscript from the command line in a Linux/Mac Terminal or Windows Command Prompt.
 
 > [!NOTE]
-> The executable command is `gswin64c` on Windows and `gs` on other platforms.
+> The executable command is `gswin64c` on Windows and `gs` on most other platforms.
   Examples here use `gs` but Windows users should substitute `gswin64c`.
 
 Further info: [GS User Guide: Invoking Ghostscript](https://ghostscript.readthedocs.io/en/latest/Use.html#invoking-ghostscript)
@@ -1538,12 +1614,10 @@ TCM only uses a few GS options:
 - `-I` adds directories for file access
 - `-o` sets the output filename and disables interactive mode
 - `-r` sets the resolution (default 72 ppi)
-- `-s` defines a string argument
-- `-d` defines a numeric or name or boolean argument
+- `-s` defines a name with a string value (without parenthesis)
+- `-d` defines a name with a numeric or name value or `true`, `false`, `null`
 - `-f` execute a file, used here for argument files
-- `-+` execute a file and creates an array of any following arguments
-
-These are demonstrated in examples that follow.
+- `-+` execute a file and create an array of any following arguments
 
 Further info: [GS User Guide: Command line options](https://ghostscript.readthedocs.io/en/latest/Use.html#command-line-options)
 
@@ -1624,8 +1698,9 @@ Not supported directly
 but there are many PDF/EPS to SVG converters for download or online use.
 I use [pdf2svg](https://github.com/dawbarton/pdf2svg) from MacPorts,
 available as a Windows binary at [pdf2svg-windows](https://github.com/jalios/pdf2svg-windows),
-which simply delegates to [Poppler](https://poppler.freedesktop.org/) and [Cairo](https://cairographics.org/).\
-E.g. `pdf2svg myTC.pdf myTC.svg`
+which simply delegates to [Poppler](https://poppler.freedesktop.org/) and [Cairo](https://cairographics.org/),\
+preserving paths and even gradients without converting to bitmaps.
+e.g. `pdf2svg myTC.pdf myTC.svg`
 
 Further info: [GS User Guide: High level devices](https://ghostscript.readthedocs.io/en/latest/Devices.html#high-level-devices)
 
@@ -1667,10 +1742,8 @@ for these and other formats Ghostscript can output directly.
 Not supported directly.
 [ImageMagick] (open source) is good for CLI image conversions and manipulations,
 and there are many graphics editing tools,
-e.g. [Affinity Photo](https://affinity.serif.com/en-gb/photo/) or [GIMP](https://www.gimp.org/).
-
-E.g. `convert myTC.png myTC.webm` (ImageMagick)\
-converts PNG to WEBM
+for instance [Affinity Photo](https://affinity.serif.com/en-gb/photo/) or [GIMP](https://www.gimp.org/),\
+e.g. `convert myTC.png myTC.webm` (ImageMagick) converts PNG to WEBM.
 
 </details>
 
@@ -1691,12 +1764,14 @@ creates a 60 second MP4 video of a static PNG image (no audio)
 ditto, with a 1kHz mono tone
 
 `ffmpeg -i myTC.png -stream_loop -1 -i myTC.wav -vf loop=-1:1,scale=702:576,pad=720:0:-1 -target pal-dvd -t 1:0:0 myTC.mpg`\
-creates a 1-hour MPEG-2 video of a PNG image and looped WAV audio, encoded for PAL DVD 4:3 simulation (18 pixels added to width, cut off by analogue blanking)[^26]
+creates a 1-hour MPEG-2 video of a PNG image and looped WAV audio, encoded for PAL DVD 4:3 simulation (18 pixels added to width, cut off by analogue blanking)[^27]
 
 
 </details>
 
 ## Video effects
+
+TODO
 
 ## Test card sources
 
@@ -1769,7 +1844,7 @@ Even now they are a fascinating read, and many principles explained are still re
 This year (2025) I became aware that I had been living two streets away from Mr&nbsp;King
 in Furzeham, Brixham, for 14 years until he died in 2010.
 In August that year soon after his funeral service I became organist at the same [church](https://youtu.be/OmLH3yhwXrQ), yet remained oblivious.
-Had I not narrowly missed meeting him perhaps we could have chatted about the heyday of analogue electronics
+Had we met we might have reminisced about the heyday of analogue electronics
 and the milestone transitions from valve to semiconductor, monochrome to colour, analogue to digital…
 RIP GJK.
 
@@ -1787,13 +1862,14 @@ RIP GJK.
 ### Television history
 
 - [BBC Television from Alexandra Palace, 1952–63](http://www.bbctv-ap.co.uk/bbctvp1.htm) – personal experiences by Arthur Dungate, with [index](http://www.bbctv-ap.co.uk/a-zindx.htm)
-- [A Tech Ops History](http://www.tech-ops.co.uk/) – in stories and pictures, by Bernie Newnham&#x2020;
+- [A Tech Ops History](http://www.tech-ops.co.uk/) – in stories and pictures, by Bernie Newnham
 - [British Heritage Television](https://405-line.tv/) – 405-line demo transmissions and [A Brief History](https://405-line.tv/tv-history/)
 - [List of years in British television](https://en.wikipedia.org/wiki/List_of_years_in_British_television) – Wikipedia
 - [The Story of BBC Television Idents](https://www.bbc.com/historyofthebbc/research/bbc-idents) – the BBC's on-air look from 1936 to the present day
 - [World Radio History](https://www.worldradiohistory.com/Home-UK.htm) – UK collection of documents and publications
 - [The Transdiffusion Broadcasting System](https://transdiffusion.org/) – a broadcasting archive for research and education
 - [TVARK](https://tvark.org/) – a comprehensive TV archive of Betamax and VHS home recordings
+- [TV Camera Museum](https://tvcameramuseum.org/) – virtual camera museum with interesting [monoscope](https://tvcameramuseum.org/marconi/bd665/p-1.html) test card grabs
 - [Early Television Foundation](https://earlytelevision.org/) – interesting American site with a [British and European](https://earlytelevision.org/postwar_british.html) section
 
 ### Technical
@@ -1809,16 +1885,17 @@ RIP GJK.
 - [PAL encoding](https://en.wikipedia.org/wiki/PAL) – Wikipedia
 - [Limiting of YUV Digital Video Signals](https://downloads.bbc.co.uk/rd/pubs/reports/1987-22.pdf) – a BBC Research Report
 - [YUV Color Calculator](https://res18h39.netlify.app/color) – colour conversion calculator
+- [BBC HD test signals](https://www.bbc.co.uk/blogs/bbcinternet/2008/12/a_christmas_present_from_the_h.html) – Andy Quested, BBC Internet Blog
 
 ### Test cards
 
-- see also [Test card sources](#test-card-sources) links above
 - [5x4 era](http://www.bbctv-ap.co.uk/gallery1.htm) and [early 4x3 cards](http://www.bbctv-ap.co.uk/gallery2.htm) – by Arthur Dungate
 - [Test Card History](https://web.archive.org/web/20160304132214/http://www.pembers.freeserve.co.uk/Test-Cards/index.html) – excellent background by Alan Pemberton
 - [TVARK: BBC Testcards](https://tvark.org/features/testcards/bbc-testcards) – archive of test card video recordings
 - [The Test Card Girl](https://youtu.be/t7yIXLx5on0) – AMTV Documentary video on the legacy of Test Card F
 - [Technical descriptions of UK test cards](https://web.archive.org/web/20160409090425/http://www.pembers.freeserve.co.uk/Test-Cards/Test-Card-Technical.html) – authoritative information by Alan Pemberton
 - [Tim Worthington: The Test Card](https://timworthington.blogspot.com/2013/11/the-fifty-fourth-annual-academy-salute.html) – a humorous take
+- see also [Test card sources](#test-card-sources) links above
 
 ### Community
 
@@ -1827,7 +1904,7 @@ RIP GJK.
 - [UK Vintage Radio Repair and Restoration](https://www.vintage-radio.net/) – discussion forum
 - [Radios-TV](https://www.radios-tv.co.uk/) – Vintage radio & television blog and forum
 - [TV Forum](https://www.tvforum.co.uk/) – discussion forum, static archive since 2021
-- [Golborne Vintage Radio](https://www.golbornevintageradio.co.uk/) – forum on everything vintage
+- [Golborne Vintage Radio](https://www.golbornevintageradio.co.uk/) – forums on everything vintage
 - [The Test Card Circle](https://www.testcardcircle.org.uk/) – for test card music enthusiasts
 
 ### Related projects
@@ -1838,6 +1915,13 @@ RIP GJK.
 - repo [edent/SVGtestcard](https://github.com/edent/SVGtestcard) – SVG 1080p test Card based on BBC HD pattern
 - repo [jyun9504/tv-test-card](https://github.com/jyun9504/tv-test-card) – a widescreen Vue implementation
 - repo [lordxeorus/Test-Patterns](https://github.com/lordxeorus/Test-Patterns) – FFMpeg colour bars generation: EBU 100/75% for PAL and SMPTE for NTSC
+- [TV Testcard Generator](https://testcardgen.onrender.com/) – interactive online tool for quick TC generation on the [Render](https://render.com/) platform
+
+### PostScript links
+
+- [PostScript Language reference](https://www.adobe.com/jp/print/postscript/pdfs/PLRM.pdf) – Adobe Systems PLRM LanguageLevel 3
+- [ttf2pscid2](https://github.com/scriptituk/ttf2pscid2) – TTF to PostScript Type 2 CIDFont Converter by TCM author
+- [Lettering Designer](https://www.tribalsigns.co.uk/shop/custom-lettering/72-custom-lettering.html) – PostScript generated signs developed by TCM author
 
 <!-- Link references -->
 
@@ -1859,7 +1943,7 @@ RIP GJK.
 
 [^6]: [Encapsulated PostScript](https://en.wikipedia.org/wiki/Encapsulated_PostScript) – Wikipedia
 
-[^7]: [Forth](https://en.wikipedia.org/wiki/Forth_(programming_language)) – Wikipedia
+[^7]: [Forth programming language](https://en.wikipedia.org/wiki/Forth_(programming_language)) – Wikipedia
 
 [^8]: [Philips circle pattern](https://en.wikipedia.org/wiki/Philips_circle_pattern) – Wikipedia
 
@@ -1897,5 +1981,7 @@ RIP GJK.
 
 [^25]: [Blue Screen vs Green Screen](https://www.premiumbeat.com/blog/blue-screen-vs-green-screen/) – Gerriets, specialist for stage and event equipment
 
-[^26]: [Test Card J](https://archive.ph/RhAE8) – archived from barney-wol\.net
+[^26]: [Washington Post](https://kecskebak.blogspot.com/2011/05/washington-post.html) – by Dave Jeffery
+
+[^27]: [Test Card J](https://archive.ph/RhAE8) – archived from barney-wol\.net
 
