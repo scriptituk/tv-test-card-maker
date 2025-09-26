@@ -56,13 +56,13 @@ This project is dedicated to the memory of **Gordon J. King** whose technical wr
 [Group&nbsp;Philips&nbsp;elements](#user-content-group-philips-elements)
 - [Element&nbsp;arguments](#element-arguments)
   - [BBC&#8209;A&nbsp;arguments](#user-content-bbc-a-arguments) &bull;
+[BBC&#8209;C&#8209;early&nbsp;arguments](#user-content-bbc-c-early-arguments) &bull;
 [BBC&#8209;C&nbsp;arguments](#user-content-bbc-c-arguments) &bull;
 [BBC&#8209;C&#8209;625&nbsp;arguments](#user-content-bbc-c-625-arguments) &bull;
 [BBC&#8209;D&#8209;early&nbsp;arguments](#user-content-bbc-d-early-arguments) &bull;
 [BBC&#8209;D&#8209;improved&nbsp;arguments](#user-content-bbc-d-improved-arguments) &bull;
 [BBC&#8209;E&nbsp;arguments](#user-content-bbc-e-arguments) &bull;
 [BBC&#8209;F&#8209;early&nbsp;arguments](#user-content-bbc-f-early-arguments) &bull;
-[BBC&#8209;F&#8209;optical&nbsp;arguments](#user-content-bbc-f-optical-arguments) &bull;
 [BBC&#8209;F&#8209;electronic&nbsp;arguments](#user-content-bbc-f-electronic-arguments)
 - [Custom&nbsp;elements](#custom-elements)
   - [CE&nbsp;example](#ce-example) &bull;
@@ -201,7 +201,7 @@ To achieve this in a structured way without the benefits of object-oriented feat
 Custom elements, namely [custom shapes](#custom-shapes), [custom images](#custom-images) and [custom text](#custom-text),
 are a major design feature which enable graphic shapes, images, EPS[^6] vector graphics and text objects to be placed anywhere,
 each with comprehensive formatting options, in ordered layers.
-For instance, captions are custom-text elements and the Carole Hersee image is a custom-image element.
+For instance, captions are custom-text elements and the Carole Hersee photo is a custom-image element.
 
 
 </details>
@@ -460,6 +460,8 @@ Inheritance: `BBC-A` <— Blank
 </details>
 
 <details><summary><code>BBC-C-early</code> arguments</summary>
+
+### <ins><code>BBC-C-early</code> arguments</ins>
 Inheritance: `BBC-C-early` <— Blank
 | arg | value | description |
 | ---: | :---: | :--- |
@@ -565,7 +567,7 @@ Inheritance: `BBC-C-early` <— Blank
 <details><summary><code>BBC-C</code> arguments</summary>
 
 ### <ins><code>BBC-C</code> arguments</ins>
-Inheritance: `BBC-C` <— [`BBC-C-early`](#bbc-c-early-arguments) <— Blank
+Inheritance: `BBC-C` <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
 | arg | value | description |
 | ---: | :---: | :--- |
 | ***/TC…*** |  | ***test card arguments*** |
@@ -600,7 +602,7 @@ Inheritance: `BBC-C` <— [`BBC-C-early`](#bbc-c-early-arguments) <— Blank
 <details><summary><code>BBC-C-625</code> arguments</summary>
 
 ### <ins><code>BBC-C-625</code> arguments</ins>
-Inheritance: `BBC-C-625` <— [`BBC-C`](#user-content-bbc-c-arguments) <— [`BBC-C-early`](#bbc-c-early-arguments) <— Blank
+Inheritance: `BBC-C-625` <— [`BBC-C`](#user-content-bbc-c-arguments) <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
 | arg | value | description |
 | ---: | :---: | :--- |
 | ***/TC…*** |  | ***test card arguments*** |
@@ -652,7 +654,7 @@ Inheritance: `BBC-C-625` <— [`BBC-C`](#user-content-bbc-c-arguments) <— [`BB
 <details><summary><code>BBC-D-early</code> arguments</summary>
 
 ### <ins><code>BBC-D-early</code> arguments</ins>
-Inheritance: `BBC-D-early` <— [`BBC-C-early`](#bbc-c-early-arguments) <— Blank
+Inheritance: `BBC-D-early` <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
 | arg | value | description |
 | ---: | :---: | :--- |
 | ***/TC…*** |  | ***test card arguments*** |
@@ -721,7 +723,7 @@ Inheritance: `BBC-D-early` <— [`BBC-C-early`](#bbc-c-early-arguments) <— Bla
 <details><summary><code>BBC-D-improved</code> arguments</summary>
 
 ### <ins><code>BBC-D-improved</code> arguments</ins>
-Inheritance: `BBC-D-improved` <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#bbc-c-early-arguments) <— Blank
+Inheritance: `BBC-D-improved` <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
 | arg | value | description |
 | ---: | :---: | :--- |
 | ***/TC…*** |  | ***test card arguments*** |
@@ -735,7 +737,7 @@ Inheritance: `BBC-D-improved` <— [`BBC-D-early`](#user-content-bbc-d-early-arg
 <details><summary><code>BBC-E</code> arguments</summary>
 
 ### <ins><code>BBC-E</code> arguments</ins>
-Inheritance: `BBC-E` <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#bbc-c-early-arguments) <— Blank
+Inheritance: `BBC-E` <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
 | arg | value | description |
 | ---: | :---: | :--- |
 | ***/TC…*** |  | ***test card arguments*** |
@@ -763,7 +765,7 @@ Inheritance: `BBC-E` <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <
 <details><summary><code>BBC-F-early</code> arguments</summary>
 
 ### <ins><code>BBC-F-early</code> arguments</ins>
-Inheritance: `BBC-F-early` <— [`BBC-E`](#user-content-bbc-e-arguments) <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#bbc-c-early-arguments) <— Blank
+Inheritance: `BBC-F-early` <— [`BBC-E`](#user-content-bbc-e-arguments) <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
 | arg | value | description |
 | ---: | :---: | :--- |
 | ***/TC…*** |  | ***test card arguments*** |
@@ -826,9 +828,9 @@ Inheritance: `BBC-F-early` <— [`BBC-E`](#user-content-bbc-e-arguments) <— [`
 </details>
 
 <details><summary><code>BBC-F-optical</code> arguments</summary>
+<a name='bbc-f-optical-arguments'></a>
 
-### <ins><code>BBC-F-optical</code> arguments</ins>
-Inheritance: `BBC-F-optical` <— [`BBC-F-early`](#user-content-bbc-f-early-arguments) <— [`BBC-E`](#user-content-bbc-e-arguments) <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#bbc-c-early-arguments) <— Blank
+Inheritance: `BBC-F-optical` <— [`BBC-F-early`](#user-content-bbc-f-early-arguments) <— [`BBC-E`](#user-content-bbc-e-arguments) <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
 | arg | value | description |
 | ---: | :---: | :--- |
 | ***/TC…*** |  | ***test card arguments*** |
@@ -856,7 +858,7 @@ Inheritance: `BBC-F-optical` <— [`BBC-F-early`](#user-content-bbc-f-early-argu
 <details><summary><code>BBC-F-electronic</code> arguments</summary>
 
 ### <ins><code>BBC-F-electronic</code> arguments</ins>
-Inheritance: `BBC-F-electronic` <— [`BBC-F-optical`](#user-content-bbc-f-optical-arguments) <— [`BBC-F-early`](#user-content-bbc-f-early-arguments) <— [`BBC-E`](#user-content-bbc-e-arguments) <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#bbc-c-early-arguments) <— Blank
+Inheritance: `BBC-F-electronic` <— [`BBC-F-optical`](#user-content-bbc-f-optical-arguments) <— [`BBC-F-early`](#user-content-bbc-f-early-arguments) <— [`BBC-E`](#user-content-bbc-e-arguments) <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
 | arg | value | description |
 | ---: | :---: | :--- |
 | ***/TC…*** |  | ***test card arguments*** |
@@ -926,6 +928,8 @@ see [shape arguments](#user-content-shape-arguments), [image arguments](#user-co
 pattern *BBC-D-early* with 500 custom elements
 
 <details><summary>CE example details</summary>
+<a name='ce-example-details'></a>
+
 
 #### CE example arguments
 
