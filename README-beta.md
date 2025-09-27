@@ -28,110 +28,107 @@ This project is dedicated to the memory of **Gordon J. King** whose technical wr
 
 
 <details><summary>Table of Contents</summary>
+<a name='table-of-contents'></a>
 
-<a name="toc">Table of Contents</a>
-
-- [Summary](#summary) &bull;
-[Table&nbsp;of&nbsp;Contents](#user-content-table-of-contents)
+- [Summary](#summary)
+&bull; [Table of Contents](#user-content-table-of-contents)
 - [Taster](#taster)
 - [Aims](#aims)
-- [Implementation](#implementation) &bull;
-[Overview](#user-content-overview)
+- [Implementation](#implementation)
+&bull; [Overview](#user-content-overview)
 - [Installing](#installing)
-  - [Install&nbsp;TCM](#install-tcm) &bull;
-[Install&nbsp;Ghostscript](#install-ghostscript) &bull;
-[Platform&nbsp;details](#user-content-platform-details)
+  - [Install&nbsp;TCM](#install-tcm)
+&bull; [Install&nbsp;Ghostscript](#install-ghostscript)
+&bull; [Platform details](#user-content-platform-details)
 - [PostScript&nbsp;basics](#postscript-basics)
-  - [Objects](#user-content-objects) &bull;
-[Operators](#user-content-operators)
+  - [Objects](#user-content-objects)
+&bull; [Operators](#user-content-operators)
 - [Making&nbsp;patterns](#making-patterns)
-  - [Setting&nbsp;parameters](#setting-parameters) &bull;
-[Examples](#examples)
+  - [Setting&nbsp;parameters](#setting-parameters)
+&bull; [Examples](#examples)
 - [Pattern&nbsp;templates](#pattern-templates)
 - [Compositing&nbsp;groups](#compositing-groups)
-  - [Group&nbsp;composition](#user-content-group-composition)
+  - [Group composition](#user-content-group-composition)
 - [Template&nbsp;elements](#template-elements)
-  - [Group&nbsp;BBCbw&nbsp;elements](#user-content-group-bbcbw-elements) &bull;
-[Group&nbsp;BBCgc&nbsp;elements](#user-content-group-bbcgc-elements) &bull;
-[Group&nbsp;Philips&nbsp;elements](#user-content-group-philips-elements)
+  - [Group BBCbw elements](#user-content-group-bbcbw-elements)
+&bull; [Group BBCgc elements](#user-content-group-bbcgc-elements)
+&bull; [Group Philips elements](#user-content-group-philips-elements)
 - [Element&nbsp;arguments](#element-arguments)
-  - [BBC&#8209;A&nbsp;arguments](#user-content-bbc-a-arguments) &bull;
-[BBC&#8209;C&#8209;early&nbsp;arguments](#user-content-bbc-c-early-arguments) &bull;
-[BBC&#8209;C&nbsp;arguments](#user-content-bbc-c-arguments) &bull;
-[BBC&#8209;C&#8209;625&nbsp;arguments](#user-content-bbc-c-625-arguments) &bull;
-[BBC&#8209;D&#8209;early&nbsp;arguments](#user-content-bbc-d-early-arguments) &bull;
-[BBC&#8209;D&#8209;improved&nbsp;arguments](#user-content-bbc-d-improved-arguments) &bull;
-[BBC&#8209;E&nbsp;arguments](#user-content-bbc-e-arguments) &bull;
-[BBC&#8209;F&#8209;early&nbsp;arguments](#user-content-bbc-f-early-arguments) &bull;
-[BBC&#8209;F&#8209;electronic&nbsp;arguments](#user-content-bbc-f-electronic-arguments)
+  - [BBC-A arguments](#user-content-bbc-a-arguments)
+&bull; [BBC-C-early arguments](#user-content-bbc-c-early-arguments)
+&bull; [BBC-C arguments](#user-content-bbc-c-arguments)
+&bull; [BBC-C-625 arguments](#user-content-bbc-c-625-arguments)
+&bull; [BBC-D-early arguments](#user-content-bbc-d-early-arguments)
+&bull; [BBC-D-improved arguments](#user-content-bbc-d-improved-arguments)
+&bull; [BBC-E arguments](#user-content-bbc-e-arguments)
+&bull; [BBC-F-early arguments](#user-content-bbc-f-early-arguments)
+&bull; [BBC-F-optical arguments](#user-content-bbc-f-optical-arguments)
+&bull; [BBC-F-electronic arguments](#user-content-bbc-f-electronic-arguments)
 - [Custom&nbsp;elements](#custom-elements)
-  - [CE&nbsp;example](#ce-example) &bull;
-[CE&nbsp;example&nbsp;arguments](#user-content-ce-example-arguments) &bull;
-[CE&nbsp;example&nbsp;notes](#user-content-ce-example-notes)
+  - [CE&nbsp;example](#ce-example)
+&bull; [CE&nbsp;example&nbsp;arguments](#user-content-ce-example-arguments)
+&bull; [CE&nbsp;example&nbsp;notes](#user-content-ce-example-notes)
   - [Layering&nbsp;and&nbsp;mirroring](#layering-and-mirroring)
-  - [Custom&nbsp;shapes](#custom-shapes) &bull;
-[Shape&nbsp;arguments](#user-content-shape-arguments)
-  - [Custom&nbsp;images](#custom-images) &bull;
-[Image&nbsp;arguments](#user-content-image-arguments)
-  - [Custom&nbsp;text](#custom-text) &bull;
-[Text&nbsp;arguments](#user-content-text-arguments)
+  - [Custom&nbsp;shapes](#custom-shapes)
+&bull; [Shape arguments](#user-content-shape-arguments)
+  - [Custom&nbsp;images](#custom-images)
+&bull; [Image arguments](#user-content-image-arguments)
+  - [Custom&nbsp;text](#custom-text)
+&bull; [Text arguments](#user-content-text-arguments)
 - [Resolution](#resolution)
 - [Aspect&nbsp;ratio](#aspect-ratio)
 - [Scaling](#scaling)
-  - [Scaling&nbsp;details](#user-content-scaling-details) &bull;
-[Time&#8209;based&nbsp;scaling](#user-content-time-based-scaling) &bull;
-[Proportional&nbsp;scaling](#user-content-proportional-scaling)
+  - [Time&#8209;based&nbsp;scaling](#user-content-time-based-scaling)
+&bull; [Proportional&nbsp;scaling](#user-content-proportional-scaling)
 - [Colours](#colours)
-  - [Colour&nbsp;syntax](#user-content-colour-syntax) &bull;
-[Greyscale](#user-content-greyscale) &bull;
-[RGB](#user-content-rgb) &bull;
-[YUV](#user-content-yuv) &bull;
-[HSL](#user-content-hsl) &bull;
-[HSB](#user-content-hsb) &bull;
-[Named&nbsp;colours](#user-content-named-colours) &bull;
-[Chroma&nbsp;keying](#user-content-chroma-keying) &bull;
-[Random&nbsp;colour](#user-content-random-colour) &bull;
-[Unit&nbsp;interval&nbsp;colour&nbsp;components](#user-content-unit-interval-colour-components) &bull;
-[Transparency](#user-content-transparency) &bull;
-[Gradients](#user-content-gradients)
+  - [Greyscale](#user-content-greyscale)
+&bull; [RGB](#user-content-rgb)
+&bull; [YUV](#user-content-yuv)
+&bull; [HSL](#user-content-hsl)
+&bull; [HSB](#user-content-hsb)
+&bull; [Named&nbsp;colours](#user-content-named-colours)
+&bull; [Chroma&nbsp;keying](#user-content-chroma-keying)
+&bull; [Random&nbsp;colour](#user-content-random-colour)
+&bull; [Unit&nbsp;interval&nbsp;colour&nbsp;components](#user-content-unit-interval-colour-components)
+&bull; [Transparency](#user-content-transparency)
+&bull; [Gradients](#user-content-gradients)
 - [Fonts](#fonts)
-  - [Font&nbsp;resources](#user-content-font-resources) &bull;
-[Listing&nbsp;fonts](#user-content-listing-fonts) &bull;
-[Adding&nbsp;fonts](#user-content-adding-fonts) &bull;
-[Editing&nbsp;fonts](#user-content-editing-fonts) &bull;
-[Block&#8209;inverted&nbsp;fonts](#user-content-block-inverted-fonts) &bull;
-[BBC&nbsp;logo&nbsp;fonts](#user-content-bbc-logo-fonts)
+  - [Listing&nbsp;fonts](#user-content-listing-fonts)
+&bull; [Adding&nbsp;fonts](#user-content-adding-fonts)
+&bull; [Editing&nbsp;fonts](#user-content-editing-fonts)
+&bull; [Block&#8209;inverted&nbsp;fonts](#user-content-block-inverted-fonts)
+&bull; [BBC&nbsp;logo&nbsp;fonts](#user-content-bbc-logo-fonts)
 - [Command&nbsp;line&nbsp;interface](#command-line-interface)
   - [Options](#options)
-    - [Basic&nbsp;options](#user-content-basic-options) &bull;
-[Environment&nbsp;variables](#user-content-environment-variables) &bull;
-[Finding&nbsp;files](#user-content-finding-files)
+    - [Basic options](#user-content-basic-options)
+&bull; [Environment variables](#user-content-environment-variables)
+&bull; [Finding files](#user-content-finding-files)
   - [Output&nbsp;formats](#output-formats)
-    - [Vector&nbsp;formats](#user-content-vector-formats) &bull;
-[PDF](#user-content-pdf) &bull;
-[EPS](#user-content-eps) &bull;
-[SVG](#user-content-svg)
-    - [Raster&nbsp;formats](#user-content-raster-formats) &bull;
-[PNG](#user-content-png) &bull;
-[JPEG,&nbsp;TIFF,&nbsp;BMP](#user-content-jpeg-tiff-bmp) &bull;
-[WEBM,&nbsp;GIF](#user-content-webm-gif)
-    - [Video&nbsp;formats](#user-content-video-formats)
+    - [Vector formats](#user-content-vector-formats)
+&bull; [PDF](#user-content-pdf)
+&bull; [EPS](#user-content-eps)
+&bull; [SVG](#user-content-svg)
+    - [Raster formats](#user-content-raster-formats)
+&bull; [PNG](#user-content-png)
+&bull; [JPEG,&nbsp;TIFF,&nbsp;BMP](#user-content-jpeg-tiff-bmp)
+&bull; [WEBM,&nbsp;GIF](#user-content-webm-gif)
+    - [Video formats](#user-content-video-formats)
 - [Video&nbsp;effects](#video-effects)
 - [Test&nbsp;card&nbsp;sources](#test-card-sources)
-  - [Originals](#originals) &bull;
-[Reconstructions](#reconstructions)
+  - [Originals](#originals)
+&bull; [Reconstructions](#reconstructions)
 - [In&nbsp;memoriam](#in-memoriam)
-  - [Gordon&nbsp;J.&nbsp;King](#gordon-j-king) &bull;
-[Tributes](#tributes)
+  - [Gordon&nbsp;J.&nbsp;King](#gordon-j-king)
+&bull; [Tributes](#tributes)
 - [Further&nbsp;reading](#further-reading)
-  - [Television&nbsp;history](#television-history) &bull;
-[Technical](#technical) &bull;
-[Test&nbsp;cards](#test-cards) &bull;
-[Community](#community) &bull;
-[Related&nbsp;projects](#related-projects)
+  - [Television&nbsp;history](#television-history)
+&bull; [Technical](#technical)
+&bull; [Test&nbsp;cards](#test-cards)
+&bull; [Community](#community)
+&bull; [Related&nbsp;projects](#related-projects)
   - [PostScript&nbsp;links](#postscript-links)
   - [Footnotes](#footnotes)
-
+TOC toc.md
 </details>
 
 ## Taster
@@ -169,8 +166,8 @@ and generated on the command-line by [Ghostscript](https://www.ghostscript.com/)
 Commands simply involve passing arguments to templates following [examples](#making-patterns) in this README.
 
 <details><summary>overview</summary>
+<a name='overview'></a>
 
-### <ins>Overview</ins>
 
 PostScript is an interpreted Page Description Language[^2],
 somewhat underappreciated now but arguably the most concise language for computed drawing tasks like this.
@@ -221,8 +218,8 @@ Unzip and copy `tcm.ps` and `Resource/` to a designated TCM directory.
 The Ghostscript interpreter is available for most platforms:
 
 <details><summary>platform details</summary>
+<a name='platform-details'></a>
 
-#### <ins>Platform details</ins>
 
 For native Windows, run the 64-bit AGPL release from [GS Downloads](https://ghostscript.com/releases/gsdnld.html)
 and restart to update `%PATH%`\
@@ -262,8 +259,8 @@ Many of the examples take [element arguments](#element-arguments) as operands,
 for example the [`BBC-C`](#user-content-bbc-c-arguments) set.
 
 <details><summary>objects</summary>
+<a name='objects'></a>
 
-### <ins>Objects</ins>
 
 | type | examples | comment |
 | :--- | :--- | :--- |
@@ -281,8 +278,8 @@ Further info: [PLRM §3.3: Data Types and Objects](https://www.adobe.com/jp/prin
 </details>
 
 <details><summary>operators</summary>
+<a name='operators'></a>
 
-### <ins>Operators</ins>
 
 | operator | example | comment |
 | ---: | :---: | :--- |
@@ -374,8 +371,8 @@ Each group has its own procedure resource for compositing all patterns in the gr
 Grouping enables TCM to generate widely differing patterns and provides extensibility.
 
 <details><summary>group composition</summary>
+<a name='group-composition'></a>
 
-### <ins>Group composition</ins>
 
 | group name | patterns | templates |
 | :--- | :--- | :--- |
@@ -392,18 +389,18 @@ These are graphic components that make up the test pattern,
 such as the graticule, streak box, step wedge, corner stripes, border.
 
 <details><summary>group <code>BBCbw</code> elements</summary>
+<a name='group-bbcbw-elements'></a>
 
-### <ins>Group <code>BBCbw</code> elements</ins>
 </details>
 
 <details><summary>group <code>BBCgc</code> elements</summary>
+<a name='group-bbcgc-elements'></a>
 
-### <ins>Group <code>BBCgc</code> elements</ins>
 </details>
 
 <details><summary>group <code>Philips</code> elements</summary>
+<a name='group-philips-elements'></a>
 
-### <ins>Group <code>Philips</code> elements</ins>
 </details>
 
 ## Element arguments
@@ -416,8 +413,8 @@ A question mark denotes a switch, for instance `PP?` controls whether pulse pane
 The following tables show element arguments for each template and the hierarchy for inherited arguments.
 
 <details><summary><code>BBC-A</code> arguments</summary>
+<a name='bbc-a-arguments'></a>
 
-### <ins><code>BBC-A</code> arguments</ins>
 Inheritance: `BBC-A` <— Blank
 | arg | value | description |
 | ---: | :---: | :--- |
@@ -460,8 +457,8 @@ Inheritance: `BBC-A` <— Blank
 </details>
 
 <details><summary><code>BBC-C-early</code> arguments</summary>
+<a name='bbc-c-early-arguments'></a>
 
-### <ins><code>BBC-C-early</code> arguments</ins>
 Inheritance: `BBC-C-early` <— Blank
 | arg | value | description |
 | ---: | :---: | :--- |
@@ -565,8 +562,8 @@ Inheritance: `BBC-C-early` <— Blank
 </details>
 
 <details><summary><code>BBC-C</code> arguments</summary>
+<a name='bbc-c-arguments'></a>
 
-### <ins><code>BBC-C</code> arguments</ins>
 Inheritance: `BBC-C` <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
 | arg | value | description |
 | ---: | :---: | :--- |
@@ -600,8 +597,8 @@ Inheritance: `BBC-C` <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <
 </details>
 
 <details><summary><code>BBC-C-625</code> arguments</summary>
+<a name='bbc-c-625-arguments'></a>
 
-### <ins><code>BBC-C-625</code> arguments</ins>
 Inheritance: `BBC-C-625` <— [`BBC-C`](#user-content-bbc-c-arguments) <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
 | arg | value | description |
 | ---: | :---: | :--- |
@@ -652,8 +649,8 @@ Inheritance: `BBC-C-625` <— [`BBC-C`](#user-content-bbc-c-arguments) <— [`BB
 </details>
 
 <details><summary><code>BBC-D-early</code> arguments</summary>
+<a name='bbc-d-early-arguments'></a>
 
-### <ins><code>BBC-D-early</code> arguments</ins>
 Inheritance: `BBC-D-early` <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
 | arg | value | description |
 | ---: | :---: | :--- |
@@ -721,8 +718,8 @@ Inheritance: `BBC-D-early` <— [`BBC-C-early`](#user-content-bbc-c-early-argume
 </details>
 
 <details><summary><code>BBC-D-improved</code> arguments</summary>
+<a name='bbc-d-improved-arguments'></a>
 
-### <ins><code>BBC-D-improved</code> arguments</ins>
 Inheritance: `BBC-D-improved` <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
 | arg | value | description |
 | ---: | :---: | :--- |
@@ -735,8 +732,8 @@ Inheritance: `BBC-D-improved` <— [`BBC-D-early`](#user-content-bbc-d-early-arg
 </details>
 
 <details><summary><code>BBC-E</code> arguments</summary>
+<a name='bbc-e-arguments'></a>
 
-### <ins><code>BBC-E</code> arguments</ins>
 Inheritance: `BBC-E` <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
 | arg | value | description |
 | ---: | :---: | :--- |
@@ -763,8 +760,8 @@ Inheritance: `BBC-E` <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <
 </details>
 
 <details><summary><code>BBC-F-early</code> arguments</summary>
+<a name='bbc-f-early-arguments'></a>
 
-### <ins><code>BBC-F-early</code> arguments</ins>
 Inheritance: `BBC-F-early` <— [`BBC-E`](#user-content-bbc-e-arguments) <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
 | arg | value | description |
 | ---: | :---: | :--- |
@@ -828,7 +825,7 @@ Inheritance: `BBC-F-early` <— [`BBC-E`](#user-content-bbc-e-arguments) <— [`
 </details>
 
 <details><summary><code>BBC-F-optical</code> arguments</summary>
-<a name='bbc-f-optical-arguments' data-tcm='toc'></a>
+<a name='bbc-f-optical-arguments'></a>
 
 Inheritance: `BBC-F-optical` <— [`BBC-F-early`](#user-content-bbc-f-early-arguments) <— [`BBC-E`](#user-content-bbc-e-arguments) <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
 | arg | value | description |
@@ -856,8 +853,8 @@ Inheritance: `BBC-F-optical` <— [`BBC-F-early`](#user-content-bbc-f-early-argu
 </details>
 
 <details><summary><code>BBC-F-electronic</code> arguments</summary>
+<a name='bbc-f-electronic-arguments'></a>
 
-### <ins><code>BBC-F-electronic</code> arguments</ins>
 Inheritance: `BBC-F-electronic` <— [`BBC-F-optical`](#user-content-bbc-f-optical-arguments) <— [`BBC-F-early`](#user-content-bbc-f-early-arguments) <— [`BBC-E`](#user-content-bbc-e-arguments) <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
 | arg | value | description |
 | ---: | :---: | :--- |
@@ -928,7 +925,7 @@ see [shape arguments](#user-content-shape-arguments), [image arguments](#user-co
 pattern *BBC-D-early* with 500 custom elements
 
 <details><summary>CE example details</summary>
-<a name='ce-example-details' data-tcm='toc'></a>
+<a name='ce-example-details'></a>
 
 
 #### CE example arguments
@@ -1177,8 +1174,8 @@ All shapes can be rotated and distorted, filled and/or stroked, and selectively 
 See also [colour syntax](#user-content-colour-syntax).
 
 <details><summary>shape arguments</summary>
+<a name='shape-arguments'></a>
 
-#### <ins>Shape arguments</ins>
 
 | arg | default | description |
 | :---: | :---: | :--- |
@@ -1213,8 +1210,8 @@ Images are then clipped to that shape.
 Unlike custom shapes and text, images cannot be distorted, but like shapes they can be selectively mirrored in all quadrants.
 
 <details><summary>image arguments</summary>
+<a name='image-arguments'></a>
 
-#### <ins>Image arguments</ins>
 
 | arg | default | description |
 | :---: | :---: | :--- |
@@ -1258,8 +1255,8 @@ then use GS to convert to EPS using\
 and render it as a [custom image](#custom-images) instead.
 
 <details><summary>text arguments</summary>
+<a name='text-arguments'></a>
 
-#### <ins>Text arguments</ins>
 
 | arg | default | description |
 | :---: | :---: | :--- |
@@ -1331,8 +1328,8 @@ Engineering documents specify the width of certain pattern elements in terms of 
 TCM scales all other dimensions relative to the grid size to maintain [proportions](#user-content-proportional-scaling).
 
 <details><summary>scaling details</summary>
+<a name='scaling-details'></a>
 
-### <ins>Scaling details</ins>
 
 ### Time-based scaling
 
@@ -1377,8 +1374,8 @@ or [named](#user-content-named-colours) colours.
 There are special names for [chroma keying](#user-content-chroma-keying) and [random](#user-content-random-colour) colours.
 
 <details><summary>colour syntax</summary>
+<a name='colour-syntax'></a>
 
-### <ins>Colour syntax</ins>
 
 ### Greyscale
 
@@ -1524,8 +1521,8 @@ How to
 with notes about [![Block](assets/block.png)](#user-content-block-inverted-fonts) characters and historical [logo](#user-content-bbc-logo-fonts) fonts:
 
 <details><summary>font resources</summary>
+<a name='font-resources'></a>
 
-### <ins>Font resources</ins>
 
 ### Listing fonts
 
@@ -1611,8 +1608,8 @@ Further info: [GS User Guide: Invoking Ghostscript](https://ghostscript.readthed
 TCM only uses a few GS options:
 
 <details><summary>basic options</summary>
+<a name='basic-options'></a>
 
-#### <ins>Basic options</ins>
 
 - `-q` suppresses startup messages
 - `-I` adds directories for file access
@@ -1628,8 +1625,8 @@ Further info: [GS User Guide: Command line options](https://ghostscript.readthed
 </details>
 
 <details><summary>environment variables</summary>
+<a name='environment-variables'></a>
 
-#### <ins>Environment variables</ins>
 
 `GS_OPTIONS` saves CLI verbosity:
 
@@ -1646,8 +1643,8 @@ Further info: [GS User Guide: Summary of environment variables](https://ghostscr
 </details>
 
 <details><summary>finding files</summary>
+<a name='finding-files'></a>
 
-#### <ins>Finding files</ins>
 
 Ghostscript runs with limited filesystem access (`SAFER` mode),
 so directory access must be enabled explicitly:
@@ -1684,8 +1681,8 @@ Further info: [GS User Guide: How Ghostscript finds files](https://ghostscript.r
 Use `-sDEVICE=` to select a driver for the output format:
 
 <details><summary>vector formats</summary>
+<a name='vector-formats'></a>
 
-#### <ins>Vector formats</ins>
 
 #### PDF
 
@@ -1711,11 +1708,12 @@ Further info: [GS User Guide: High level devices](https://ghostscript.readthedoc
 </details>
 
 <details><summary>raster formats</summary>
+<a name='raster-formats'></a>
 
-#### <ins>Raster formats</ins>
 
-Recommended options for images are:\
-`-dTextAlphaBits=4 -dGraphicsAlphaBits=4` to improve subsample antialiasing
+> ![Note](assets/icons/note-16.svg)\
+> Recommended options for images are:\
+  `-dTextAlphaBits=4 -dGraphicsAlphaBits=4` to improve subsample antialiasing
 
 #### PNG
 
@@ -1752,8 +1750,8 @@ e.g. `convert myTC.png myTC.webm` (ImageMagick) converts PNG to WEBM.
 </details>
 
 <details><summary>video formats</summary>
+<a name='video-formats'></a>
 
-#### <ins>Video formats</ins>
 
 Video is not supported directly.
 [FFmpeg] (open source) is good for CLI video creation from raster images,
@@ -1927,13 +1925,13 @@ RIP GJK.
 - [ttf2pscid2](https://github.com/scriptituk/ttf2pscid2) – TTF to PostScript Type 2 CIDFont Converter by TCM author
 - [Lettering Designer](https://www.tribalsigns.co.uk/shop/custom-lettering/72-custom-lettering.html) – PostScript generated signs developed by TCM author
 
+### Footnotes
+
 <!-- Link references -->
 
 [ImageMagick]: https://imagemagick.org/
 [FFmpeg]: https://www.ffmpeg.org/
 [FontForge]: https://fontforge.org/
-
-### Footnotes
 
 [^1]: [The PostScript Language: A Comprehensive Guide](https://smallusefultips.com/what-is-postscript-language/) – by SmallUsefulTips
 
