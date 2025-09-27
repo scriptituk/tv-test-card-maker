@@ -29,7 +29,7 @@ This project is dedicated to the memory of **Gordon J. King** whose technical wr
 
 <details><summary>Table of Contents</summary>
 
-### <ins>Table of Contents</ins>
+<a name="toc">Table of Contents</a>
 
 - [Summary](#summary) &bull;
 [Table&nbsp;of&nbsp;Contents](#user-content-table-of-contents)
