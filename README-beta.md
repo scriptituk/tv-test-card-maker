@@ -27,11 +27,12 @@ Aside from TV, it champions the benefits of PostScript[^1] for creating intricat
 This project is dedicated to the memory of **Gordon J. King** whose technical writings inspired so many budding electronics enthusiasts – see [dedication](#in-memoriam).
 
 
+Much of the nitty gritty is contained in collapsible sections so please use the [Table of Contents](#user-content-table-of-contents).
+
 <details><summary>Table of Contents</summary>
 <a name='table-of-contents'></a>
 
 - [Summary](#summary)
-&bull; [Table of Contents](#user-content-table-of-contents)
 - [Taster](#taster)
 - [Aims](#aims)
 - [Implementation](#implementation)
@@ -50,9 +51,9 @@ This project is dedicated to the memory of **Gordon J. King** whose technical wr
 - [Compositing&nbsp;groups](#compositing-groups)
   - [Group composition](#user-content-group-composition)
 - [Template&nbsp;elements](#template-elements)
-  - [Group BBCbw elements](#user-content-group-bbcbw-elements)
-&bull; [Group BBCgc elements](#user-content-group-bbcgc-elements)
-&bull; [Group Philips elements](#user-content-group-philips-elements)
+  - [BBCbw elements](#user-content-bbcbw-elements)
+&bull; [BBCgc elements](#user-content-bbcgc-elements)
+&bull; [Philips elements](#user-content-philips-elements)
 - [Element&nbsp;arguments](#element-arguments)
   - [BBC-A arguments](#user-content-bbc-a-arguments)
 &bull; [BBC-C-early arguments](#user-content-bbc-c-early-arguments)
@@ -124,11 +125,10 @@ This project is dedicated to the memory of **Gordon J. King** whose technical wr
   - [Television&nbsp;history](#television-history)
 &bull; [Technical](#technical)
 &bull; [Test&nbsp;cards](#test-cards)
-&bull; [Community](#community)
-&bull; [Related&nbsp;projects](#related-projects)
-  - [PostScript&nbsp;links](#postscript-links)
+&bull; [TV&nbsp;Community](#tv-community)
+  - [Related&nbsp;TC&nbsp;projects](#related-tc-projects)
+&bull; [PostScript&nbsp;links](#postscript-links)
   - [Footnotes](#footnotes)
-TOC toc.md
 </details>
 
 ## Taster
@@ -165,7 +165,7 @@ Patterns are created programmatically in
 and generated on the command-line by [Ghostscript](https://www.ghostscript.com/) (GS).
 Commands simply involve passing arguments to templates following [examples](#making-patterns) in this README.
 
-<details><summary>overview</summary>
+<details><summary>Overview</summary>
 <a name='overview'></a>
 
 
@@ -217,7 +217,7 @@ Unzip and copy `tcm.ps` and `Resource/` to a designated TCM directory.
 
 The Ghostscript interpreter is available for most platforms:
 
-<details><summary>platform details</summary>
+<details><summary>Platform details</summary>
 <a name='platform-details'></a>
 
 
@@ -258,7 +258,7 @@ but you really shouldn’t need to dig any further.
 Many of the examples take [element arguments](#element-arguments) as operands,
 for example the [`BBC-C`](#user-content-bbc-c-arguments) set.
 
-<details><summary>objects</summary>
+<details><summary>Objects</summary>
 <a name='objects'></a>
 
 
@@ -277,7 +277,7 @@ Further info: [PLRM §3.3: Data Types and Objects](https://www.adobe.com/jp/prin
 
 </details>
 
-<details><summary>operators</summary>
+<details><summary>Operators</summary>
 <a name='operators'></a>
 
 
@@ -370,7 +370,7 @@ A compositing group is a set of visibly similar templates that share a common la
 Each group has its own procedure resource for compositing all patterns in the group.
 Grouping enables TCM to generate widely differing patterns and provides extensibility.
 
-<details><summary>group composition</summary>
+<details><summary>Group composition</summary>
 <a name='group-composition'></a>
 
 
@@ -388,18 +388,18 @@ Grouping enables TCM to generate widely differing patterns and provides extensib
 These are graphic components that make up the test pattern,
 such as the graticule, streak box, step wedge, corner stripes, border.
 
-<details><summary>group <code>BBCbw</code> elements</summary>
-<a name='group-bbcbw-elements'></a>
+<details><summary><code>BBCbw</code> elements</summary>
+<a name='bbcbw-elements'></a>
 
 </details>
 
-<details><summary>group <code>BBCgc</code> elements</summary>
-<a name='group-bbcgc-elements'></a>
+<details><summary><code>BBCgc</code> elements</summary>
+<a name='bbcgc-elements'></a>
 
 </details>
 
-<details><summary>group <code>Philips</code> elements</summary>
-<a name='group-philips-elements'></a>
+<details><summary><code>Philips</code> elements</summary>
+<a name='philips-elements'></a>
 
 </details>
 
@@ -1173,7 +1173,7 @@ therefore the centroid is offset from the specified centre as this animation sho
 All shapes can be rotated and distorted, filled and/or stroked, and selectively mirrored in all quadrants.
 See also [colour syntax](#user-content-colour-syntax).
 
-<details><summary>shape arguments</summary>
+<details><summary>Shape arguments</summary>
 <a name='shape-arguments'></a>
 
 
@@ -1209,7 +1209,7 @@ Scaling is relative to the auto-fit scale which is calculated using offset trans
 Images are then clipped to that shape.
 Unlike custom shapes and text, images cannot be distorted, but like shapes they can be selectively mirrored in all quadrants.
 
-<details><summary>image arguments</summary>
+<details><summary>Image arguments</summary>
 <a name='image-arguments'></a>
 
 
@@ -1254,7 +1254,7 @@ then use GS to convert to EPS using\
 `gs -sDEVICE=eps2write -o text.eps text.pdf`\
 and render it as a [custom image](#custom-images) instead.
 
-<details><summary>text arguments</summary>
+<details><summary>Text arguments</summary>
 <a name='text-arguments'></a>
 
 
@@ -1327,7 +1327,7 @@ Element positions should therefore be anchored relative to centrelines or edges 
 Engineering documents specify the width of certain pattern elements in terms of [time](#user-content-time-based-scaling) (MHz or μs).
 TCM scales all other dimensions relative to the grid size to maintain [proportions](#user-content-proportional-scaling).
 
-<details><summary>scaling details</summary>
+<details><summary>Scaling details</summary>
 <a name='scaling-details'></a>
 
 
@@ -1373,7 +1373,7 @@ Colour can be expressed as
 or [named](#user-content-named-colours) colours.
 There are special names for [chroma keying](#user-content-chroma-keying) and [random](#user-content-random-colour) colours.
 
-<details><summary>colour syntax</summary>
+<details><summary>Colour syntax</summary>
 <a name='colour-syntax'></a>
 
 
@@ -1520,7 +1520,7 @@ How to
 [edit](#user-content-editing-fonts) fonts,
 with notes about [![Block](assets/block.png)](#user-content-block-inverted-fonts) characters and historical [logo](#user-content-bbc-logo-fonts) fonts:
 
-<details><summary>font resources</summary>
+<details><summary>Font resources</summary>
 <a name='font-resources'></a>
 
 
@@ -1607,7 +1607,7 @@ Further info: [GS User Guide: Invoking Ghostscript](https://ghostscript.readthed
 
 TCM only uses a few GS options:
 
-<details><summary>basic options</summary>
+<details><summary>Basic options</summary>
 <a name='basic-options'></a>
 
 
@@ -1624,7 +1624,7 @@ Further info: [GS User Guide: Command line options](https://ghostscript.readthed
 
 </details>
 
-<details><summary>environment variables</summary>
+<details><summary>Environment variables</summary>
 <a name='environment-variables'></a>
 
 
@@ -1642,7 +1642,7 @@ Further info: [GS User Guide: Summary of environment variables](https://ghostscr
 
 </details>
 
-<details><summary>finding files</summary>
+<details><summary>Finding files</summary>
 <a name='finding-files'></a>
 
 
@@ -1680,7 +1680,7 @@ Further info: [GS User Guide: How Ghostscript finds files](https://ghostscript.r
 
 Use `-sDEVICE=` to select a driver for the output format:
 
-<details><summary>vector formats</summary>
+<details><summary>Vector formats</summary>
 <a name='vector-formats'></a>
 
 
@@ -1707,9 +1707,10 @@ Further info: [GS User Guide: High level devices](https://ghostscript.readthedoc
 
 </details>
 
-<details><summary>raster formats</summary>
+<details><summary>Raster formats</summary>
 <a name='raster-formats'></a>
 
+ 
 
 > ![Note](assets/icons/note-16.svg)\
 > Recommended options for images are:\
@@ -1749,13 +1750,15 @@ e.g. `convert myTC.png myTC.webm` (ImageMagick) converts PNG to WEBM.
 
 </details>
 
-<details><summary>video formats</summary>
+<details><summary>Video formats</summary>
 <a name='video-formats'></a>
 
 
 Video is not supported directly.
 [FFmpeg] (open source) is good for CLI video creation from raster images,
 and there are many video editing tools.
+
+Formats and containers include MP4, MKV, MOV, MPG, DV, ISO plus many others.
 
 *Examples:*
 
@@ -1766,14 +1769,15 @@ creates a 60 second MP4 video of a static PNG image (no audio)
 ditto, with a 1kHz mono tone
 
 `ffmpeg -i myTC.png -stream_loop -1 -i myTC.wav -vf loop=-1:1,scale=702:576,pad=720:0:-1 -target pal-dvd -t 1:0:0 myTC.mpg`\
-creates a 1-hour MPEG-2 video of a PNG image and looped WAV audio, encoded for PAL DVD 4:3 simulation (18 pixels added to width, cut off by analogue blanking)[^27]
+creates a 1-hour MPEG-2 video of a PNG image and looped WAV audio, encoded for PAL DVD 4:3 simulation (18 pixels added to width, cut off by analogue line blanking)[^27]
 
 
 </details>
 
 ## Video effects
 
-TODO
+TODO[^28]
+
 
 ## Test card sources
 
@@ -1858,6 +1862,8 @@ RIP GJK.
   – Gordon J King, Author and Editor Practical Wireless
 - [UK Vintage Radio forum](https://www.vintage-radio.net/forum/showthread.php?t=54437)
   – discussion thread Re. Gordon J. King (3 pages)
+- [Bibliography](https://www.vintage-radio.net/forum/showthread.php?t=140536)
+  – informal list of GJK book titles compiled by [Andrewausfa](https://www.youtube.com/@Andrewausfa)
 
 ## Further reading
 
@@ -1899,7 +1905,7 @@ RIP GJK.
 - [Tim Worthington: The Test Card](https://timworthington.blogspot.com/2013/11/the-fifty-fourth-annual-academy-salute.html) – a humorous take
 - see also [Test card sources](#test-card-sources) links above
 
-### Community
+### TV Community
 
 - [British Amateur Television Club](https://batc.org.uk/) – promotes all aspects of television past and present
 - [British Vintage Wireless Society](https://www.bvws.org.uk/) – preservation of vintage radio and related equipment, history, technical data
@@ -1909,7 +1915,7 @@ RIP GJK.
 - [Golborne Vintage Radio](https://www.golbornevintageradio.co.uk/) – forums on everything vintage
 - [The Test Card Circle](https://www.testcardcircle.org.uk/) – for test card music enthusiasts
 
-### Related projects
+### Related TC projects
 
 - repo [davecrump/vidsource](https://github.com/davecrump/vidsource) – [BATC](https://batc.org.uk/) Composite Video Source for [Raspberry Pi Zero](https://www.raspberrypi.com/products/raspberry-pi-zero/)
 - repo [sarodp/myatv](https://github.com/sarodp/myatv) – amateur TV test pattern generator from static JPEG images for Raspberry Pi
@@ -1921,9 +1927,9 @@ RIP GJK.
 
 ### PostScript links
 
-- [PostScript Language reference](https://www.adobe.com/jp/print/postscript/pdfs/PLRM.pdf) – Adobe Systems PLRM LanguageLevel 3
-- [ttf2pscid2](https://github.com/scriptituk/ttf2pscid2) – TTF to PostScript Type 2 CIDFont Converter by TCM author
-- [Lettering Designer](https://www.tribalsigns.co.uk/shop/custom-lettering/72-custom-lettering.html) – PostScript generated signs developed by TCM author
+- [PostScript Language Reference Manual](https://www.adobe.com/jp/print/postscript/pdfs/PLRM.pdf) – Adobe Systems PLRM LanguageLevel 3
+- [ttf2pscid2](https://github.com/scriptituk/ttf2pscid2) – TTF to PostScript Type 2 CIDFont Converter by [scriptituk](https://github.com/scriptituk)
+- [Lettering Designer](https://www.tribalsigns.co.uk/shop/custom-lettering/72-custom-lettering.html) – PostScript generated signs developed by [scriptituk](https://github.com/scriptituk)
 
 ### Footnotes
 
@@ -1986,4 +1992,6 @@ RIP GJK.
 [^26]: [Washington Post](https://kecskebak.blogspot.com/2011/05/washington-post.html) – by Dave Jeffery
 
 [^27]: [Test Card J](https://archive.ph/RhAE8) – archived from barney-wol\.net
+
+[^28]: [xfade-easing](https://github.com/scriptituk/xfade-easing) – video transition effects for FFmpeg Xfade filter by [scriptituk](https://github.com/scriptituk)
 
