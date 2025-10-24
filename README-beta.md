@@ -6,8 +6,7 @@
 
 <img src='assets/tv-test-card-maker.gif' alt='Summary' align='right'>
 
-Digital imitations of vintage TV test patterns are plentiful
-but there are few accurate high-resolution and vector graphic replicas,
+There are not many accurate high-resolution or vector graphic replicas of vintage TV test patterns,
 and those created by drawing tools cannot be altered because master files are unavailable.
 
 This test card maker (TCM) recreates memorable TV test patterns
@@ -27,7 +26,7 @@ Aside from TV, it champions the benefits of PostScript[^1] for creating intricat
 This project is dedicated to the memory of **Gordon J. King** whose technical writings inspired so many budding electronics enthusiasts – see [dedication](#in-memoriam).
 
 
-Much of the nitty gritty is contained in collapsible sections so please use the [Table of Contents](#user-content-table-of-contents).
+Much of the nitty gritty is contained in collapsible sections revealed in the [Table of Contents](#user-content-table-of-contents).
 
 <details><summary>Table of Contents</summary>
 <a name='table-of-contents'></a>
@@ -46,6 +45,8 @@ Much of the nitty gritty is contained in collapsible sections so please use the 
 &bull; [Operators](#user-content-operators)
 - [Making&nbsp;patterns](#making-patterns)
   - [Setting&nbsp;parameters](#setting-parameters)
+&bull; [Size](#size)
+&bull; [Template](#template)
 &bull; [Examples](#examples)
 - [Pattern&nbsp;templates](#pattern-templates)
 - [Compositing&nbsp;groups](#compositing-groups)
@@ -67,8 +68,8 @@ Much of the nitty gritty is contained in collapsible sections so please use the 
 &bull; [BBC-F-electronic arguments](#user-content-bbc-f-electronic-arguments)
 - [Custom&nbsp;elements](#custom-elements)
   - [CE&nbsp;example](#ce-example)
-&bull; [CE&nbsp;example&nbsp;arguments](#user-content-ce-example-arguments)
-&bull; [CE&nbsp;example&nbsp;notes](#user-content-ce-example-notes)
+&bull; [CE example arguments](#user-content-ce-example-arguments)
+&bull; [CE example notes](#user-content-ce-example-notes)
   - [Layering&nbsp;and&nbsp;mirroring](#layering-and-mirroring)
   - [Custom&nbsp;shapes](#custom-shapes)
 &bull; [Shape arguments](#user-content-shape-arguments)
@@ -111,7 +112,7 @@ Much of the nitty gritty is contained in collapsible sections so please use the 
 &bull; [SVG](#user-content-svg)
     - [Raster formats](#user-content-raster-formats)
 &bull; [PNG](#user-content-png)
-&bull; [JPEG,&nbsp;TIFF,&nbsp;BMP](#user-content-jpeg-tiff-bmp)
+&bull; [JPEG,&nbsp;TIFF,&nbsp;PNM,&nbsp;BMP](#user-content-jpeg-tiff-pnm-bmp)
 &bull; [WEBM,&nbsp;GIF](#user-content-webm-gif)
     - [Video formats](#user-content-video-formats)
 - [Video&nbsp;effects](#video-effects)
@@ -325,6 +326,35 @@ Further info: [PLRM §8: Operators](https://www.adobe.com/jp/print/postscript/pd
 ## Making patterns
 
 ### Setting parameters
+
+Parameters are set using [GS options](#user-content-basic-options) and [TCM arguments](#element-arguments).
+
+### Size
+
+The test card size parameters are `TCh` (height), `TCw` (width) and `TCr` (aspect ratio).
+Two may be specified, the third is calculated,
+with `TCh` & `TCw` having precedence over `TCr`, stretching horizontally.
+
+Size parameters have to be set first to establish output dimensions that calibrate [scaling](#user-content-proportional-scaling).
+They must be set using the `-d` [GS option](#user-content-basic-options).
+
+*Examples*:
+
+`gs -q -IResource -sDEVICE=pdfwrite -o tc.pdf -dTCh=1152 tcm.ps`\
+creates a PDF 1536x1152 points (default 4:3 ratio, *BBC-F-electronic* template)
+
+`gs -q -IResource -sDEVICE=pdfwrite -o tc.pdf -dTCw=1200 tcm.ps`\
+creates a PDF 1200x900 points
+
+`gs -q -IResource -sDEVICE=png256 -o tc.png -dTCr=1.25 tcm.ps`\
+creates a low-resolution 72dpi indexed PNG 720x576 pixels (5:4 ratio, default 576 high)
+
+`gs -q -IResource -sDEVICE=png16m -dTextAlphaBits=4 -dGraphicsAlphaBits=4 -r600 -dDownScaleFactor=2 -o tc.png -dTCr=1.25 -dTCw=700 -dTCh=r500 tcm.ps`\
+creates a high-resolution 300dpi PNG 2916x2083 (2083=TCh*300dpi/72ppi), `TCr` is ignored
+
+### Template
+
+The template `/TC` may be specified anyhow but 
 
 ### Examples
 
@@ -924,11 +954,9 @@ see [shape arguments](#user-content-shape-arguments), [image arguments](#user-co
 *Example*:
 pattern *BBC-D-early* with 500 custom elements
 
-<details><summary>CE example details</summary>
-<a name='ce-example-details'></a>
+<details><summary>CE example arguments</summary>
+<a name='ce-example-arguments'></a>
 
-
-#### CE example arguments
 
 | arg | value | description |
 | :---: | :---: | :--- |
@@ -1115,7 +1143,11 @@ pattern *BBC-D-early* with 500 custom elements
 
 (other arguments that lighten the background and alter the ident are not shown)
 
-#### CE example notes
+</details>
+
+<details><summary>CE example notes</summary>
+<a name='ce-example-notes'></a>
+
 
 - `T12` & `S12`(title & frame): both CEs numbered 12 but text is layered over shapes, see [layering](#layering-and-mirroring)
 - `S20`(green triangles): drawn in quadrant Q3 at bottom-left but only painted in Q2 and Q1, see [mirroring](#layering-and-mirroring)
@@ -1150,7 +1182,7 @@ custom [shapes](#custom-shapes) and [images](#custom-images) (text makes no sens
 can be mirrored as though painted relative to any corner, and get flipped over accordingly.
 
 The mirroring argument determines which quadrant corners act as the origin:
-`/N` (default Q3) the Normal origin,
+`/N` (Q3, default) the Normal origin,
 `/H` (Q4) to paint Horizontally mirrored,
 `/V` (Q2) for Vertically mirrored,
 `/B` (Q1) for Both horizontally and vertically mirrored.
@@ -1170,7 +1202,7 @@ They are calculated to fit the unit square[^10] at the specified rotation then s
 Odd-sided polygons are oriented with a vertex at top-centre and horizontal base,
 placed using constant width Reuleaux[^11] curve fitting to normalise size and rotation within the bounds,
 therefore the centroid is offset from the specified centre as this animation shows (credit: *LEMeZza/Wikimedia Commons*).
-All shapes can be rotated and distorted, filled and/or stroked, and selectively mirrored in all quadrants.
+All shapes can be rotated and distorted, filled and/or stroked, and selectively [mirrored](#layering-and-mirroring) in all quadrants.
 See also [colour syntax](#user-content-colour-syntax).
 
 <details><summary>Shape arguments</summary>
@@ -1179,15 +1211,15 @@ See also [colour syntax](#user-content-colour-syntax).
 
 | arg | default | description |
 | :---: | :---: | :--- |
-| `/S#s` | `/R` | shape (required): /L(ine), /S(quare), /C(ircle), /R(ectangle), /E(llipse), /P(olygon) |
+| `/S#s` | `/R` | shape (required): /S(quare), /C(ircle), /L(ine), /R(ectangle), /E(llipse), /P(olygon) |
 | `/S#c` | `/LightGrey` | fill colour: null for no fill |
 | `/S#k` | `/DarkGrey` | stroke colour: null for no stroke |
 | `/S#x` | `TCx` | horizontal centre |
 | `/S#y` | `TCy` | vertical centre |
-| `/S#h` | `TCh 4 div` | height/diameter |
-| `/S#w` | `TCh 4 div` | width (ignored for line/square/circle) |
+| `/S#h` | `TCh 5 div` | height/diameter/length |
+| `/S#w` | `TCh 5 div` | width (ignored for Square/Circle/Line) |
 | `/S#a` | `0` | rotation angle (degrees anticlockwise) |
-| `/S#n` | `3` | number of sides (polygon) |
+| `/S#n` | `3` | number of sides (Polygon) |
 | `/S#r` | `false` | true for Reuleaux polygon curve sides (odd-sided only) |
 | `/S#d` | `[]` | stroke dash pattern: empty for solid else dash-length gap-length pairs |
 | `/S#t` | `1` | stroke thickness |
@@ -1207,7 +1239,7 @@ Image import accepts JPEG, PNG, EPS and JFIF formats.
 Transparency in EPS and 8-bit indexed PNG images works but 32-bit PNG images with an alpha channel are not supported.
 Scaling is relative to the auto-fit scale which is calculated using offset translation, rotation and scalar projection[^12] to enclose the specified rectangle or circle.
 Images are then clipped to that shape.
-Unlike custom shapes and text, images cannot be distorted, but like shapes they can be selectively mirrored in all quadrants.
+Unlike custom shapes and text, images cannot be distorted, but like shapes they can be selectively [mirrored](#layering-and-mirroring) in all quadrants.
 
 <details><summary>Image arguments</summary>
 <a name='image-arguments'></a>
@@ -1218,8 +1250,8 @@ Unlike custom shapes and text, images cannot be distorted, but like shapes they 
 | `/I#f` | `()` | image filename (required), accepts JPEG/PNG/EPS/JFIF |
 | `/I#x` | `TCx` | horizontal centre |
 | `/I#y` | `TCy` | vertical centre |
-| `/I#h` | `TCh 4 div` | height/diameter: -1 to calculate from aspect ratio |
-| `/I#w` | `TCh 4 div` | width: 0 for circle, -1 to calculate from aspect ratio |
+| `/I#h` | `TCh 5 div` | height/diameter: -1 to calculate from aspect ratio |
+| `/I#w` | `TCh 5 div` | width: 0 for circle, -1 to calculate from aspect ratio |
 | `/I#a` | `0` | rotation angle (degrees anticlockwise) |
 | `/I#s` | `0` | scale: 0 to auto-fit to width,height max |
 | `/I#i` | `0` | horizontal offset from x at auto-fit scaling |
@@ -1314,17 +1346,17 @@ Changing the aspect ratio `/TCr` will expand or contract the width accordingly
 and the TCM drawing algorithms will compensate without distorting element shapes.
 Element positions should therefore be anchored relative to centrelines or edges or other elements.
 
-*Examples:* square *BBC-F-electronic* and widescreen *BBC-D-improved* with altered text and a 5:4 *BBC-A*
+*Examples:* a 5:4 *BBC-A* and widescreen *BBC-D-improved* with altered text and square *BBC-F-electronic*
 
-[![square ratio](assets/ratio-sq-thumb.png)](assets/ratio-sq.png)
+[![5:4 ratio](assets/ratio-54-thumb.png)](assets/ratio-54.png)
 &nbsp;
 [![widescreen ratio](assets/ratio-ws-thumb.png)](assets/ratio-ws.png)
 &nbsp;
-[![5:4 ratio](assets/ratio-54-thumb.png)](assets/ratio-54.png)
+[![square ratio](assets/ratio-sq-thumb.png)](assets/ratio-sq.png)
 
 ## Scaling
 
-Engineering documents specify the width of certain pattern elements in terms of [time](#user-content-time-based-scaling) (MHz or μs).
+Engineering documents specify the width of certain pattern elements in terms of [time](#user-content-time-based-scaling) (MHz or μs or lines).
 TCM scales all other dimensions relative to the grid size to maintain [proportions](#user-content-proportional-scaling).
 
 <details><summary>Scaling details</summary>
@@ -1357,7 +1389,7 @@ This unit is named `/Gsz` and the main scaling [operator](#user-content-operator
 
 > ![Note](assets/icons/note-16.svg)\
 > For *BBC-A*, which has no graticule, `Gsz` is the distance between adjacent horizontal castellation midpoints clamped within ±10% of the vertical ones.
-  This makes elements shrink as the aspect ratio reduces, resulting in a 5:4 version close to the early TCA shown on Arthur Dungate’s 5x4 era page, see [test card links](#test-cards) and [example](#aspect-ratio).
+  This makes elements shrink as the aspect ratio reduces, resulting in a 5:4 version close to the early TCA shown on Arthur Dungate’s 5x4 era page, see [test card links](#test-cards) and [ratio example](#aspect-ratio).
 
 </details>
 
@@ -1618,7 +1650,7 @@ TCM only uses a few GS options:
 - `-s` defines a name with a string value (without parenthesis)
 - `-d` defines a name with a numeric or name value or `true`, `false`, `null`
 - `-f` execute a file, used here for argument files
-- `-+` execute a file and create an array of any following arguments
+- `-+` execute a file and create an array of the following arguments
 
 Further info: [GS User Guide: Command line options](https://ghostscript.readthedocs.io/en/latest/Use.html#command-line-options)
 
@@ -1710,7 +1742,6 @@ Further info: [GS User Guide: High level devices](https://ghostscript.readthedoc
 <details><summary>Raster formats</summary>
 <a name='raster-formats'></a>
 
- 
 
 > ![Note](assets/icons/note-16.svg)\
 > Recommended options for images are:\
@@ -1735,7 +1766,7 @@ PNG device summary
 
 Further info: [GS User Guide: PNG file format](https://ghostscript.readthedocs.io/en/latest/Devices.html#png-file-format)
 
-#### JPEG, TIFF, BMP
+#### JPEG, TIFF, PNM, BMP
 
 See [GS User Guide: Image file formats](https://ghostscript.readthedocs.io/en/latest/Devices.html#image-file-formats)
 for these and other formats Ghostscript can output directly.
@@ -1782,8 +1813,9 @@ TODO[^28]
 ## Test card sources
 
 Authentic originals of adequate quality and resolution are hard to find,
-not least owing to the plethora of reconstructions that abound which differ from original sources on close scrutiny.
-And of course there were no ‘masters’ as such in the early days.
+not least owing to the plethora of reconstructions that abound which on close scrutiny differ from reliable sources.
+Of course there were no ‘masters’ as such in the early days,
+and the cards, monoscopes and slides all differed slightly.
 
 ### Originals
 
@@ -1815,6 +1847,8 @@ And of course there were no ‘masters’ as such in the early days.
   – from the archived barney-wol site,
   this shows [EBU R 103](https://tech.ebu.ch/files/live/sites/tech/files/shared/r/r103.pdf#page=5)
   ‘broadcast-safe’ 8-bit colour values 16-253 (except side magentas, possibly in error)
+- [Test Card J Carole Hersee](https://www.flickr.com/photos/bbccouk/3113496392/sizes/c/)
+  – high resolution from the [Flickr bbccouk photostream](https://www.flickr.com/photos/bbccouk/)
 
 ### Reconstructions
 
@@ -1829,7 +1863,7 @@ And of course there were no ‘masters’ as such in the early days.
   – lots of patterns from a Vietnam artist
 - all manor of commercial outlets like Alamy, Adobe Stock etc. sell test cards of dubious authenticity
 
-In general, an analogue-era test pattern with uniform grey background or perfect typography or no telltale signs of handcrafted workmanship is likely to be a reconstruction.
+In general, any analogue-era test pattern with uniform grey background or perfect typography or no telltale signs of handcrafted workmanship is likely to be a reconstruction.
 
 ## In memoriam
 
@@ -1840,7 +1874,7 @@ helped nurture my teenage passion for practical electronics
 which led to an enjoyable and fulfilling career, including a training spell with the BBC.
 Back then, after persistently borrowing GJK’s books from the Horsham lending library,
 I managed to save enough money to buy my own (below).
-Even now they are a fascinating read, and many principles explained are still relevant.
+Even now they are a fascinating read, and many principles explained are relevant today.
 
 ![Radio and Audio Servicing Handbook](assets/Radio-and-Audio-Servicing-Handbook-ed2-thumb.png) &nbsp;
 ![Television Servicing Handbook](assets/Television-Servicing-Handbook-ed2-thumb.png) &nbsp;
@@ -1849,9 +1883,9 @@ Even now they are a fascinating read, and many principles explained are still re
 
 This year (2025) I became aware that I had been living two streets away from Mr&nbsp;King
 in Furzeham, Brixham, for 14 years until he died in 2010.
-In August that year soon after his funeral service I became organist at the same [church](https://youtu.be/OmLH3yhwXrQ), yet remained oblivious.
-Had we met we might have reminisced about the heyday of analogue electronics
-and the milestone transitions from valve to semiconductor, monochrome to colour, analogue to digital…
+In August that year soon after his funeral service I became organist at the same [church](https://youtu.be/OmLH3yhwXrQ), still unaware.
+Anyway, he mentored through his writings, covering the heyday of analogue electronics
+and milestone transitions from valve to semiconductor, monochrome to colour, analogue to digital…
 RIP GJK.
 
 ### Tributes
@@ -1861,7 +1895,7 @@ RIP GJK.
 - [SuperannRTÉ.ie: obituary & tributes](https://superannrte.ie/index.php?option=com_content&view=article&id=851:death-of-gordon-j-king-author-and-editor-practical-wireless-851&catid=10&Itemid=115)
   – Gordon J King, Author and Editor Practical Wireless
 - [UK Vintage Radio forum](https://www.vintage-radio.net/forum/showthread.php?t=54437)
-  – discussion thread Re. Gordon J. King (3 pages)
+  – discussion thread on Gordon J. King (3 pages)
 - [Bibliography](https://www.vintage-radio.net/forum/showthread.php?t=140536)
   – informal list of GJK book titles compiled by [Andrewausfa](https://www.youtube.com/@Andrewausfa)
 
