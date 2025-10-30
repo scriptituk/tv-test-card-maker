@@ -403,10 +403,14 @@ but many modern digital test patterns exist already.
 
 Names are hyphenated as *group*-*designation*-*variant* which controls compositing and drawing algorithms.
 The optional *variant* controls element variations.
-For instance there are two test patterns deignated `G`: a Philips circle pattern[^8] used by the BBC and a classic BBC style used internationally.
+
+<!-- For instance there are two test patterns deignated `G`: a Philips circle pattern[^8] used by the BBC and a classic BBC style used internationally. -->
 
 
 ## Compositing groups
+
+> [!NOTE]
+> Groups are of no concern unless you are coding new elements.
 
 A compositing group is a set of visibly similar templates that share a common layout of graphic [elements](#group-elements) and their respective [arguments](#element-arguments).
 Each group has its own procedure resource for compositing all patterns in the group.
@@ -1866,13 +1870,13 @@ In general, any analogue-era test pattern with uniform grey background or perfec
 
 ## Graphical user interface
 
-There isn’t one but the TCM CLI lends itself to be GUI driven easily.
+There isn’t one but TCM lends itself to be GUI-driven easily.
 
 ### FML Test Card Maker
 
-A neat freeware GUI test card maker exists called CardMaker for Windows.
+A neat freeware GUI test card maker for Windows exists called CardMaker by FML.
 Although old and unmaintained it still works well.
-Indeed it is so good that it is worth a plug here:
+Indeed it is so useful that it deserves a mention here:
 
 <details><summary>CardMaker</summary>
 <a name='cardmaker'></a>
@@ -1882,22 +1886,22 @@ Indeed it is so good that it is worth a plug here:
 
 Funsville Memetic Laboratories (FML) is the web space of Steve Heap, a.k.a. [FMLTheGeneral](https://www.youtube.com/@FMLTheGeneral/videos), author of CardMaker on the defunct oodletuz\.fsnet\.co\.uk domain but available on The Wayback Machine. Pertinent links are:
 
-- [FML Test Card Maker](https://web.archive.org/web/20151010221017/http://www.oodletuz.fsnet.co.uk/soft/tcmaker.htm) – the `tcmaker.zip` file contains the `CardMaker.exe` executable, Compiled HTML Help, resource files, instructions and some sample Test Card Definition (TCD) files
+- [FML Test Card Maker](https://web.archive.org/web/20151010221017/http://www.oodletuz.fsnet.co.uk/soft/tcmaker.htm) – the `tcmaker.zip` file contains the `CardMaker.exe` executable, Compiled HTML Help (CHM), resource files, instructions and sample Test Card Definition (TCD) files
 - [The TCD Resource](https://web.archive.org/web/20160305053742/http://www.oodletuz.fsnet.co.uk/tcd/index.htm) – a lot of TCD files for UK, European and other world standard test cards
 - [Testcards by Wenlock Burton (VK3YWB)](https://www.flickr.com/photos/wenlockburton/albums/72157629092497514/with/2884520670) – a Flickr album of 80 more test card reconstructions using CardMaker
-- [Wenlock’s Testcard Galleries and TCDs](https://www.oocities.org/wenlockburton/testcards/index.htm) – showcase and a downloadable zip file of all his TCDs on the OoCities\.org archive.
+- [Wenlock’s Testcard Galleries and TCDs](https://www.oocities.org/wenlockburton/testcards/index.htm) – showcase and a downloadable zip file of all his TCDs on the oocities\.org archive.
 
 TCD files are conceptually like TCM templates: they define pattern objects and layer properties.
-The TCD format is plain text, tab- and space-separated property values,
-stored as imlicit fixed-point integer decimals (2 dp), and integer RGB colours.
+The TCD format is plain text: tab- and space-separated property values
+stored as implicit fixed-point integers (2 dp), integer 24-bit RGB colours, and text.
 
 The image (click to enlarge) shows CardMaker running on Windows 10
-with two layers: pattern elements on the left and cutouts on the right.
-The image also shows a CHM Help window and a Paint window of the generated PM5544 test card.
+with two layers: pattern elements on the left and cutouts on the right,
+also a CHM Help window and a Paint window of the image generated from the PM5544 TCD sample.
 
-CardMaker generates lossless BMP and variable-quality JPEG images.
-Despite its 32-bit 2004 vintage, it is a well designed, intuitive and functional app.
-For detailed information see the [CardMaker Help](assets/CardMaker-help.pdf) PDF converted from the CHM file.
+CardMaker generates lossless BMP and variable-quality JPEG images only, no vector formats.
+Despite its legacy 32-bit 2004 vintage it is well designed, intuitive and functional.
+For detailed information see the [CardMaker Help](assets/CardMaker-help.pdf) PDF converted from the CHM.
 
 </details>
 
@@ -1943,7 +1947,7 @@ RIP GJK.
 - [A Tech Ops History](http://www.tech-ops.co.uk/) – in stories and pictures, by Bernie Newnham
 - [British Heritage Television](https://405-line.tv/) – 405-line demo transmissions and [A Brief History](https://405-line.tv/tv-history/)
 - [List of years in British television](https://en.wikipedia.org/wiki/List_of_years_in_British_television) – Wikipedia
-- [The Story of BBC Television Idents](https://www.bbc.com/historyofthebbc/research/bbc-idents) – the BBC's on-air look from 1936 to the present day
+- [The Story of BBC Television Idents](https://www.bbc.com/historyofthebbc/research/bbc-idents) – the BBC’s on-air look from 1936 to the present day
 - [World Radio History](https://www.worldradiohistory.com/Home-UK.htm) – UK collection of documents and publications
 - [The Transdiffusion Broadcasting System](https://transdiffusion.org/) – a broadcasting archive for research and education
 - [TVARK](https://tvark.org/) – a comprehensive TV archive of Betamax and VHS home recordings
