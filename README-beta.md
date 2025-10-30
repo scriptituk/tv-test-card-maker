@@ -49,14 +49,15 @@ Much of the nitty gritty is contained in collapsible sections revealed in the [T
 &bull; [Template](#template)
 &bull; [Examples](#examples)
 - [Pattern&nbsp;templates](#pattern-templates)
+&bull; [Template&nbsp;names](#template-names)
 - [Compositing&nbsp;groups](#compositing-groups)
   - [Group composition](#user-content-group-composition)
-- [Template&nbsp;elements](#template-elements)
-  - [BBCbw elements](#user-content-bbcbw-elements)
-&bull; [BBCgc elements](#user-content-bbcgc-elements)
-&bull; [Philips elements](#user-content-philips-elements)
+- [Group&nbsp;elements](#group-elements)
+  - [OTP elements](#user-content-otp-elements)
+&bull; [BBC elements](#user-content-bbc-elements)
+&bull; [PCP elements](#user-content-pcp-elements)
 - [Element&nbsp;arguments](#element-arguments)
-  - [BBC-A arguments](#user-content-bbc-a-arguments)
+  - [OTP-A arguments](#user-content-otp-a-arguments)
 &bull; [BBC-C-early arguments](#user-content-bbc-c-early-arguments)
 &bull; [BBC-C arguments](#user-content-bbc-c-arguments)
 &bull; [BBC-C-625 arguments](#user-content-bbc-c-625-arguments)
@@ -66,6 +67,7 @@ Much of the nitty gritty is contained in collapsible sections revealed in the [T
 &bull; [BBC-F-early arguments](#user-content-bbc-f-early-arguments)
 &bull; [BBC-F-optical arguments](#user-content-bbc-f-optical-arguments)
 &bull; [BBC-F-electronic arguments](#user-content-bbc-f-electronic-arguments)
+&bull; [Blank arguments](#user-content-blank-arguments)
 - [Custom&nbsp;elements](#custom-elements)
   - [CE&nbsp;example](#ce-example)
 &bull; [CE example arguments](#user-content-ce-example-arguments)
@@ -119,6 +121,9 @@ Much of the nitty gritty is contained in collapsible sections revealed in the [T
 - [Test&nbsp;card&nbsp;sources](#test-card-sources)
   - [Originals](#originals)
 &bull; [Reconstructions](#reconstructions)
+- [Graphical&nbsp;user&nbsp;interface](#graphical-user-interface)
+  - [FML&nbsp;Test&nbsp;Card&nbsp;Maker](#fml-test-card-maker)
+&bull; [CardMaker](#user-content-cardmaker)
 - [In&nbsp;memoriam](#in-memoriam)
   - [Gordon&nbsp;J.&nbsp;King](#gordon-j-king)
 &bull; [Tributes](#tributes)
@@ -154,9 +159,9 @@ TODO
 
 ## Implementation
 
-Test patterns, a.k.a. test cards, consist of graphical [elements](#template-elements)
+These test patterns, a.k.a. test cards, consist of graphical [elements](#group-elements)
 rendered according to [arguments](#element-arguments)
-and composited according to a [group](#compositing-groups) layout.
+and composited according to a layout [group](#compositing-groups).
 Pattern [templates](#pattern-templates) are element sets that replicate historic patterns.
 All element arguments can be overridden to alter element appearance,
 and additional [custom elements](#custom-elements) can be layered on top.
@@ -190,7 +195,7 @@ The command-line interface (CLI) for TCM is the GS CLI,
 and the PS code uses GS-specific procedures,
 therefore other interpreters will not work without modification.
 
-This implementation makes it easy without PS or GS expertise to modify pattern [elements](#template-elements) just by changing [arguments](#element-arguments) that control composition:
+This implementation makes it easy without PS or GS expertise to modify pattern [elements](#group-elements) just by changing [arguments](#element-arguments) that control composition:
 dimensions, coordinates, colours, text, frequencies, imported resources, etc.
 Arguments can be specified as command line options or read from file,
 and follow basic PS dictionary syntax.
@@ -205,7 +210,7 @@ For instance, captions are custom-text elements and the Carole Hersee photo is a
 </details>
 
 > [!NOTE]
-> This nomenclature of groups, elements and arguments is TCM-specific.
+> This nomenclature of elements, arguments and groups is TCM-specific.
 
 ## Installing
 
@@ -250,14 +255,14 @@ All you need to grasp to tweak TCM patterns are the [objects](#user-content-obje
 like Forth[^7].
 - PostScript is *stack-based*, where operands and intermediate results are stored on a stack
 - everything is an *object* (all data and procedures, that is)
-- whitespace seperates tokens and comments follow a %
+- whitespace seperates tokens and % begins a comment (to end of line)
 
 
 The following tables show basic object types and operators needed to modify test cards.
 They are mostly intuitive and by no means exhaustive
 but you really shouldn’t need to dig any further.
 Many of the examples take [element arguments](#element-arguments) as operands,
-for example the [`BBC-C`](#user-content-bbc-c-arguments) set.
+see for instance the [`BBC-C`](#user-content-bbc-c-arguments) set.
 
 <details><summary>Objects</summary>
 <a name='objects'></a>
@@ -291,8 +296,8 @@ Further info: [PLRM §3.3: Data Types and Objects](https://www.adobe.com/jp/prin
 | <code>_num<sub>1</sub>_ _num<sub>2</sub>_ **div** _product_</code> | <code>5.6 3 **div**</code> | return <code>_num<sub>1</sub>_ ÷ _num<sub>2</sub>_</code> |
 | <code>_num_ **div2** _quotient_</code><sup>※</sup> | <code>Glw **div2**</code> | return <code>_num_ ÷ 2</code> |
 | <code>_num<sub>1</sub>_ _num<sub>2</sub>_ **mod** _remainder_</code> | <code>/S7x rand TCw **mod**</code> | return remainder of <code>_num<sub>1</sub>_ ÷ _num<sub>2</sub>_</code> |
-| <code>_num_ **sq** _num_</code><sup>※</sup> | <code>CCr **sq**</code> | return <code>_num_<sup>2</sup</code>> |
-| <code>_num_ **sqrt** _num_</code> | <code>TCy **sqrt**</code> | return <code>√<em>num</em</code>> (square root) |
+| <code>_num_ **sq** _num_</code><sup>※</sup> | <code>CCr **sq**</code> | return <code>_num_<sup>2</sup></code> |
+| <code>_num_ **sqrt** _num_</code> | <code>TCy **sqrt**</code> | return <code>√<em>num</em></code> (square root) |
 | <code>_num_ **neg** _num_</code> | <code>123 **neg**</code> | return <code>-_num_</code> |
 | <code>_num_ **abs** _num_</code> | <code>-99 **abs**</code> | return <code>\|_num_\|</code> (absolute value) |
 | <code>_leg<sub>1</sub>_ _leg<sub>2</sub>_ **hypot** _hypot_</code><sup>※</sup> | <code>TCw TCh **hypot**</code> | return hypotenuse (root sum of squares) |
@@ -379,7 +384,7 @@ All pattern elements can easily be adjusted or customised.
 The thumbnails link to larger animated images showing replica and original overlaid, for testing.\
 By default a replica icon ![](assets/icons/replica-16.svg) in the bottom-right corner watermarks the replica pattern.
 
-<kbd align='center'>&nbsp;<br>**BBC-A**<br>&nbsp;<br>[![BBC-A](assets/templates/BBC-A-thumb.png)](assets/templates/BBC-A-anim.gif)</kbd>
+<kbd align='center'>&nbsp;<br>**OTP-A**<br>&nbsp;<br>[![OTP-A](assets/templates/OTP-A-thumb.png)](assets/templates/OTP-A-anim.gif)</kbd>
 <kbd align='center'>&nbsp;<br>**BBC-C-early**<br>&nbsp;<br>[![BBC-C-early](assets/templates/BBC-C-early-thumb.png)](assets/templates/BBC-C-early-anim.gif)</kbd>
 <kbd align='center'>&nbsp;<br>**BBC-C**<br>&nbsp;<br>[![BBC-C](assets/templates/BBC-C-thumb.png)](assets/templates/BBC-C-anim.gif)</kbd>
 <kbd align='center'>&nbsp;<br>**BBC-D-early**<br>&nbsp;<br>[![BBC-D-early](assets/templates/BBC-D-early-thumb.png)](assets/templates/BBC-D-early-anim.gif)</kbd>
@@ -394,9 +399,16 @@ By default a replica icon ![](assets/icons/replica-16.svg) in the bottom-right c
 International and widescreen patterns may follow if called for
 but many modern digital test patterns exist already.
 
+### Template names
+
+Names are hyphenated as *group*-*designation*-*variant* which controls compositing and drawing algorithms.
+The optional *variant* controls element variations.
+For instance there are two test patterns deignated `G`: a Philips circle pattern[^8] used by the BBC and a classic BBC style used internationally.
+
+
 ## Compositing groups
 
-A compositing group is a set of visibly similar templates that share a common layout of graphic [elements](#template-elements) and their respective [arguments](#element-arguments).
+A compositing group is a set of visibly similar templates that share a common layout of graphic [elements](#group-elements) and their respective [arguments](#element-arguments).
 Each group has its own procedure resource for compositing all patterns in the group.
 Grouping enables TCM to generate widely differing patterns and provides extensibility.
 
@@ -404,32 +416,31 @@ Grouping enables TCM to generate widely differing patterns and provides extensib
 <a name='group-composition'></a>
 
 
-| group name | patterns | templates |
-| :--- | :--- | :--- |
-| `/BBCbw` | black and white BBC patterns | BBC A (B *TBD*) |
-| `/BBCgc` | greyscale and colour BBC patterns | BBC C, D, E, F, J (W, X *TBD*) |
-| `/Philips` | Philips circle pattern[^8] | BBC pattern G (*TBD*) |
-
-
-</details>
-
-## Template elements
-
-These are graphic components that make up the test pattern,
-such as the graticule, streak box, step wedge, corner stripes, border.
-
-<details><summary><code>BBCbw</code> elements</summary>
-<a name='bbcbw-elements'></a>
+| group | patterns |
+| :---: | :--- |
+| `/BBC` |  classic BBC/ITA/IBA/BREMA letter designation patterns |
+| `/PCP` |  Philips circle patterns |
+| `/OTP` |  other test patterns |
 
 </details>
 
-<details><summary><code>BBCgc</code> elements</summary>
-<a name='bbcgc-elements'></a>
+## Group elements
+
+These are graphic elements that make up the test patterns in a group,
+such as the graticule, streak box, step wedge, corner stripes, etc.
+
+<details><summary><code>OTP</code> elements</summary>
+<a name='otp-elements'></a>
 
 </details>
 
-<details><summary><code>Philips</code> elements</summary>
-<a name='philips-elements'></a>
+<details><summary><code>BBC</code> elements</summary>
+<a name='bbc-elements'></a>
+
+</details>
+
+<details><summary><code>PCP</code> elements</summary>
+<a name='pcp-elements'></a>
 
 </details>
 
@@ -442,63 +453,53 @@ A question mark denotes a switch, for instance `PP?` controls whether pulse pane
 
 The following tables show element arguments for each template and the hierarchy for inherited arguments.
 
-<details><summary><code>BBC-A</code> arguments</summary>
-<a name='bbc-a-arguments'></a>
+<details><summary><code>OTP-A</code> arguments</summary>
+<a name='otp-a-arguments'></a>
 
-Inheritance: `BBC-A` <— Blank
+Inheritance: `OTP-A` <— [`Blank`](#user-content-blank-arguments)
 | arg | value | description |
 | ---: | :---: | :--- |
 | ***/TC…*** |  | ***test card arguments*** |
-| `/TCorg` | `/BBC` | organisation |
-| `/TCid` | `/A` | designation letter |
-| `/TCv` | `null` | version |
-| `/TCg` | `/BBCbw` | compositing group |
 | `/TCbc` | `/white` | background colour |
-| `/TC?` | `true` | false for no pattern elements (custom elements only) |
-| ***/G…*** | ![graticule](assets/elements/BBC-A-G.png) | ***graticule arguments*** |
+| ***/G…*** | ![graticule](assets/elements/OTP-A-G.png) | ***graticule arguments*** |
 | `/Gszv` | `TCh 16.5 div` | vertical grid size |
 | `/Gsz` | `TCw 20.5 div 1.1 Gszv mul min 0.9 Gszv mul max` | grid size: datum for all measurements |
-| ***/SB…*** | ![streak box](assets/elements/BBC-A-SB.png) | ***streak box arguments*** |
+| ***/SB…*** | ![streak box](assets/elements/OTP-A-SB.png) | ***streak box arguments*** |
 | `/SBiw` | `3 xGsz` | streak box inner width |
 | `/SBih` | `0.51 xGsz` | streak box inner height |
 | `/SBy` | `TCy 4.44 xGsz sub` | streak box vertical centre |
 | `/SBc` | `/black` | streak box colours: [inner outer] |
-| ***/CC…*** | ![centre circles](assets/elements/BBC-A-CC.png) | ***centre circles arguments*** |
+| ***/CC…*** | ![centre circles](assets/elements/OTP-A-CC.png) | ***centre circles arguments*** |
 | `/CClw` | `0.74 xGsz` | centre circles stroke width |
 | `/CCr` | `2.6 xGsz` | white circle stroke radius |
-| ***/ID…*** | ![ident designation](assets/elements/BBC-A-ID.png) | ***ident designation arguments*** |
+| ***/ID…*** | ![ident designation](assets/elements/OTP-A-ID.png) | ***ident designation arguments*** |
 | `/IDs` | `(A)` | ident string: empty for no ident |
 | `/IDf` | `/GillSans-alt` | ident font |
 | `/IDc` | `/black` | ident colour |
 | `/IDh` | `0.89 xGsz` | ident height |
 | `/IDx` | `TCx` | ident horizontal centre |
 | `/IDy` | `TCy 5.51 xGsz sub` | ident vertical centre |
-| ***/FB…*** | ![frequency bars](assets/elements/BBC-A-FB.png) | ***frequency bars arguments*** |
+| ***/FB…*** | ![frequency bars](assets/elements/OTP-A-FB.png) | ***frequency bars arguments*** |
 | `/FBh` | `SBiw` | freq bars height |
-| `/FBc` | `/black` | freq bars colours: grating between surround |
+| `/FBc` | `/black` | freq bars colours: [min max surround] |
 | `/FBx` | `TCx 4.81 xGsz sub` | freq bars horizontal centre |
 | `/FBf` | `[ [1 6 -1 /T-2 1] [1.5 6 1 /T-3 1] [2 6 -1 /T-4 -1] [2.5 6 0 /T-1 0] [3 6 1 /T-5 -1] ]` | frequencies: [MHz nbars antiphase] array |
 | ***/NP…*** |  | ***needle pulse line arguments*** |
 | `/NPh` | `FBh` | needle pulse line height |
 | `/NPx` | `TCx 5.91 xGsz sub` | needle pulse line horizontal centre |
 | `/NPc` | `/black` |  |
-| ***/B…*** | ![border](assets/elements/BBC-A-B.png) | ***border arguments*** |
+| ***/B…*** | ![border](assets/elements/OTP-A-B.png) | ***border arguments*** |
 | `/Bw` | `0.53 xGsz` | border width |
 </details>
 
 <details><summary><code>BBC-C-early</code> arguments</summary>
 <a name='bbc-c-early-arguments'></a>
 
-Inheritance: `BBC-C-early` <— Blank
+Inheritance: `BBC-C-early` <— [`Blank`](#user-content-blank-arguments)
 | arg | value | description |
 | ---: | :---: | :--- |
 | ***/TC…*** |  | ***test card arguments*** |
-| `/TCorg` | `/BBC` | organisation |
-| `/TCid` | `/C` | designation letter |
-| `/TCv` | `/early` | version |
-| `/TCg` | `/BBCgc` | compositing group |
 | `/TCbc` | `0.6` | background colour |
-| `/TC?` | `true` | false for no pattern elements (custom elements only) |
 | ***/G…*** | ![graticule](assets/elements/BBC-C-early-G.png) | ***graticule arguments*** |
 | `/Gsz` | `TCh 0.129 mul` | grid size: datum for all measurements |
 | `/Glw` | `Gsz 12 div` | grid linewidth |
@@ -562,7 +563,7 @@ Inheritance: `BBC-C-early` <— Blank
 | `/FBh` | `0.505 xGsz` | freq bars height |
 | `/FBg` | `0` | freq bars gap size (>0 for D/E) |
 | `/FBp` | `0.012 xGsz` | freq bars padding |
-| `/FBc` | `[0 1 1]` | freq bars colours: grating between surround |
+| `/FBc` | `[0 1 1]` | freq bars colours: [min max surround] |
 | `/FBs?` | `false` | true for sinusoidal frequency gratings, false for square |
 | `/FBx` | `TCx CCr CClw 0.4 mul sub FBoh div2 leg sub FBow div2 add` | freq bars horizontal centre |
 | `/FBf` | `[ [1 4 0] [1.5 6 0] [2 8 0] [2.5 10 0] [3 12 0] ]` | frequencies: [MHz nbars antiphase] array |
@@ -594,11 +595,9 @@ Inheritance: `BBC-C-early` <— Blank
 <details><summary><code>BBC-C</code> arguments</summary>
 <a name='bbc-c-arguments'></a>
 
-Inheritance: `BBC-C` <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
+Inheritance: `BBC-C` <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— [`Blank`](#user-content-blank-arguments)
 | arg | value | description |
 | ---: | :---: | :--- |
-| ***/TC…*** |  | ***test card arguments*** |
-| `/TCv` | `null` | version |
 | ***/G…*** | ![graticule](assets/elements/BBC-C-G.png) | ***graticule arguments*** |
 | `/Gsz` | `TCh 0.129 mul` | grid size: datum for all measurements |
 | ***/SB…*** | ![streak box](assets/elements/BBC-C-SB.png) | ***streak box arguments*** |
@@ -629,11 +628,10 @@ Inheritance: `BBC-C` <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <
 <details><summary><code>BBC-C-625</code> arguments</summary>
 <a name='bbc-c-625-arguments'></a>
 
-Inheritance: `BBC-C-625` <— [`BBC-C`](#user-content-bbc-c-arguments) <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
+Inheritance: `BBC-C-625` <— [`BBC-C`](#user-content-bbc-c-arguments) <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— [`Blank`](#user-content-blank-arguments)
 | arg | value | description |
 | ---: | :---: | :--- |
 | ***/TC…*** |  | ***test card arguments*** |
-| `/TCv` | `/625` | version |
 | `/TCbc` | `0.53` | background colour |
 | ***/G…*** | ![graticule](assets/elements/BBC-C-625-G.png) | ***graticule arguments*** |
 | `/Gsz` | `TCh 7.79 div` | grid size: datum for all measurements |
@@ -675,18 +673,15 @@ Inheritance: `BBC-C-625` <— [`BBC-C`](#user-content-bbc-c-arguments) <— [`BB
 | `/Bw` | `0.29 xGsz` | border width |
 | `/Bah` | `1` | border arrow height (fraction of border width, 0 for no arrows) |
 | ***/X…*** |  | ***extra processing arguments*** |
-| `/Xp` | `{ Mcs }` | extra procs (use unique proc names and def not arg, for md) |
+| `/Xsp` | `{ Mcs }` | supplementary rendering procedures |
 </details>
 
 <details><summary><code>BBC-D-early</code> arguments</summary>
 <a name='bbc-d-early-arguments'></a>
 
-Inheritance: `BBC-D-early` <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
+Inheritance: `BBC-D-early` <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— [`Blank`](#user-content-blank-arguments)
 | arg | value | description |
 | ---: | :---: | :--- |
-| ***/TC…*** |  | ***test card arguments*** |
-| `/TCid` | `/D` | designation letter |
-| `/TCv` | `/early` | version |
 | ***/G…*** | ![graticule](assets/elements/BBC-D-early-G.png) | ***graticule arguments*** |
 | `/Gsz` | `TCh 9 div` | grid size: datum for all measurements |
 | `/Glw` | `Gsz 0.1 mul` | grid linewidth |
@@ -733,6 +728,8 @@ Inheritance: `BBC-D-early` <— [`BBC-C-early`](#user-content-bbc-c-early-argume
 | `/FBx` | `TCx 1.58 xGsz sub FBow div2 add` | freq bars horizontal centre |
 | `/FBg` | `FBoh FBh 3 mul sub div2` | freq bars gap size (>0 for D/E) |
 | `/FBp` | `0.075 xGsz` | freq bars padding |
+| `/FBc` | `[ 0.25 0.75 1 ]` | freq bars colours: [min max surround] |
+| `/FBs?` | `true` | true for sinusoidal frequency gratings, false for square |
 | `/FBf` | `[ [1 5 0] [1.5 7 1] [2 9 1] [2.5 12 0] [2.75 13 0] [3 14 0] ]` | frequencies: [MHz nbars antiphase] array |
 | ***/CS…*** | ![corner stripes](assets/elements/BBC-D-early-CS.png) | ***corner stripes arguments*** |
 | `/CSa` | `45` | corner stripes angle from horizontal |
@@ -750,26 +747,24 @@ Inheritance: `BBC-D-early` <— [`BBC-C-early`](#user-content-bbc-c-early-argume
 <details><summary><code>BBC-D-improved</code> arguments</summary>
 <a name='bbc-d-improved-arguments'></a>
 
-Inheritance: `BBC-D-improved` <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
+Inheritance: `BBC-D-improved` <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— [`Blank`](#user-content-blank-arguments)
 | arg | value | description |
 | ---: | :---: | :--- |
-| ***/TC…*** |  | ***test card arguments*** |
-| `/TCv` | `/improved` | version |
 | ***/ID…*** | ![ident designation](assets/elements/BBC-D-improved-ID.png) | ***ident designation arguments*** |
 | `/IDdr` | `0.07 xGsz` | ident adjacent dot radius: 0 for none |
 | ***/C…*** | ![caption](assets/elements/BBC-D-improved-C.png) | ***caption arguments*** |
 | `/Ct` | `[/T-1 /T-2]` | caption custom text element names: empty for no caption |
+| ***/FB…*** | ![frequency bars](assets/elements/BBC-D-improved-FB.png) | ***frequency bars arguments*** |
+| `/FBc` | `[ 0.15 0.85 1 ]` | freq bars colours: [min max surround] |
 </details>
 
 <details><summary><code>BBC-E</code> arguments</summary>
 <a name='bbc-e-arguments'></a>
 
-Inheritance: `BBC-E` <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
+Inheritance: `BBC-E` <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— [`Blank`](#user-content-blank-arguments)
 | arg | value | description |
 | ---: | :---: | :--- |
 | ***/TC…*** |  | ***test card arguments*** |
-| `/TCid` | `/E` | designation letter |
-| `/TCv` | `null` | version |
 | `/TCbc` | `0.5` | background colour |
 | ***/G…*** | ![graticule](assets/elements/BBC-E-G.png) | ***graticule arguments*** |
 | `/Glw` | `7 lines` | grid linewidth |
@@ -782,9 +777,8 @@ Inheritance: `BBC-E` <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <
 | `/SWds` | `1.3 xGlw` | step wedge dot size 0 for none, diameter or [width height] array |
 | ***/FB…*** | ![frequency bars](assets/elements/BBC-E-FB.png) | ***frequency bars arguments*** |
 | `/FBh` | `0.55 xGsz` | freq bars height |
-| `/FBc` | `[ 0.2 0.95 0.75 ]` | freq bars colours: grating between surround |
+| `/FBc` | `[ 0.25 0.75 0.75 ]` | freq bars colours: [min max surround] |
 | `/FBf` | `[ [1.5 5 0] [2.5 9 0] [3.5 11 0] [4 13 0] [4.5 15 0] [5.25 17 0] ]` | frequencies: [MHz nbars antiphase] array |
-| `/FBs?` | `true` | true for sinusoidal frequency gratings, false for square |
 | ***/CS…*** | ![corner stripes](assets/elements/BBC-E-CS.png) | ***corner stripes arguments*** |
 | `/CShf` | `1.5` | corner stripes horizontal fundamental MHz |
 </details>
@@ -792,12 +786,9 @@ Inheritance: `BBC-E` <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <
 <details><summary><code>BBC-F-early</code> arguments</summary>
 <a name='bbc-f-early-arguments'></a>
 
-Inheritance: `BBC-F-early` <— [`BBC-E`](#user-content-bbc-e-arguments) <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
+Inheritance: `BBC-F-early` <— [`BBC-E`](#user-content-bbc-e-arguments) <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— [`Blank`](#user-content-blank-arguments)
 | arg | value | description |
 | ---: | :---: | :--- |
-| ***/TC…*** |  | ***test card arguments*** |
-| `/TCid` | `/F` | designation letter |
-| `/TCv` | `/early` | version |
 | ***/G…*** | ![graticule](assets/elements/BBC-F-early-G.png) | ***graticule arguments*** |
 | `/Glw` | `8 lines` | grid linewidth |
 | `/Golw` | `0.42 xGlw` | grid outline width: 0 for no outline (F/J/W/X pattern) |
@@ -838,7 +829,7 @@ Inheritance: `BBC-F-early` <— [`BBC-E`](#user-content-bbc-e-arguments) <— [`
 | `/FBx` | `TCx SWx sub TCx add` | freq bars horizontal centre |
 | `/FBg` | `0` | freq bars gap size (>0 for D/E) |
 | `/FBp` | `0` | freq bars padding |
-| `/FBc` | `[0 1 1]` | freq bars colours: grating between surround |
+| `/FBc` | `[ 0 0.95 1 ]` | freq bars colours: [min max surround] |
 | `/FBf` | `[ [1.5 6 0] [2.5 9 0] [3.5 13 0] [4 15 0] [4.5 17 0] [5.25 20 0] ]` | frequencies: [MHz nbars antiphase] array |
 | `/FBs?` | `false` | true for sinusoidal frequency gratings, false for square |
 | `/FBoh` | `FBh FBf length mul` | freq bar outer height |
@@ -857,11 +848,9 @@ Inheritance: `BBC-F-early` <— [`BBC-E`](#user-content-bbc-e-arguments) <— [`
 <details><summary><code>BBC-F-optical</code> arguments</summary>
 <a name='bbc-f-optical-arguments'></a>
 
-Inheritance: `BBC-F-optical` <— [`BBC-F-early`](#user-content-bbc-f-early-arguments) <— [`BBC-E`](#user-content-bbc-e-arguments) <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
+Inheritance: `BBC-F-optical` <— [`BBC-F-early`](#user-content-bbc-f-early-arguments) <— [`BBC-E`](#user-content-bbc-e-arguments) <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— [`Blank`](#user-content-blank-arguments)
 | arg | value | description |
 | ---: | :---: | :--- |
-| ***/TC…*** |  | ***test card arguments*** |
-| `/TCv` | `/optical` | version |
 | ***/G…*** | ![graticule](assets/elements/BBC-F-optical-G.png) | ***graticule arguments*** |
 | `/Glw` | `7 lines` | grid linewidth |
 | `/Golw` | `0.5 xGlw` | grid outline width: 0 for no outline (F/J/W/X pattern) |
@@ -885,11 +874,9 @@ Inheritance: `BBC-F-optical` <— [`BBC-F-early`](#user-content-bbc-f-early-argu
 <details><summary><code>BBC-F-electronic</code> arguments</summary>
 <a name='bbc-f-electronic-arguments'></a>
 
-Inheritance: `BBC-F-electronic` <— [`BBC-F-optical`](#user-content-bbc-f-optical-arguments) <— [`BBC-F-early`](#user-content-bbc-f-early-arguments) <— [`BBC-E`](#user-content-bbc-e-arguments) <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— Blank
+Inheritance: `BBC-F-electronic` <— [`BBC-F-optical`](#user-content-bbc-f-optical-arguments) <— [`BBC-F-early`](#user-content-bbc-f-early-arguments) <— [`BBC-E`](#user-content-bbc-e-arguments) <— [`BBC-D-early`](#user-content-bbc-d-early-arguments) <— [`BBC-C-early`](#user-content-bbc-c-early-arguments) <— [`Blank`](#user-content-blank-arguments)
 | arg | value | description |
 | ---: | :---: | :--- |
-| ***/TC…*** |  | ***test card arguments*** |
-| `/TCv` | `/electronic` | version |
 | ***/G…*** | ![graticule](assets/elements/BBC-F-electronic-G.png) | ***graticule arguments*** |
 | `/Glw` | `5 lines` | grid linewidth |
 | `/Golw` | `0.65 xGlw` | grid outline width: 0 for no outline (F/J/W/X pattern) |
@@ -927,6 +914,18 @@ Inheritance: `BBC-F-electronic` <— [`BBC-F-optical`](#user-content-bbc-f-optic
 | `/CSep` | `1.5 xGlw` | corner stripes end padding |
 | ***/B…*** | ![border](assets/elements/BBC-F-electronic-B.png) | ***border arguments*** |
 | `/Bcc` | `[ [235 70 70] [70 70 235] [70 253 70] [253 253 70] [70 253 253] ]` | castellation colours: empty or [left-red left-blue bottom-green right-yellow top-cyan] |
+</details>
+
+<details><summary><code>Blank</code> arguments</summary>
+<a name='blank-arguments'></a>
+
+
+| arg | value | description |
+| ---: | :---: | :--- |
+| ***/X…*** |  | ***extra processing arguments*** |
+| `/Xsp` | `{}` | supplementary rendering procedures |
+| `/Xwt` | `/T-9` | watermark text element name, null for no watermark |
+| `/X?` | `true` | false for no extra processing |
 </details>
 
 ## Custom elements
@@ -1346,7 +1345,7 @@ Changing the aspect ratio `/TCr` will expand or contract the width accordingly
 and the TCM drawing algorithms will compensate without distorting element shapes.
 Element positions should therefore be anchored relative to centrelines or edges or other elements.
 
-*Examples:* a 5:4 *BBC-A* and widescreen *BBC-D-improved* with altered text and square *BBC-F-electronic*
+*Examples:* a 5:4 *OTP-A* and widescreen *BBC-D-improved* with altered text and square *BBC-F-electronic*
 
 [![5:4 ratio](assets/ratio-54-thumb.png)](assets/ratio-54.png)
 &nbsp;
@@ -1388,7 +1387,7 @@ This unit is named `/Gsz` and the main scaling [operator](#user-content-operator
 `/SBow 2.66 xGsz arg`
 
 > ![Note](assets/icons/note-16.svg)\
-> For *BBC-A*, which has no graticule, `Gsz` is the distance between adjacent horizontal castellation midpoints clamped within ±10% of the vertical ones.
+> For *OTP-A*, which has no graticule, `Gsz` is the distance between adjacent horizontal castellation midpoints clamped within ±10% of the vertical ones.
   This makes elements shrink as the aspect ratio reduces, resulting in a 5:4 version close to the early TCA shown on Arthur Dungate’s 5x4 era page, see [test card links](#test-cards) and [ratio example](#aspect-ratio).
 
 </details>
@@ -1583,7 +1582,7 @@ If that fails, use a font inspector app:
 The *BBC-C* ident letter **C** is a Type&nbsp;42 font made with FontForge
 because the font couldn’t be found (it’s close to a cropped circle).
 The Replica icon ![](assets/icons/replica-16.svg) is also a single-glyph Type&nbsp;42 font, extracted from TTF.
-And the GillSans-alt TTF is GillSans with altered weight for *BBC-A*, which also couldn’t be matched.
+And the GillSans-alt TTF is GillSans with altered weight for *OTP-A*, which also couldn’t be matched.
 
 ### Block-inverted fonts
 
@@ -1837,7 +1836,7 @@ and the cards, monoscopes and slides all differed slightly.
 - [Information Sheet 4306(6)](https://www.bbceng.info/additions/2020/Eng-inf/Eng%20Inf%20Dept%20Sheet%204306(6)%20Test%20Cards%20F%20&%20G%20(full%20quality).pdf)
   – contains BBC pattern F, dated 1967
 - [Test Card F (optical vs electronic)](https://archive.ph/VpVwc)
-  – slide scan from the archived barney-wol site [who is Barney Wol?]
+  – slide scan from the archived barney-wol site [Peter Vince (G8ZZR)]
   with excellent discussion on optical and digital features
   (see also [Eng Inf No.10 p.8](https://www.bbceng.info/Eng_Inf/eng-inf-files/EngInf10.pdf#page=8)
    and [Eng Inf No.18 p.9](https://www.bbceng.info/Eng_Inf/eng-inf-files/EngInf18.pdf#page=9))
@@ -1864,6 +1863,43 @@ and the cards, monoscopes and slides all differed slightly.
 - all manor of commercial outlets like Alamy, Adobe Stock etc. sell test cards of dubious authenticity
 
 In general, any analogue-era test pattern with uniform grey background or perfect typography or no telltale signs of handcrafted workmanship is likely to be a reconstruction.
+
+## Graphical user interface
+
+There isn’t one but the TCM CLI lends itself to be GUI driven easily.
+
+### FML Test Card Maker
+
+A neat freeware GUI test card maker exists called CardMaker for Windows.
+Although old and unmaintained it still works well.
+Indeed it is so good that it is worth a plug here:
+
+<details><summary>CardMaker</summary>
+<a name='cardmaker'></a>
+
+
+<a href='assets/CardMaker.png'><img src='assets/CardMaker-thumb.png' alt='FML CardMaker' align='right'></a>
+
+Funsville Memetic Laboratories (FML) is the web space of Steve Heap, a.k.a. [FMLTheGeneral](https://www.youtube.com/@FMLTheGeneral/videos), author of CardMaker on the defunct oodletuz\.fsnet\.co\.uk domain but available on The Wayback Machine. Pertinent links are:
+
+- [FML Test Card Maker](https://web.archive.org/web/20151010221017/http://www.oodletuz.fsnet.co.uk/soft/tcmaker.htm) – the `tcmaker.zip` file contains the `CardMaker.exe` executable, Compiled HTML Help, resource files, instructions and some sample Test Card Definition (TCD) files
+- [The TCD Resource](https://web.archive.org/web/20160305053742/http://www.oodletuz.fsnet.co.uk/tcd/index.htm) – a lot of TCD files for UK, European and other world standard test cards
+- [Testcards by Wenlock Burton (VK3YWB)](https://www.flickr.com/photos/wenlockburton/albums/72157629092497514/with/2884520670) – a Flickr album of 80 more test card reconstructions using CardMaker
+- [Wenlock’s Testcard Galleries and TCDs](https://www.oocities.org/wenlockburton/testcards/index.htm) – showcase and a downloadable zip file of all his TCDs on the OoCities\.org archive.
+
+TCD files are conceptually like TCM templates: they define pattern objects and layer properties.
+The TCD format is plain text, tab- and space-separated property values,
+stored as imlicit fixed-point integer decimals (2 dp), and integer RGB colours.
+
+The image (click to enlarge) shows CardMaker running on Windows 10
+with two layers: pattern elements on the left and cutouts on the right.
+The image also shows a CHM Help window and a Paint window of the generated PM5544 test card.
+
+CardMaker generates lossless BMP and variable-quality JPEG images.
+Despite its 32-bit 2004 vintage, it is a well designed, intuitive and functional app.
+For detailed information see the [CardMaker Help](assets/CardMaker-help.pdf) PDF converted from the CHM file.
+
+</details>
 
 ## In memoriam
 
@@ -1919,11 +1955,12 @@ RIP GJK.
 - [BBCeng.info](https://www.bbceng.info/Information/eng_inf_top.htm) – BBC Engineering Information from 1922 to 1997
 - [BBC Engineering Monographs](https://www.bbc.co.uk/rd/publications/engineering-monographs) – 115 downloadable editions from 1955 to 1980
 - [BBC Technical Instruction: Test Waveforms](https://www.bbceng.info/ti/non-eqpt/TI_P2_Part3_Test%20Waveforms.pdf) – 405-line waveforms (p.11) and 625 (p.17)
-- [A Broader Aspect](https://transdiffusion.org/2006/03/31/broader_aspect/) – article on early television aspect ratios
-- [EBU Technical Recommendation R92-1999](https://tech.ebu.ch/docs/r/r092.pdf) – Active picture area and centring in analogue and digital 625/50 television systems
+- [A Broader Aspect](https://transdiffusion.org/2006/03/31/broader_aspect/) – Transdiffusion article on early television aspect ratios
+- [EBU Technical Recommendation R92-1999](https://tech.ebu.ch/docs/r/r092.pdf) – active picture area and centring in analogue and digital 625/50 television systems
 - [Analog television](https://en.wikipedia.org/wiki/Analog_television) – Wikipedia
 - [Television Technical Theory: Unplugged](https://danalee.ca/ttt/) & [Analog Video](https://danalee.ca/ttt/analog_video.htm) – comprehensive insights by Dana M. Lee
 - [List of common display resolutions: Analog systems](https://en.wikipedia.org/wiki/List_of_common_display_resolutions#Analog_systems) – approximate dots x lines resolution
+- [World Analogue Television Standards and Waveforms](https://www.bbceng.info/Technical%20Reviews/World%20Analogue%20Television%20Standards%20and%20Waveforms.pdf) – summary of colour standards at the time they were current
 - [PAL encoding](https://en.wikipedia.org/wiki/PAL) – Wikipedia
 - [Limiting of YUV Digital Video Signals](https://downloads.bbc.co.uk/rd/pubs/reports/1987-22.pdf) – a BBC Research Report
 - [YUV Color Calculator](https://res18h39.netlify.app/color) – colour conversion calculator
