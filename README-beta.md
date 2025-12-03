@@ -1,5 +1,4 @@
 
-### authentic replicas &bull; easily customised &bull; vector and raster formats &bull; cross-platform
 
 ## Summary
 
@@ -30,7 +29,6 @@ Much of the nitty gritty is contained in collapsible sections revealed in the [T
 <details open><summary>Table of Contents</summary>
 <a name='table-of-contents'></a>
 
-  - [authentic&nbsp;replicas&nbsp;easily&nbsp;customised&nbsp;vector&nbsp;and&nbsp;raster&nbsp;formats&nbsp;cross&#8209;platform](#authentic-replicas-easily-customised-vector-and-raster-formats-cross-platform)
 - [Summary](#summary)
 - [Aims](#aims)
 - [Implementation](#implementation)
@@ -139,7 +137,7 @@ Much of the nitty gritty is contained in collapsible sections revealed in the [T
   - [DVDs](#dvds)
 &bull; [DVD example](#user-content-dvd-example)
 &bull; [FreeCalRec601](#user-content-freecalrec601)
-&bull; [Making&nbsp;VOB&nbsp;media](#user-content-making-vob-media)
+&bull; [VOB&nbsp;commands](#user-content-vob-commands)
 &bull; [VOB&nbsp;explanation](#user-content-vob-explanation)
 &bull; [Authoring&nbsp;and&nbsp;burning](#user-content-authoring-and-burning)
 - [Test&nbsp;card&nbsp;sources](#test-card-sources)
@@ -405,16 +403,16 @@ All pattern elements can easily be adjusted or customised.
 The thumbnails link to larger animated images showing replica and original overlaid, for testing.\
 By default a replica icon ![](assets/icons/replica-16.svg) in the bottom-right corner watermarks the replica pattern.
 
-<kbd align='center'>&nbsp;<br>**GTP-A**<br>&nbsp;<br>[![GTP-A](assets/templates/GTP-A-thumb.png)](assets/templates/GTP-A-anim.gif)</kbd>
-<kbd align='center'>&nbsp;<br>**BBC-C-early**<br>&nbsp;<br>[![BBC-C-early](assets/templates/BBC-C-early-thumb.png)](assets/templates/BBC-C-early-anim.gif)</kbd>
-<kbd align='center'>&nbsp;<br>**BBC-C**<br>&nbsp;<br>[![BBC-C](assets/templates/BBC-C-thumb.png)](assets/templates/BBC-C-anim.gif)</kbd>
-<kbd align='center'>&nbsp;<br>**BBC-D-early**<br>&nbsp;<br>[![BBC-D-early](assets/templates/BBC-D-early-thumb.png)](assets/templates/BBC-D-early-anim.gif)</kbd>
-<kbd align='center'>&nbsp;<br>**BBC-D-improved**<br>&nbsp;<br>[![BBC-D-improved](assets/templates/BBC-D-improved-thumb.png)](assets/templates/BBC-D-improved-anim.gif)</kbd>
-<kbd align='center'>&nbsp;<br>**BBC-E**<br>&nbsp;<br>[![BBC-E](assets/templates/BBC-E-thumb.png)](assets/templates/BBC-E-anim.gif)</kbd>
-<kbd align='center'>&nbsp;<br>**BBC-C-625**<br>&nbsp;<br>[![BBC-C-625](assets/templates/BBC-C-625-thumb.png)](assets/templates/BBC-C-625-anim.gif)</kbd>
-<kbd align='center'>&nbsp;<br>**BBC-F-early**<br>&nbsp;<br>[![BBC-F-early](assets/templates/BBC-F-early-thumb.png)](assets/templates/BBC-F-early-anim.gif)</kbd>
-<kbd align='center'>&nbsp;<br>**BBC-F-optical**<br>&nbsp;<br>[![BBC-F-optical](assets/templates/BBC-F-optical-thumb.png)](assets/templates/BBC-F-optical-anim.gif)</kbd>
-<kbd align='center'>&nbsp;<br>**BBC-F-electronic**<br>&nbsp;<br>[![BBC-F-electronic](assets/templates/BBC-F-electronic-thumb.png)](assets/templates/BBC-F-electronic-anim.gif)</kbd>
+<kbd align='center'>&nbsp;<br>**GTP-A**<br>&nbsp;<br>[![GTP-A](assets/templates/GTP-A-thumb.png)](assets/templates/GTP-A-anim.png)</kbd>
+<kbd align='center'>&nbsp;<br>**BBC-C-early**<br>&nbsp;<br>[![BBC-C-early](assets/templates/BBC-C-early-thumb.png)](assets/templates/BBC-C-early-anim.png)</kbd>
+<kbd align='center'>&nbsp;<br>**BBC-C**<br>&nbsp;<br>[![BBC-C](assets/templates/BBC-C-thumb.png)](assets/templates/BBC-C-anim.png)</kbd>
+<kbd align='center'>&nbsp;<br>**BBC-D-early**<br>&nbsp;<br>[![BBC-D-early](assets/templates/BBC-D-early-thumb.png)](assets/templates/BBC-D-early-anim.png)</kbd>
+<kbd align='center'>&nbsp;<br>**BBC-D-improved**<br>&nbsp;<br>[![BBC-D-improved](assets/templates/BBC-D-improved-thumb.png)](assets/templates/BBC-D-improved-anim.png)</kbd>
+<kbd align='center'>&nbsp;<br>**BBC-E**<br>&nbsp;<br>[![BBC-E](assets/templates/BBC-E-thumb.png)](assets/templates/BBC-E-anim.png)</kbd>
+<kbd align='center'>&nbsp;<br>**BBC-C-625**<br>&nbsp;<br>[![BBC-C-625](assets/templates/BBC-C-625-thumb.png)](assets/templates/BBC-C-625-anim.png)</kbd>
+<kbd align='center'>&nbsp;<br>**BBC-F-early**<br>&nbsp;<br>[![BBC-F-early](assets/templates/BBC-F-early-thumb.png)](assets/templates/BBC-F-early-anim.png)</kbd>
+<kbd align='center'>&nbsp;<br>**BBC-F-optical**<br>&nbsp;<br>[![BBC-F-optical](assets/templates/BBC-F-optical-thumb.png)](assets/templates/BBC-F-optical-anim.png)</kbd>
+<kbd align='center'>&nbsp;<br>**BBC-F-electronic**<br>&nbsp;<br>[![BBC-F-electronic](assets/templates/BBC-F-electronic-thumb.png)](assets/templates/BBC-F-electronic-anim.png)</kbd>
 
 
 International and widescreen patterns may follow if called for
@@ -968,12 +966,12 @@ but they can be overridden in the normal way, for instance to change captions.
 
 ### CE example
 
-<a href='assets/ce-example.png'><img src='assets/ce-example-thumb.png' alt='custom elements' align='right'></a>
+[![custom elements](assets/ce-example-small.png)](assets/ce-example.png)
 
 *Example*:
 pattern *BBC-D-early* with 500 custom elements
 
-Here is a 1960s-themed example to illustrate the concept (click thumbnail).
+Here is a 1960s-themed example to illustrate the concept (click to enlarge).
 It is created from the arguments below extracted from the [args file](assets/ce-example.ps) used.
 Unspecified arguments take default values –
 see [shape arguments](#user-content-shape-arguments), [image arguments](#user-content-image-arguments), [text arguments](#user-content-text-arguments).
@@ -1375,7 +1373,7 @@ Units are arbitrary but PostScript/PDF points are 1/72" by default, or 1 pixel f
 TCM [size](#size) is detailed above; that defines the Storage Aspect Ratio (SAR) in pixels or points.
 
 Changing the aspect ratio `TCr` expands or contracts the width accordingly
-and the drawing algorithms compensate without distorting element shapes.
+and the drawing algorithms compensate _without distorting element shapes_.
 Element positions should therefore be anchored relative to centrelines or edges or other elements.
 
 Widescreen aspects, being digital, retain 625-line [time-base](#user-content-time-based-scaling) scaling for frequency gratings, needle pulse widths and corner stripes,
@@ -1992,7 +1990,7 @@ Create a 1-hour MP4 video from image and looped audio:\
 
 Here is *BBC-D-improved* (1965 version) with transparent centre overlaying a video:
 
-![video example](assets/video-mrd.gif)
+[![video example](assets/mrd-example-small.gif)](assets/mrd-example.gif)
 
 <details><summary>Overlay example</summary>
 <a name='overlay-example'></a>
@@ -2092,10 +2090,10 @@ so we just deploy the same [FFmpeg] options for SD DVD conformance.
   and FreeCalRec601 ISOs built from GS-made sRGB colour chunks are empirically binary-identical to those built from ImageMagick chunks (tested for TIFF and PNG).
 
 
-#### Making VOB media
+#### VOB commands
 
 FreeCalRec601 [build_vob.sh](https://github.com/danmons/FreeCalRec601/blob/master/build_vob.sh) builds VOBs using [FFmpeg],
-which boils down to this snippet:
+equivalent to this Bash snippet:
 
 ```bash
 target=pal-dvd # or ntsc-dvd
@@ -2121,7 +2119,7 @@ This makes an anamorphic (720x576 4:3) interlaced DVD VOB in PAL or NTSC varian
 #### VOB explanation
 
 - `target`,`vf`,`cs`,`cp`,`ct` shell variables for PAL and NTSC variants
-- `-loop` ([image 2 demuxer](https://www.ffmpeg.org/ffmpeg-formats.html#image2-1)) loops the image frame
+- `-loop` ([image2 demuxer](https://www.ffmpeg.org/ffmpeg-formats.html#image2-1)) loops the image frame
 - `-vf` video filters:
   - [`colorspace`](https://www.ffmpeg.org/ffmpeg-filters.html#colorspace) converts the colour primaries, white point and gamma from bt709 (=sRGB) to bt601 for the target
   - [`tinterlace`](https://www.ffmpeg.org/ffmpeg-filters.html#tinterlace) makes the video interlaced, top field first, with vertical low-pass filtering (reduces interline twitter and Moiré artifacts)
@@ -2454,5 +2452,5 @@ Primary: `#007bff` (Blue)
 
 [^30]: [The Magic Roundabout Series 1 1965–68 (incomplete)](https://youtu.be/jS2IlF9GEco) – 5 episodes, not 224, because of lost media
 
-[^31]: [Rec. 601](https://en.wikipedia.org/wiki/Rec._601) –
+[^31]: [Rec. 601](https://en.wikipedia.org/wiki/Rec._601) – Wikipedia
 
