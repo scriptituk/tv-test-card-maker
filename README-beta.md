@@ -1,4 +1,3 @@
-# TV Test Card Maker
 
 ### authentic replicas &bull; easily customised &bull; vector and raster formats &bull; cross-platform
 
@@ -6,7 +5,7 @@
 
 <img src='assets/tv-test-card-maker.gif' alt='Summary' align='right'>
 
-There are not many accurate high-resolution or vector graphic replicas of vintage TV test patterns,
+Accurate high-resolution and vector graphic replicas of vintage TV test patterns are hard to come by,
 and those created by drawing tools cannot be altered because master files are unavailable.
 
 This test card maker (TCM) recreates memorable TV test patterns
@@ -15,9 +14,9 @@ It exposes rendering parameters for adjustment
 and enables custom elements – shapes, images and text – to be superimposed anywhere.
 
 As a novel PostScript application,
-TCM demonstrates precision control of vector graphics creation
+TCM demonstrates precision control of vector graphic creation
 and some interesting coding paradigms that add structure and adaptability.
-Indeed the implementation was key to the project rationale as an academic incentive.
+Indeed the implementation was key to the project rationale, so the takeaway is intentionaly twofold.
 
 Hopefully TCM may prove useful to retro TV enthusiasts and the amateur TV community,
 and perhaps spark wider interest for generic pattern generation.
@@ -26,13 +25,13 @@ Aside from TV, it champions the benefits of PostScript[^1] for creating intricat
 This project is dedicated to the memory of **Gordon J. King** whose technical writings inspired so many budding electronics enthusiasts – see [dedication](#in-memoriam).
 
 
-Much of the nitty gritty is contained in collapsible sections revealed in the [Table of Contents](#user-content-table-of-contents).
+Much of the nitty gritty is contained in collapsible sections revealed in the [Table of Contents](#table-of-contents).
 
-<details><summary>Table of Contents</summary>
+<details open><summary>Table of Contents</summary>
 <a name='table-of-contents'></a>
 
+  - [authentic&nbsp;replicas&nbsp;easily&nbsp;customised&nbsp;vector&nbsp;and&nbsp;raster&nbsp;formats&nbsp;cross&#8209;platform](#authentic-replicas-easily-customised-vector-and-raster-formats-cross-platform)
 - [Summary](#summary)
-- [Taster](#taster)
 - [Aims](#aims)
 - [Implementation](#implementation)
 &bull; [Overview](#user-content-overview)
@@ -53,11 +52,11 @@ Much of the nitty gritty is contained in collapsible sections revealed in the [T
 - [Compositing&nbsp;groups](#compositing-groups)
   - [Group composition](#user-content-group-composition)
 - [Group&nbsp;elements](#group-elements)
-  - [OTP elements](#user-content-otp-elements)
+  - [GTP elements](#user-content-gtp-elements)
 &bull; [BBC elements](#user-content-bbc-elements)
 &bull; [PCP elements](#user-content-pcp-elements)
 - [Element&nbsp;arguments](#element-arguments)
-  - [OTP-A arguments](#user-content-otp-a-arguments)
+  - [GTP-A arguments](#user-content-gtp-a-arguments)
 &bull; [BBC-C-early arguments](#user-content-bbc-c-early-arguments)
 &bull; [BBC-C arguments](#user-content-bbc-c-arguments)
 &bull; [BBC-C-625 arguments](#user-content-bbc-c-625-arguments)
@@ -84,8 +83,10 @@ Much of the nitty gritty is contained in collapsible sections revealed in the [T
 - [Scaling](#scaling)
   - [Time&#8209;based&nbsp;scaling](#user-content-time-based-scaling)
 &bull; [Proportional&nbsp;scaling](#user-content-proportional-scaling)
+- [Timing](#timing)
 - [Colours](#colours)
-  - [Greyscale](#user-content-greyscale)
+  - [Colour arguments](#user-content-colour-arguments)
+&bull; [Greyscale](#user-content-greyscale)
 &bull; [RGB](#user-content-rgb)
 &bull; [YUV](#user-content-yuv)
 &bull; [HSL](#user-content-hsl)
@@ -96,6 +97,7 @@ Much of the nitty gritty is contained in collapsible sections revealed in the [T
 &bull; [Unit&nbsp;interval&nbsp;colour&nbsp;components](#user-content-unit-interval-colour-components)
 &bull; [Transparency](#user-content-transparency)
 &bull; [Gradients](#user-content-gradients)
+  - [Colour space](#user-content-colour-space)
 - [Fonts](#fonts)
   - [Listing&nbsp;fonts](#user-content-listing-fonts)
 &bull; [Adding&nbsp;fonts](#user-content-adding-fonts)
@@ -107,6 +109,9 @@ Much of the nitty gritty is contained in collapsible sections revealed in the [T
     - [Basic options](#user-content-basic-options)
 &bull; [Environment variables](#user-content-environment-variables)
 &bull; [Finding files](#user-content-finding-files)
+    - [Rendering options](#user-content-rendering-options)
+&bull; [Interpolation](#user-content-interpolation)
+&bull; [Antialiasing](#user-content-antialiasing)
   - [Output&nbsp;formats](#output-formats)
     - [Vector formats](#user-content-vector-formats)
 &bull; [PDF](#user-content-pdf)
@@ -114,10 +119,29 @@ Much of the nitty gritty is contained in collapsible sections revealed in the [T
 &bull; [SVG](#user-content-svg)
     - [Raster formats](#user-content-raster-formats)
 &bull; [PNG](#user-content-png)
-&bull; [JPEG,&nbsp;TIFF,&nbsp;PNM,&nbsp;BMP](#user-content-jpeg-tiff-pnm-bmp)
+&bull; [TIFF,&nbsp;BMP,&nbsp;PNM,&nbsp;JPEG](#user-content-tiff-bmp-pnm-jpeg)
 &bull; [WEBM,&nbsp;GIF](#user-content-webm-gif)
     - [Video formats](#user-content-video-formats)
-- [Video&nbsp;effects](#video-effects)
+&bull; [H.264/AAC&nbsp;(MP4)](#user-content-h264aac-mp4)
+&bull; [FFV1/PCM&nbsp;(MKV)](#user-content-ffv1pcm-mkv)
+&bull; [VP9/Opus&nbsp;(WEBM)](#user-content-vp9opus-webm)
+&bull; [Animated&nbsp;PNG](#user-content-animated-png)
+&bull; [Animated&nbsp;GIF](#user-content-animated-gif)
+- [Video&nbsp;generation](#video-generation)
+  - [Static&nbsp;testcards](#static-testcards)
+&bull; [Silent&nbsp;test&nbsp;card](#user-content-silent-test-card)
+&bull; [Test&nbsp;card&nbsp;with&nbsp;tone](#user-content-test-card-with-tone)
+&bull; [Test&nbsp;card&nbsp;with&nbsp;music](#user-content-test-card-with-music)
+  - [Overlays](#overlays)
+&bull; [Overlay example](#user-content-overlay-example)
+&bull; [Overlay&nbsp;commands](#user-content-overlay-commands)
+&bull; [Overlay&nbsp;explanation](#user-content-overlay-explanation)
+  - [DVDs](#dvds)
+&bull; [DVD example](#user-content-dvd-example)
+&bull; [FreeCalRec601](#user-content-freecalrec601)
+&bull; [Making&nbsp;VOB&nbsp;media](#user-content-making-vob-media)
+&bull; [VOB&nbsp;explanation](#user-content-vob-explanation)
+&bull; [Authoring&nbsp;and&nbsp;burning](#user-content-authoring-and-burning)
 - [Test&nbsp;card&nbsp;sources](#test-card-sources)
   - [Originals](#originals)
 &bull; [Reconstructions](#reconstructions)
@@ -131,15 +155,12 @@ Much of the nitty gritty is contained in collapsible sections revealed in the [T
   - [Television&nbsp;history](#television-history)
 &bull; [Technical](#technical)
 &bull; [Test&nbsp;cards](#test-cards)
+&bull; [Other&nbsp;test&nbsp;card&nbsp;projects](#other-test-card-projects)
 &bull; [TV&nbsp;Community](#tv-community)
-  - [Related&nbsp;TC&nbsp;projects](#related-tc-projects)
-&bull; [PostScript&nbsp;links](#postscript-links)
+  - [PostScript&nbsp;links](#postscript-links)
+&bull; [Useful&nbsp;tools](#useful-tools)
   - [Footnotes](#footnotes)
 </details>
-
-## Taster
-
-TODO
 
 ## Aims
 
@@ -155,7 +176,7 @@ TODO
 - enable transparency
 - be robust enough to calibrate television receivers
 - clear instructions and numerous examples
-- guidance for generating videos with audio and making ISO images and DVDs
+- guidance for generating videos with audio and making DVDs
 
 ## Implementation
 
@@ -351,11 +372,11 @@ creates a PDF 1536x1152 points (default 4:3 ratio, *BBC-F-electronic* template)
 `gs -q -IResource -sDEVICE=pdfwrite -o tc.pdf -dTCw=1200 tcm.ps`\
 creates a PDF 1200x900 points
 
-`gs -q -IResource -sDEVICE=png256 -o tc.png -dTCr=1.25 tcm.ps`\
-creates a low-resolution 72dpi indexed PNG 720x576 pixels (5:4 ratio, default 576 high)
+`gs -q -IResource -sDEVICE=png256 -dTextAlphaBits=4 -dGraphicsAlphaBits=4 -o tc.png -dTCr=1.25 tcm.ps`\
+creates a low-resolution 72dpi 8-bit indexed PNG 720x576 pixels (5:4 ratio, default 576 high)
 
 `gs -q -IResource -sDEVICE=png16m -dTextAlphaBits=4 -dGraphicsAlphaBits=4 -r600 -dDownScaleFactor=2 -o tc.png -dTCr=1.25 -dTCw=700 -dTCh=r500 tcm.ps`\
-creates a high-resolution 300dpi PNG 2916x2083 (2083=TCh*300dpi/72ppi), `TCr` is ignored
+creates a high-resolution 300dpi 24-bit PNG 2916x2083 (2083=TCh*300dpi/72ppi), `TCr` is ignored
 
 ### Template
 
@@ -369,11 +390,11 @@ makes the default *BBC-F-electronic* pattern as a PDF file `fe.pdf`
 `gs -q -IResource -sDEVICE=eps2write -o c.eps -dTC=/BBC-C tcm.ps`\
 makes the long-running 405-line *BBC-C* pattern as an EPS file `c.eps`
 
-`gs -q -IResource -sDEVICE=pnggray -o c625.png -dTC=/BBC-C-625 tcm.ps`\
+`gs -q -IResource -sDEVICE=pnggray -dTextAlphaBits=4 -dGraphicsAlphaBits=4 -o c625.png -dTC=/BBC-C-625 tcm.ps`\
 makes the 625-line *BBC-C-625* pattern as a greyscale PNG file `c625.png`
 
 `gs -q -IResource -sDEVICE=pngalpha -o fo.png -dTC=/BBC-F-optical -dCPi=null tcm.ps`\
-makes the double-slide *BBC-F-optical* pattern as a PNG file `fo.png`
+makes the two-slide *BBC-F-optical* pattern as a PNG file `fo.png`
 with a transparent hole where the image should be (see [arguments](#user-content-bbc-f-optical-arguments))
 
 ## Pattern templates
@@ -384,7 +405,7 @@ All pattern elements can easily be adjusted or customised.
 The thumbnails link to larger animated images showing replica and original overlaid, for testing.\
 By default a replica icon ![](assets/icons/replica-16.svg) in the bottom-right corner watermarks the replica pattern.
 
-<kbd align='center'>&nbsp;<br>**OTP-A**<br>&nbsp;<br>[![OTP-A](assets/templates/OTP-A-thumb.png)](assets/templates/OTP-A-anim.gif)</kbd>
+<kbd align='center'>&nbsp;<br>**GTP-A**<br>&nbsp;<br>[![GTP-A](assets/templates/GTP-A-thumb.png)](assets/templates/GTP-A-anim.gif)</kbd>
 <kbd align='center'>&nbsp;<br>**BBC-C-early**<br>&nbsp;<br>[![BBC-C-early](assets/templates/BBC-C-early-thumb.png)](assets/templates/BBC-C-early-anim.gif)</kbd>
 <kbd align='center'>&nbsp;<br>**BBC-C**<br>&nbsp;<br>[![BBC-C](assets/templates/BBC-C-thumb.png)](assets/templates/BBC-C-anim.gif)</kbd>
 <kbd align='center'>&nbsp;<br>**BBC-D-early**<br>&nbsp;<br>[![BBC-D-early](assets/templates/BBC-D-early-thumb.png)](assets/templates/BBC-D-early-anim.gif)</kbd>
@@ -424,7 +445,7 @@ Grouping enables TCM to generate widely differing patterns and provides extensib
 | :---: | :--- |
 | `/BBC` |  classic BBC/ITA/IBA/BREMA letter designation patterns |
 | `/PCP` |  Philips circle patterns |
-| `/OTP` |  other test patterns |
+| `/GTP` |  general test patterns |
 
 </details>
 
@@ -433,8 +454,8 @@ Grouping enables TCM to generate widely differing patterns and provides extensib
 These are graphic elements that make up the test patterns in a group,
 such as the graticule, streak box, step wedge, corner stripes, etc.
 
-<details><summary><code>OTP</code> elements</summary>
-<a name='otp-elements'></a>
+<details><summary><code>GTP</code> elements</summary>
+<a name='gtp-elements'></a>
 
 </details>
 
@@ -457,33 +478,33 @@ A question mark denotes a switch, for instance `PP?` controls whether pulse pane
 
 The following tables show element arguments for each template and the hierarchy for inherited arguments.
 
-<details><summary><code>OTP-A</code> arguments</summary>
-<a name='otp-a-arguments'></a>
+<details><summary><code>GTP-A</code> arguments</summary>
+<a name='gtp-a-arguments'></a>
 
-Inheritance: `OTP-A` <— [`Blank`](#user-content-blank-arguments)
+Inheritance: `GTP-A` <— [`Blank`](#user-content-blank-arguments)
 | arg | value | description |
 | ---: | :---: | :--- |
 | ***/TC…*** |  | ***test card arguments*** |
 | `/TCbc` | `/white` | background colour |
-| ***/G…*** | ![graticule](assets/elements/OTP-A-G.png) | ***graticule arguments*** |
+| ***/G…*** | ![graticule](assets/elements/GTP-A-G.png) | ***graticule arguments*** |
 | `/Gszv` | `TCh 16.5 div` | vertical grid size |
 | `/Gsz` | `TCw 20.5 div 1.1 Gszv mul min 0.9 Gszv mul max` | grid size: datum for all measurements |
-| ***/SB…*** | ![streak box](assets/elements/OTP-A-SB.png) | ***streak box arguments*** |
+| ***/SB…*** | ![streak box](assets/elements/GTP-A-SB.png) | ***streak box arguments*** |
 | `/SBiw` | `3 xGsz` | streak box inner width |
 | `/SBih` | `0.51 xGsz` | streak box inner height |
 | `/SBy` | `TCy 4.44 xGsz sub` | streak box vertical centre |
 | `/SBc` | `/black` | streak box colours: [inner outer] |
-| ***/CC…*** | ![centre circles](assets/elements/OTP-A-CC.png) | ***centre circles arguments*** |
+| ***/CC…*** | ![centre circles](assets/elements/GTP-A-CC.png) | ***centre circles arguments*** |
 | `/CClw` | `0.74 xGsz` | centre circles stroke width |
 | `/CCr` | `2.6 xGsz` | white circle stroke radius |
-| ***/ID…*** | ![ident designation](assets/elements/OTP-A-ID.png) | ***ident designation arguments*** |
+| ***/ID…*** | ![ident designation](assets/elements/GTP-A-ID.png) | ***ident designation arguments*** |
 | `/IDs` | `(A)` | ident string: empty for no ident |
 | `/IDf` | `/GillSans-alt` | ident font |
 | `/IDc` | `/black` | ident colour |
 | `/IDh` | `0.89 xGsz` | ident height |
 | `/IDx` | `TCx` | ident horizontal centre |
 | `/IDy` | `TCy 5.51 xGsz sub` | ident vertical centre |
-| ***/FB…*** | ![frequency bars](assets/elements/OTP-A-FB.png) | ***frequency bars arguments*** |
+| ***/FB…*** | ![frequency bars](assets/elements/GTP-A-FB.png) | ***frequency bars arguments*** |
 | `/FBh` | `SBiw` | freq bars height |
 | `/FBc` | `/black` | freq bars colours: [min max surround] |
 | `/FBx` | `TCx 4.81 xGsz sub` | freq bars horizontal centre |
@@ -492,7 +513,7 @@ Inheritance: `OTP-A` <— [`Blank`](#user-content-blank-arguments)
 | `/NPh` | `FBh` | needle pulse line height |
 | `/NPx` | `TCx 5.91 xGsz sub` | needle pulse line horizontal centre |
 | `/NPc` | `/black` |  |
-| ***/B…*** | ![border](assets/elements/OTP-A-B.png) | ***border arguments*** |
+| ***/B…*** | ![border](assets/elements/GTP-A-B.png) | ***border arguments*** |
 | `/Bw` | `0.53 xGsz` | border width |
 </details>
 
@@ -949,13 +970,13 @@ but they can be overridden in the normal way, for instance to change captions.
 
 <a href='assets/ce-example.png'><img src='assets/ce-example-thumb.png' alt='custom elements' align='right'></a>
 
-Here is a 1960s themed example to illustrate the concept (click thumbnail).
+*Example*:
+pattern *BBC-D-early* with 500 custom elements
+
+Here is a 1960s-themed example to illustrate the concept (click thumbnail).
 It is created from the arguments below extracted from the [args file](assets/ce-example.ps) used.
 Unspecified arguments take default values –
 see [shape arguments](#user-content-shape-arguments), [image arguments](#user-content-image-arguments), [text arguments](#user-content-text-arguments).
-
-*Example*:
-pattern *BBC-D-early* with 500 custom elements
 
 <details><summary>CE example arguments</summary>
 <a name='ce-example-arguments'></a>
@@ -1206,7 +1227,7 @@ Odd-sided polygons are oriented with a vertex at top-centre and horizontal base,
 placed using constant width Reuleaux[^11] curve fitting to normalise size and rotation within the bounds,
 therefore the centroid is offset from the specified centre as this animation shows (credit: *LEMeZza/Wikimedia Commons*).
 All shapes can be rotated and distorted, filled and/or stroked, and selectively [mirrored](#layering-and-mirroring) in all quadrants.
-See also [colour syntax](#user-content-colour-syntax).
+See also [colour arguments](#user-content-colour-arguments).
 
 <details><summary>Shape arguments</summary>
 <a name='shape-arguments'></a>
@@ -1266,12 +1287,13 @@ Unlike custom shapes and text, images cannot be distorted, but like shapes they 
 (`#` is the image element number)
 
 > ![Tip](assets/icons/tip-16.svg)\
-  To position, use auto-fit scale to centre the offset point, then rotate and scale.
+  To position, use auto-fit scale to centre the offset point then rotate and scale.
 
-> ![Warning](assets/icons/warning-16.svg)\
-  EPS `/syntaxerror` is quite common but can be fixed using the GS utility [ps2epsi](https://ghostscript.readthedocs.io/en/latest/Ps2epsi.html) for DSC conformance[^13],\
-  e.g. `ps2epsi bad.eps good.eps` to clean the errors,\
-  then `sed '/^%%BeginPreview/,/^%%EndPreview/d' good.eps > smaller.eps` to remove the preview.
+> ![Caution](assets/icons/caution-16.svg)\
+  GS fails for EPS files with DOS/Windows line endings, so use:\
+  `sed $'s/\r$//' bad.eps > good.eps` to remove CR characters.
+  EPS files with Document Structuring Convention (DSC)[^13] errors can be fixed by regenerating through GS:
+  `eps2eps bad.eps good.eps`
 
 
 </details>
@@ -1282,11 +1304,11 @@ Text can be aligned around the compass, justified, scaled, distorted to fit widt
 and block-inverted to replicate logos like ![BBC](assets/bbc.png) (sometimes called cameo fonts).
 There are many arguments to control block-inversion,
 including monospacing, padding, rounded corners, tracking.
-See also [font resources](#user-content-font-resources) and [colour syntax](#user-content-colour-syntax).
+See also [font resources](#user-content-font-resources) and [colour arguments](#user-content-colour-arguments).
 
 For styled text, create it in a word processor and export to PDF,
-then use GS to convert to EPS using\
-`gs -sDEVICE=eps2write -o text.eps text.pdf`\
+then use the GhostScript `eps2eps` utility to convert to EPS:\
+`eps2eps text.pdf text.eps`\
 and render it as a [custom image](#custom-images) instead.
 
 <details><summary>Text arguments</summary>
@@ -1327,29 +1349,39 @@ and render it as a [custom image](#custom-images) instead.
 
 ## Resolution
 
-In the vertical plane, analogue scan lines are inherently discrete.
-Horizontally, the intensity cannot alternate faster than the scan rate and video bandwidth allow under the sampling theorem[^14].
-Those constraints are however well defined, therefore analogue horizontal resolution can be approximated[^15].
-The standard measure used is Television lines (TVL)[^16]
-and these topics are clearly explained in Alan Pemberton’s *Ponderings*[^17].
+> [!NOTE]
+> Resolution, [aspect ratio](#aspect-ratio) and [scaling](#scaling) depend on factors too involved to delve into here – whether analogue/digital, PAL/NTSC/SECAM, line count, line time, sampling rate etc.
+  but there are experts on the VideoHelp Forum[^14] and elsewhere with detailed answers.
 
-TCM takes the vertical height argument as the baseline and an aspect ratio, their product being the width.
-The active analogue line time corresponds to the width and the active scan lines to the height.
-Square pixels are assumed.
-TCM takes no account of Kell factor[^18] and rounds resolutions up to even numbers
+
+In the vertical plane, analogue scan lines are inherently discrete.
+In the horizontal the intensity is continuous but cannot alternate faster than the scan rate and video bandwidth allow under the sampling theorem[^15].
+These constraints are specified by various standards, therefore analogue horizontal resolution can be approximated[^16].
+The practical measure used is Television lines (TVL)[^17], explained in Alan Pemberton’s *Ponderings*[^18].
+
+In simulating analogue test cards digitally, TCM simply scales the active analogue line time to the width `TCw` and the active scan lines to the height `TCh`.
+This gives square unit pixels for 4:3 625-line replicas at the default 768x576 size
+but applies scaling and warping for other values.
+
+TCM takes no account of Kell factor[^19] and rounds pattern size up to even numbers
 to simplify the maths and facilitate digital video post-processing.
 So 625/50 has 575 active lines (25 frame blanking lines) but 576 is used (the default),
 and 405/50 has 377 active lines (14 frame blanking lines) and height 378.
-Units are arbitrary but PostScript points are 1/72" by default, or 1 pixel for [raster format](#user-content-raster-formats) images.
+Units are arbitrary but PostScript/PDF points are 1/72" by default, or 1 pixel for [raster format](#user-content-raster-formats) images.
 
 
 ## Aspect ratio
 
-Changing the aspect ratio `/TCr` will expand or contract the width accordingly
-and the TCM drawing algorithms will compensate without distorting element shapes.
+TCM [size](#size) is detailed above; that defines the Storage Aspect Ratio (SAR) in pixels or points.
+
+Changing the aspect ratio `TCr` expands or contracts the width accordingly
+and the drawing algorithms compensate without distorting element shapes.
 Element positions should therefore be anchored relative to centrelines or edges or other elements.
 
-*Examples:* a 5:4 *OTP-A* and widescreen *BBC-D-improved* with altered text and square *BBC-F-electronic*
+Widescreen aspects, being digital, retain 625-line [time-base](#user-content-time-based-scaling) scaling for frequency gratings, needle pulse widths and corner stripes,
+which presumably lose their intended significance.
+
+*Examples:* a 5:4 *GTP-A* and widescreen *BBC-D-improved* with altered text and square *BBC-F-electronic*
 
 [![5:4 ratio](assets/ratio-54-thumb.png)](assets/ratio-54.png)
 &nbsp;
@@ -1391,10 +1423,16 @@ This unit is named `/Gsz` and the main scaling [operator](#user-content-operator
 `/SBow 2.66 xGsz arg`
 
 > ![Note](assets/icons/note-16.svg)\
-> For *OTP-A*, which has no graticule, `Gsz` is the distance between adjacent horizontal castellation midpoints clamped within ±10% of the vertical ones.
+> For *GTP-A*, which has no graticule, `Gsz` is the distance between adjacent horizontal castellation midpoints clamped within ±10% of the vertical ones.
   This makes elements shrink as the aspect ratio reduces, resulting in a 5:4 version close to the early TCA shown on Arthur Dungate’s 5x4 era page, see [test card links](#test-cards) and [ratio example](#aspect-ratio).
 
 </details>
+
+## Timing
+
+TODO: note about 405/625 constants
+
+TODO: note about rise/fall times In simulating analogue test cards digitally
 
 ## Colours
 
@@ -1404,12 +1442,12 @@ Colour can be expressed as
 [YUV](#user-content-yuv),
 [HSL](#user-content-hsl),
 [HSB](#user-content-hsb) (HSV),
-[unit interval](#user-content-unit-interval-colour-components) (UI)[^19]
+[unit interval](#user-content-unit-interval-colour-components) (UI)[^20]
 or [named](#user-content-named-colours) colours.
 There are special names for [chroma keying](#user-content-chroma-keying) and [random](#user-content-random-colour) colours.
 
-<details><summary>Colour syntax</summary>
-<a name='colour-syntax'></a>
+<details><summary>Colour arguments</summary>
+<a name='colour-arguments'></a>
 
 
 ### Greyscale
@@ -1425,8 +1463,7 @@ Grey shades are specified as a value from 0 to 255.
 > Regardless how a colour is specified,
   if it produces grey then the PostScript colour space is set to Gray,
   otherwise it is converted to RGB.\
-  If colour is rendered to a grey/mono output device, e.g. `pnggray`,
-  then a warning is emitted.
+  If colour is rendered to a grey/mono output device, e.g. `pnggray`, then GS emits a warning.
 
 ### RGB
 
@@ -1440,8 +1477,8 @@ RGB can also be specified in hexadecimal #RRGGBB notation (case-insensitive) as 
 
 ### YUV
 
-YUV was invented for colour television[^20] but the number of standards nowadays is bewildering.
-The following are currently supported[^21]:
+YUV was invented for colour television[^21] but the number of standards nowadays is bewildering.
+The following are currently supported[^22]:
 
 - `YUVDSD`: limited YCbCr &rarr; full RGB, ITU-R BT.601, for digital SDTV
 - `YUVDHD`: limited YCbCr &rarr; full RGB, ITU-R BT.709, for digital HDTV
@@ -1452,7 +1489,7 @@ The following are currently supported[^21]:
 `YUV` defaults to `YUVDSD` about which Wikipedia has this to say:
 
 > This form of Y′CbCr is used primarily for older standard-definition television systems,
-  as it uses an RGB model that fits the phosphor emission characteristics of older CRTs[^22].
+  as it uses an RGB model that fits the phosphor emission characteristics of older CRTs[^23].
 
 <!-- Math in <details> bug: avoid $G_y$, see https://github.com/orgs/community/discussions/57950 -->
 To extend YUV conversions, add a matrix procedure like `YUVDSD` in [tcm-colour.ps](Resource/ProcSet/tcm-colour.ps)
@@ -1476,7 +1513,7 @@ Hue is an angle (0 to 360&deg;), and Saturation and Lightness are percentages (0
 
 ### HSB
 
-HSB colour, a.k.a. HSV[^23], is specified as an array of [Hue Saturation Brightness] values.\
+HSB colour, a.k.a. HSV[^24], is specified as an array of [Hue Saturation Brightness] values.\
 Hue is an angle (0 to 360&deg;), and Saturation and Brightness are percentages (0 to 100%).
 
 *Example:* `[310 60 90]HSB`
@@ -1486,20 +1523,21 @@ Hue is an angle (0 to 360&deg;), and Saturation and Brightness are percentages (
 
 ### Named colours
 
-All the standardised [X11 colour names](https://en.wikipedia.org/wiki/X11_color_names#Color_name_chart) are supported.
+All the standardised X11 colour names[^25] are supported.
 Colour names are case-insensitive and must not contain spaces.
 Both `grey` and `gray` (US) are recognised.
 
 *Example:* `/Lightgrey` (case-insensitive)
+
 
 ### Chroma keying
 
 Colour names for chroma key compositing (case-insensitive) are:\
 `/GreenScreen` (`[0 177 64]`)\
 `/BlueScreen` (`[0 71 187]`)\
-these seem most common but `[8 39 245]` is given as blue standard by Gerriets[^24].
+these seem most common but `[8 39 245]` is given as blue standard by Gerriets[^26].
 
-Green screens are generally used now but blue screens were prominent in early television[^25].
+Green screens are generally used now but blue screens were prominent in early television[^27].
 
 
 ### Random colour
@@ -1509,7 +1547,7 @@ Use `/RandomColour` or `/RandomGrey` (case-insensitive) for a randomly generated
 ### Unit interval colour components
 
 Whichever colour representation above is used, TCM has to convert all colour component values to the
-unit interval[^19] (UI), i.e. real numbers between 0.0&nbsp;and&nbsp;1.0 incusive,
+unit interval[^20] (UI), i.e. real numbers between 0.0&nbsp;and&nbsp;1.0 incusive,
 for PostScript to process.
 
 Therefore TCM also accepts UI values for all colour components, with automatic UI detection.
@@ -1547,6 +1585,21 @@ PS can paint any gradient, not necessarily continuous, by interpolation between 
 
 </details>
 
+<details><summary>Colour space</summary>
+<a name='colour-space'></a>
+
+
+TCM uses PS DeviceRGB and DeviceGray colour spaces which, by default, GS renders as sRGB and sRGB-linearised grey respectively.
+
+Since GS release 9.0 the color architecture uses the ICC[^28] format for color management.
+Specifically, for DeviceRGB and DeviceGray, the GS Color Management document[^29] states:
+
+> “The profile default_gray.icc is defined to provide output along the neutral axis with an sRGB linearization.
+   The profile default_rgb.icc is the V2 sRGB ICC profile”
+
+
+</details>
+
 ## Fonts
 
 How to
@@ -1578,7 +1631,7 @@ The filename must match the PS `FontName` in the file, which is often the filena
 If that fails, use a font inspector app:
 - Mac: Font Book –> File –> Validate File…
 - Linux: `fc-scan` dumps the `postscriptname`
-- Windows: install [Font-Validator](https://github.com/HinTak/Font-Validator)
+- Windows: install [Font-Validator]
 
 ### Editing fonts
 
@@ -1586,7 +1639,7 @@ If that fails, use a font inspector app:
 The *BBC-C* ident letter **C** is a Type&nbsp;42 font made with FontForge
 because the font couldn’t be found (it’s close to a cropped circle).
 The Replica icon ![](assets/icons/replica-16.svg) is also a single-glyph Type&nbsp;42 font, extracted from TTF.
-And the GillSans-alt TTF is GillSans with altered weight for *OTP-A*, which also couldn’t be matched.
+And the GillSans-alt TTF is GillSans with altered weight for *GTP-A*, which also couldn’t be matched.
 
 ### Block-inverted fonts
 
@@ -1601,7 +1654,9 @@ See [Text arguments](#user-content-text-arguments) for all block rendering argum
 ### BBC logo fonts
 
 From inspection, websites reproducing early BBC logos are not very reliable.
-Dave Jeffery’s blog[^26] gives the definitively name of the font as Washington, from a BBC insider,
+The definitively font name according to
+[Dave Jeffery’s blog](https://kecskebak.blogspot.com/2011/05/washington-post.html)
+is Washington, from a BBC insider,
 which he recreates in [FontForge] from BBC specimen sheets of the metal typeface –
 perhaps like this similar
 [Doric No. 1 Italic](https://archive.org/details/1959-stephenson-blake-printing-types/page/140/mode/2up?view=theater)
@@ -1624,7 +1679,6 @@ as they match closest in overlay tests.
 
 Other fonts are easier to identify, e.g. Gill Sans, Helvetica.
 Sanchez is used for the *BBC-F-electronic* ID.
-
 
 </details>
 
@@ -1653,7 +1707,8 @@ TCM only uses a few GS options:
 - `-s` defines a name with a string value (without parenthesis)
 - `-d` defines a name with a numeric or name value or `true`, `false`, `null`
 - `-f` execute a file, used here for argument files
-- `-+` execute a file and create an array of the following arguments
+- `-+` execute a file and create an array of following arguments
+- `--` end of options, execute following files
 
 Further info: [GS User Guide: Command line options](https://ghostscript.readthedocs.io/en/latest/Use.html#command-line-options)
 
@@ -1663,7 +1718,7 @@ Further info: [GS User Guide: Command line options](https://ghostscript.readthed
 <a name='environment-variables'></a>
 
 
-`GS_OPTIONS` saves CLI verbosity:
+Use `GS_OPTIONS` to save CLI verbosity:
 
 `export GS_OPTIONS='-q -IResource -dInterpolateControl=-1'`
 
@@ -1681,7 +1736,7 @@ Further info: [GS User Guide: Summary of environment variables](https://ghostscr
 <a name='finding-files'></a>
 
 
-Ghostscript runs with limited filesystem access (`SAFER` mode),
+By default Ghostscript runs with limited filesystem access (`SAFER` mode),
 so directory access must be enabled explicitly:
 
 The `Resource/` directory contains all TCM resources needed by `tcm.ps`
@@ -1711,9 +1766,48 @@ Further info: [GS User Guide: How Ghostscript finds files](https://ghostscript.r
 
 </details>
 
+<details><summary>Rendering options</summary>
+<a name='rendering-options'></a>
+
+
+See also [colour space](#user-content-colour-space).
+
+#### Interpolation
+
+By default, GS renders images using nearest neighbour scaling.
+To force images to be interpolated using bicubic scaling, use\
+`-dInterpolateControl=-1` which is much slower.\
+However GS can only interpolate non-skewed images at 0&deg; and 180&deg; rotation.
+
+For PDF and EPS rendering there are Distiller parameters:\
+`-dDownsampleXXXImages`\
+`-dXXXImageDownsampleThreshold`\
+`-dXXXImageDownsampleType`\
+`-dXXXImageResolution`\
+where `XXX` is `Color`, `Gray` or `Mono`.
+Whether `-dInterpolateControl` takes precedence is not documented.
+
+Further info:
+[GS User Guide: -dInterpolateControl](https://ghostscript.readthedocs.io/en/latest/Use.html#dinterpolatecontrol-control-value),
+[GS PDF/PS Devices: Distiller Parameters](https://ghostscript.readthedocs.io/en/latest/VectorDevices.html#distiller-parameters)
+
+#### Antialiasing
+
+For high quality image (not vector) rasterisations of text and graphics content, use subsample antialiasing:\
+`-dTextAlphaBits=4 -dGraphicsAlphaBits=4` (set by default for `pngalpha` device).
+
+For best PNG and TIFF rendering, use a high resolution with downscaling:\
+`-r600 -dDownScaleFactor=2` gives an improved 300dpi image\
+`-r1200 -dDownScaleFactor=6` gives 200dpi image\
+this is the [recommended way](https://ghostscript.readthedocs.io/en/latest/Devices.html#png-file-format) to achieve antialiasing and gives better results than `-dTextAlphaBits=4 -dGraphicsAlphaBits=4` alone.
+
+</details>
+
 ### Output formats
 
-Use `-sDEVICE=` to select a driver for the output format:
+Use `-sDEVICE=` to select a driver for the output format.
+
+See also [rendering options](#user-content-rendering-options) and [colour space](#user-content-colour-space) regarding rendering.
 
 <details><summary>Vector formats</summary>
 <a name='vector-formats'></a>
@@ -1730,11 +1824,11 @@ Use option `-sEPSCrop` when converting from EPS to other formats with GS.
 
 #### SVG
 
-Not supported directly
-but there are many PDF/EPS to SVG converters for download or online use.
-I use [pdf2svg](https://github.com/dawbarton/pdf2svg) from MacPorts,
-available as a Windows binary at [pdf2svg-windows](https://github.com/jalios/pdf2svg-windows),
-which simply delegates to [Poppler](https://poppler.freedesktop.org/) and [Cairo](https://cairographics.org/),\
+Not supported directly.
+
+There are many PDF/EPS to SVG converters for download or online use.
+I use [pdf2svg] from MacPorts, available as a Windows binary at [pdf2svg-windows],
+which simply delegates to [Poppler] and [Cairo],\
 preserving paths and even gradients without converting to bitmaps.
 e.g. `pdf2svg myTC.pdf myTC.svg`
 
@@ -1746,18 +1840,9 @@ Further info: [GS User Guide: High level devices](https://ghostscript.readthedoc
 <a name='raster-formats'></a>
 
 
-> ![Note](assets/icons/note-16.svg)\
-> Recommended options for images are:\
-  `-dTextAlphaBits=4 -dGraphicsAlphaBits=4` to improve subsample antialiasing
-
 #### PNG
 
-PNG is versatile and lossless, good for transparent areas.
-
-For best results use a high resolution with downscaling:\
-`-r600 -dDownScaleFactor=2` gives an improved 300dpi image\
-`-r1200 -dDownScaleFactor=6` gives 200dpi image\
-This is the [recommended way](https://ghostscript.readthedocs.io/en/latest/Devices.html#png-file-format) to achieve antialiasing.
+PNG is versatile and lossless, good for transparent areas, and is the recommended GS format for high-quality images.
 
 PNG device summary
 - `sDEVICE=png16malpha` (with `-dDownScaleFactor`) for 32-bit RGBA colour with transparency
@@ -1769,17 +1854,28 @@ PNG device summary
 
 Further info: [GS User Guide: PNG file format](https://ghostscript.readthedocs.io/en/latest/Devices.html#png-file-format)
 
-#### JPEG, TIFF, PNM, BMP
+#### TIFF, BMP, PNM, JPEG
+
+The `tiffscaled` devices support the `DownScaleFactor` option:\
+`gs -q -IResource -sDEVICE=tiffscaled24 -r576 -dDownScaleFactor=8 -sCompression=lzw -o tcf.tiff tcm.ps`
+
+JPEG is not intended for graphics but `-dJPEGQ=100` maximises the quality.
+Although undocumented, the `jpeg` device also supports `DownScaleFactor` but sets the DPI to the GS resolution, so\
+`gs -IResource -sDEVICE=jpeg -dJPEGQ=100 -r576 -dDownScaleFactor=8 -o tcf576.jpg tcm.ps`\
+for the default 576 pixel height makes a best-quality JPEG at 576 dpi downscaled from 6144x4608 internally (8x).
+For normal display resolution, change the JFIF density metadata to 72, e.g. with [ExifTool] (open source):\
+`exiftool -XResolution=72 -YResolution=72 -o tcf72.jpg tcf576.jpg`
 
 See [GS User Guide: Image file formats](https://ghostscript.readthedocs.io/en/latest/Devices.html#image-file-formats)
-for these and other formats Ghostscript can output directly.
+for these and other raster formats Ghostscript can output directly.
 
 #### WEBM, GIF
 
 Not supported directly.
+
 [ImageMagick] (open source) is good for CLI image conversions and manipulations,
-and there are many graphics editing tools,
-for instance [Affinity Photo](https://affinity.serif.com/en-gb/photo/) or [GIMP](https://www.gimp.org/),\
+and there are many graphics editing apps,
+for instance [Affinity Photo] or [GIMP] (open source),\
 e.g. `convert myTC.png myTC.webm` (ImageMagick) converts PNG to WEBM.
 
 </details>
@@ -1789,29 +1885,271 @@ e.g. `convert myTC.png myTC.webm` (ImageMagick) converts PNG to WEBM.
 
 
 Video is not supported directly.
-[FFmpeg] (open source) is good for CLI video creation from raster images,
-and there are many video editing tools.
 
-Formats and containers include MP4, MKV, MOV, MPG, DV, ISO plus many others.
+[FFmpeg] (open source) is a widely used CLI for making video files from raster images and other media sources, supporting many codecs and containers.
+The following suggests some video and audio settings.
 
-*Examples:*
+#### H.264/AAC (MP4)
 
-`ffmpeg -i myTC.png -vf loop=-1:1 -c:v libx264 -pix_fmt yuv420p -t 60 myTC.mp4`\
-creates a 60 second MP4 video of a static PNG image (no audio)
+Advanced Video Coding (AVC), see [H.264 Video Encoding Guide](https://trac.ffmpeg.org/wiki/Encode/H.264).
 
-`ffmpeg -i myTC.png -f lavfi -i sine=1000 -vf loop=-1:1 -c:v libx264 -pix_fmt yuv420p -c:a aac -t 60 myTC.mp4`\
-ditto, with a 1kHz mono tone
+`-c:v libx264 -tune stillimage -pix_fmt yuv420p`\
+`-c:a aac -ar 48000 -ac 2`
 
-`ffmpeg -i myTC.png -stream_loop -1 -i myTC.wav -vf loop=-1:1,scale=702:576,pad=720:0:-1 -target pal-dvd -t 1:0:0 myTC.mpg`\
-creates a 1-hour MPEG-2 video of a PNG image and looped WAV audio, encoded for PAL DVD 4:3 simulation (18 pixels added to width, cut off by analogue line blanking)[^27]
+#### FFV1/PCM (MKV)
+
+Lossless, see [FFV1 encoding cheatsheet](https://trac.ffmpeg.org/wiki/Encode/FFV1).
+
+`-c:v ffv1 -level 3 -coder 1 -context 1 -g 1 -pix_fmt yuv420p`\
+`-c:a pcm_s16le -ar 48000 -ac 2`
+
+#### VP9/Opus (WEBM)
+
+WebM 1280x720p@24,25,30, see [Recommended Settings for VP9](https://developers.google.com/media/vp9/settings/vod).
+
+`-c:v libvpx-vp9 -b:v 1024k -minrate 512k -maxrate 1485k -crf 32 -quality good -g 240 -tile-columns 4 -threads 4 -pix_fmt yuv420p`\
+`-c:a libopus`
+
+#### Animated PNG
+
+APNG muxer, see [apng](https://www.ffmpeg.org/ffmpeg-formats.html#toc-apng).
+For much smaller files with 256 colours, include palette filters as for [GIF](#user-content-animated-gif).
+
+`-f apng` specify format\
+`-plays 0` loop forever\
+`-final_delay n` delay n seconds between loops
+
+Optimize with [Oxipng].
+
+#### Animated GIF
+
+For best results,` save or pipe concatenated uncompressed frames:
+
+`-f yuv4mpegpipe`
+
+and encode them with [gifski] (see [overlay example](#user-content-overlay-example)).
+
+Otherwise, include these palette filters in the filtergraph,
+see [`palettegen`](https://www.ffmpeg.org/ffmpeg-filters.html#palettegen) & [`paletteuse`](https://www.ffmpeg.org/ffmpeg-filters.html#paletteuse):
+
+`[v]split[p][v]; [p]palettegen[p]; [v][p]paletteuse[v]`
+
+Optimize with [Gifsicle].
+
+</details>
+
+## Video generation
+
+> [!NOTE]
+> These examples use the versatile [FFmpeg] CLI and [Bash] shell but can be adapted for Windows.
+
+> [!TIP]
+> Use ffmpeg options:\
+  &bull; `-y` to overwrite output file\
+  &bull; `-hide_banner` to suppress copyright and build infomation\
+  &bull; `-v warning` to show warnings and errors only (hides banner too)\
+  &bull; `-v error` to show errors only
+
+### Static testcards
+
+Here are some examples of making still videos of test card with or without sound:
+
+<details><summary>Static examples</summary>
+<a name='static-examples'></a>
+
+
+First, make a test card image, say *BBC-F-electronic* (TCF, the default):\
+`gs -q -IResource -sDEVICE=png16m -r576 -dDownScaleFactor=8 -o myTC.png tcm.ps`\
+this makes a 24-bit sRGB antialiased PNG image, 768x576 pixels by default.
+
+> ![Tip](assets/icons/tip-16.svg)\
+> These examples make simple MP4 videos;
+  see [Video formats](#user-content-video-formats) for other formats and better encoding options.
+
+#### Silent test card
+
+Create a 60 second 25 fps MP4 video from image without audio:\
+`ffmpeg -i myTC.png -vf loop=-1:1 -pix_fmt yuv420p -t 60 myTC.mp4`\
+(the [`loop`](https://www.ffmpeg.org/ffmpeg-filters.html#loop) filter here creates an infinite loop)
+
+#### Test card with tone
+
+Create a 60 second MP4 video from image with a 1kHz mono tone:\
+`ffmpeg -i myTC.png -f lavfi -i sine=1000 -vf loop=-1:1 -pix_fmt yuv420p -t 60 myTC.mp4`\
+(the [`sine`](https://www.ffmpeg.org/ffmpeg-filters.html#sine) audio source here creates a sine wave of 1000Hz)
+
+#### Test card with music
+
+Create a 1-hour MP4 video from image and looped audio:\
+`ffmpeg -i myTC.png -stream_loop -1 -i myTC.wav -vf loop=-1:1 -pix_fmt yuv420p -t 1:0:0 myTC.mp4`
+
+> ![Aside](assets/icons/aside-16.svg)\
+> See the [Test Card Circle](#tv-community) link for historical test card and intermission background music lists.
+
+</details>
+
+### Overlays
+
+Here is *BBC-D-improved* (1965 version) with transparent centre overlaying a video:
+
+![video example](assets/video-mrd.gif)
+
+<details><summary>Overlay example</summary>
+<a name='overlay-example'></a>
+
+
+#### Overlay commands
+
+```bash
+gs -IResource -sDEVICE=png16malpha -r1200 -dDownScaleFactor=4 -o tcD.png \
+   -+ tcm.ps /TC /BBC-D-improved /CCf? false /SW? false /FB? false \
+   /T-1s '(1965)' /T-2s '(The Magic Roundabout)'
+
+ffmpeg -y -v warning -i magic.mkv -i tcD.png -filter_complex '
+    [0]scale=-2:260, pad=768:576:-1:-1[tmr];
+    [1]scale=768:576[tcd];
+    [tmr][tcd]overlay[v]
+    ' -map [v]:v -map 0:a -c:v libx264 -pix_fmt yuv420p -c:a aac magicD.mp4
+```
+
+The `gs` command `/CCf? /SW? /FB?` arguments switch off the centre circle fill, step wedge and frequency bars to make a transparent hole, and the `/T-1s /T-2s` arguments replace the caption text strings.
+As [recommended](#user-content-antialiasing), `-r1200 -dDownScaleFactor=4` creates a high resolution antialiased PNG.
+
+The `ffmpeg` command scales and centres the video 260px high (centre circle radius `CCr` x 2) and the PNG 576px high,
+then overlays the two, producing a MP4 video complete with sound from the video.
+
+The animated GIF above actually uses other [ffmpeg filters](https://www.ffmpeg.org/ffmpeg-filters.html#) too and a separate GIF encoder:
+
+```bash
+ffmpeg -y -v warning -ss 13:5.1 -t 5 -i magic.mkv -i tcD.png -filter_complex '
+    [0]crop=1584:1056:170:12, zscale=ih*4/3:ih:f=spline36:r=full,
+       monochrome, cas=0.75, normalize=smoothing=50, setsar=1/1, setdar=4/3,
+       zscale=-2:260*504/768:f=spline36, pad=504:378:-1:-1[v];
+    [1]zscale=504:378:f=spline36[i];
+    [v][i]overlay, fps=15, format=yuv420p[g];
+    ' -map [g]:v -f yuv4mpegpipe magicD.y4m
+    gifski -q -o magicD.gif magicD.y4m
+ # or -map [g]:v -f yuv4mpegpipe | gifski -q -o magicD.gif -
+```
+
+#### Overlay explanation
+
+The `magic.mkv` source[^30] is a 1920x1080 60 fps progressive video with 3:2 aspect centred episodes.
+A 5 second clip is extracted 13 minutes 5.1 seconds in.
+
+Filters:
+
+- [`crop`](https://www.ffmpeg.org/ffmpeg-filters.html#crop) cuts out the episodes
+- crop rectangle obtained using [`cropdetect`](https://www.ffmpeg.org/ffmpeg-filters.html#cropdetect) on video source
+- [`zscale`](https://www.ffmpeg.org/ffmpeg-filters.html#zscale) to `ih*4/3` width corrects the aspect from 3:2 to 4:3
+  (you can use [`scale`](https://www.ffmpeg.org/ffmpeg-filters.html#scale) of course but [`zscale`](https://www.ffmpeg.org/ffmpeg-filters.html#zscale) passes color characteristics unchanged)
+- the `spline36` scaling algorithm is good for downscaling sharp sources like testcards and animated content, as `lanczos` tends to introduce haloing/ringing artifacts
+- [`monochrome`](https://www.ffmpeg.org/ffmpeg-filters.html#monochrome) converts video to grey (it looks grey but we don't know)
+- [`cas`](https://www.ffmpeg.org/ffmpeg-filters.html#cas) sharpens video
+- [`normalize`](https://www.ffmpeg.org/ffmpeg-filters.html#normalize) stretches dynamic range from black to white
+- [`setsar`](https://www.ffmpeg.org/ffmpeg-filters.html#setsar) & [`setdar`](https://www.ffmpeg.org/ffmpeg-filters.html#setdar) (Sample/Pixel Aspect Ratio & Display Aspect Ratio) set square pixels and 4:3
+- [`zscale`](https://www.ffmpeg.org/ffmpeg-filters.html#zscale) to `260*504/768` height reduces the video to double the centre circle radius `CCr` for the GIF width 504
+- [`pad`](https://www.ffmpeg.org/ffmpeg-filters.html#pad) to `504:378` pads the video to the GIF size
+- [`zscale`](https://www.ffmpeg.org/ffmpeg-filters.html#zscale) to `504:378` reduces the test card image source to the GIF size
+- [`overlay`](https://www.ffmpeg.org/ffmpeg-filters.html#overlay) overlays the test card mask over the centred video
+- [`fps`](https://www.ffmpeg.org/ffmpeg-filters.html#fps) sets the frame rate to 15 fps for the GIF
+- [`format`](https://www.ffmpeg.org/ffmpeg-filters.html#format) converts to YUV for `yuv4mpegpipe`
+- `-f yuv4mpegpipe` concatenates frames,
+  saved as a [yuv4mpeg (.y4m)](https://linux.die.net/man/5/yuv4mpeg) file for [gifski] animation.
 
 
 </details>
 
-## Video effects
+### DVDs
 
-TODO[^28]
+Making a DVD involves:
 
+1. creating the needed media files to specification
+1. building the directory structure
+1. making an ISO image and burning it physical disk
+
+<details><summary>DVD example</summary>
+<a name='dvd-example'></a>
+
+
+#### FreeCalRec601
+
+Colour reproduction is a convoluted topic
+but someone who understands is colour science guru and retro enthusiast Dan Mons.
+His project [FreeCalRec601](https://github.com/danmons/FreeCalRec601)
+is a Rec.601/BT.601[^31] DVD and test pattern generator for calibrating Standard Definition (SD) CRT displays.
+His [RetroRGB post](https://retrorgb.com/freecalrec601-dvds-for-calibrating-crts.html) about it has useful links and videos.
+
+Like FreeCalRec601, TCM images have sRGB [colour space](#user-content-colour-space) when output by GS RGB devices,
+so we just deploy the same [FFmpeg] options for SD DVD conformance.
+
+> ![Aside](assets/icons/aside-16.svg)\
+> FreeCalRec601 [build_images.sh](https://github.com/danmons/FreeCalRec601/blob/master/build_images.sh) makes sRGB colour chunks using [ImageMagick],
+  for instance magenta75:\
+  `convert -colorspace sRGB -type truecolor -depth 8 -size 180x144 xc:'rgb(218,98,218)' chunk_magenta75.tif`\
+  the equivalent GS command being:\
+  `gs -q -sDEVICE=tiff24nc -o chunk_magenta75.tif -dDEVICEWIDTHPOINTS=180 -dDEVICEHEIGHTPOINTS=144 -c '218 255 div 98 255 div 218 255 div setrgbcolor 0 0 180 144 rectfill showpage'`\
+  and FreeCalRec601 ISOs built from GS-made sRGB colour chunks are empirically binary-identical to those built from ImageMagick chunks (tested for TIFF and PNG).
+
+
+#### Making VOB media
+
+FreeCalRec601 [build_vob.sh](https://github.com/danmons/FreeCalRec601/blob/master/build_vob.sh) builds VOBs using [FFmpeg],
+which boils down to this snippet:
+
+```bash
+target=pal-dvd # or ntsc-dvd
+vf=${target%-*}
+if [[ $vf = pal ]]; then
+    cs=bt601-6-625 cp=bt470bg ct=gamma28
+else # ntsc
+    cs=bt601-6-525 cp=smpte170m ct=smpte170m
+fi
+
+ffmpeg -y -v warning -loop 1 -i myTC.tif -i myTC.wav \
+    -vf "
+        colorspace=$cs:iall=bt709:range=tv:irange=tv,
+        tinterlace=interleave_top:flags=low_pass_filter
+    " \
+    -target $target -flags +ildct+ilme \
+    -color_primaries $cp -colorspace $cp -color_trc $ct -video_format $vf \
+    -aspect 4:3 -shortest myTC-$vf.vob
+```
+
+This makes an anamorphic (720x576 4:3) interlaced DVD VOB in PAL or NTSC variant with audio.
+
+#### VOB explanation
+
+- `target`,`vf`,`cs`,`cp`,`ct` shell variables for PAL and NTSC variants
+- `-loop` ([image 2 demuxer](https://www.ffmpeg.org/ffmpeg-formats.html#image2-1)) loops the image frame
+- `-vf` video filters:
+  - [`colorspace`](https://www.ffmpeg.org/ffmpeg-filters.html#colorspace) converts the colour primaries, white point and gamma from bt709 (=sRGB) to bt601 for the target
+  - [`tinterlace`](https://www.ffmpeg.org/ffmpeg-filters.html#tinterlace) makes the video interlaced, top field first, with vertical low-pass filtering (reduces interline twitter and Moiré artifacts)
+- `-target` ([main options](https://www.ffmpeg.org/ffmpeg.html#Main-options)) sets video and audio format options for the target output, `pal-dvd` or `ntsc-dvd`
+- `-flags` ([codec options](https://www.ffmpeg.org/ffmpeg-codecs.html#Codec-Options)) sets interlace encoding flags (cosine transform (DCT) and motion estimation)
+- `-color_primaries`, `-colorspace`, `-color_trc` ([codec options](https://www.ffmpeg.org/ffmpeg-codecs.html#Codec-Options)) sets colour encoding values
+- `-aspect` sets display aspect ratio (DAR)
+- `-shortest` limits duration to the shortest input channel (audio here)
+
+#### Authoring and burning
+
+For free DVD authoring check out the [DVDAuthor] CLI and [DVDStyler] app.
+[FreeCalRec601](https://github.com/danmons/FreeCalRec601) shows DVDAuthor in use with a menu.
+
+To make an ISO image from the CLI:
+
+Linux:\
+`mkisofs -V 'Volume Name' -dvd-video -udf -J -o output.iso source-dir`
+
+Mac:\
+`hdiutil makehybrid -default-volume-name 'Volume Name' -udf -iso -joliet -o output.iso source-dir`
+
+Windows:\
+`Oscdimg.exe -l"Volume Name" -u1 -j1 source-dir output.iso`
+
+Burning is usuallly a platform dependent proprietary command.
+
+</details>
 
 ## Test card sources
 
@@ -1857,7 +2195,7 @@ and the cards, monoscopes and slides all differed slightly.
 
 - [The Rewind Team](https://rewind.thetvroom.com/38764/features/the-history-of-the-bbc-trade-test-transmission-part-1-4/)
   – montages of mixed originals and reconstructions with useful commentary
-- [Test Card Circle](https://www.testcardcircle.org.uk/tchistory.html)
+- [The Test Card Circle](https://www.testcardcircle.org.uk/tchistory.html)
   – most of the images shown are reconstructions
 - [sub-TV ATV Test Cards](http://sub-tv.co.uk/atvtestcards.asp) and
   [625 TV Room](https://625.uk.com/tv_logos/flash2.htm#testcards)
@@ -1882,7 +2220,7 @@ Indeed it is so useful that it deserves a mention here:
 <a name='cardmaker'></a>
 
 
-<a href='assets/CardMaker.png'><img src='assets/CardMaker-thumb.png' alt='FML CardMaker' align='right'></a>
+<a href='assets/cm/CardMaker.png'><img src='assets/cm/CardMaker-thumb.png' alt='FML CardMaker' align='right'></a>
 
 Funsville Memetic Laboratories (FML) is the web space of Steve Heap, a.k.a. [FMLTheGeneral](https://www.youtube.com/@FMLTheGeneral/videos), author of CardMaker on the defunct oodletuz\.fsnet\.co\.uk domain but available on The Wayback Machine. Pertinent links are:
 
@@ -1901,7 +2239,7 @@ also a CHM Help window and a Paint window of the image generated from the PM5544
 
 CardMaker generates lossless BMP and variable-quality JPEG images only, no vector formats.
 Despite its legacy 32-bit 2004 vintage it is well designed, intuitive and functional.
-For detailed information see the [CardMaker Help](assets/CardMaker-help.pdf) PDF converted from the CHM.
+For detailed information see the [CardMaker Help](assets/cm/CardMaker-help.pdf) PDF converted from the CHM.
 
 </details>
 
@@ -1923,7 +2261,7 @@ Even now they are a fascinating read, and many principles explained are relevant
 
 This year (2025) I became aware that I had been living two streets away from Mr&nbsp;King
 in Furzeham, Brixham, for 14 years until he died in 2010.
-In August that year soon after his funeral service I became organist at the same [church](https://youtu.be/OmLH3yhwXrQ), still unaware.
+That August, soon after his funeral service, I began as organist at the same [church](https://youtu.be/OmLH3yhwXrQ), still unaware.
 Anyway, he mentored through his writings, covering the heyday of analogue electronics
 and milestone transitions from valve to semiconductor, monochrome to colour, analogue to digital…
 RIP GJK.
@@ -1975,10 +2313,22 @@ RIP GJK.
 - [5x4 era](http://www.bbctv-ap.co.uk/gallery1.htm) and [early 4x3 cards](http://www.bbctv-ap.co.uk/gallery2.htm) – by Arthur Dungate
 - [Test Card History](https://web.archive.org/web/20160304132214/http://www.pembers.freeserve.co.uk/Test-Cards/index.html) – excellent background by Alan Pemberton
 - [TVARK: BBC Testcards](https://tvark.org/features/testcards/bbc-testcards) – archive of test card video recordings
-- [The Test Card Girl](https://youtu.be/t7yIXLx5on0) – AMTV Documentary video on the legacy of Test Card F
+- [The Test Card Girl](https://youtu.be/t7yIXLx5on0) – AMTV documentary video: The Lasting Legacy of Test Card F
 - [Technical descriptions of UK test cards](https://web.archive.org/web/20160409090425/http://www.pembers.freeserve.co.uk/Test-Cards/Test-Card-Technical.html) – authoritative information by Alan Pemberton
 - [Tim Worthington: The Test Card](https://timworthington.blogspot.com/2013/11/the-fifty-fourth-annual-academy-salute.html) – a humorous take
 - see also [Test card sources](#test-card-sources) links above
+
+### Other test card projects
+
+- repo [danmons/FreeCalRec601](https://github.com/danmons/FreeCalRec601) – accurate Rec.601 SD calibration DVD and test pattern generator
+- repo [davecrump/vidsource](https://github.com/davecrump/vidsource) – [BATC](https://batc.org.uk/) Composite Video Source for [Raspberry Pi Zero](https://www.raspberrypi.com/products/raspberry-pi-zero/)
+- repo [sarodp/myatv](https://github.com/sarodp/myatv) – amateur TV test pattern generator from static JPEG images for Raspberry Pi
+- repo [georgik/esp32-monoscope-pattern](https://github.com/georgik/esp32-monoscope-pattern) – for [ESP32](https://www.espressif.com/en/products/socs/esp32), simulates classic test patterns with old TV effects
+- repo [edent/SVGtestcard](https://github.com/edent/SVGtestcard) – SVG 1080p test Card based on BBC HD pattern
+- repo [jyun9504/tv-test-card](https://github.com/jyun9504/tv-test-card) – a widescreen Vue implementation
+- repo [lordxeorus/Test-Patterns](https://github.com/lordxeorus/Test-Patterns) – FFMpeg colour bars generation: EBU 100/75% for PAL and SMPTE for NTSC
+- [TV Testcard Generator](https://testcardgen.onrender.com/) – interactive online tool for quick TC generation on the [Render](https://render.com/) platform
+- [FML Test Card Maker](https://web.archive.org/web/20151010221017/http://www.oodletuz.fsnet.co.uk/soft/tcmaker.htm) – Windows tool, creates test cards and patterns from elements, see [CardMaker](#user-content-cardmaker)
 
 ### TV Community
 
@@ -1990,30 +2340,60 @@ RIP GJK.
 - [Golborne Vintage Radio](https://www.golbornevintageradio.co.uk/) – forums on everything vintage
 - [The Test Card Circle](https://www.testcardcircle.org.uk/) – for test card music enthusiasts
 
-### Related TC projects
-
-- repo [davecrump/vidsource](https://github.com/davecrump/vidsource) – [BATC](https://batc.org.uk/) Composite Video Source for [Raspberry Pi Zero](https://www.raspberrypi.com/products/raspberry-pi-zero/)
-- repo [sarodp/myatv](https://github.com/sarodp/myatv) – amateur TV test pattern generator from static JPEG images for Raspberry Pi
-- repo [georgik/esp32-monoscope-pattern](https://github.com/georgik/esp32-monoscope-pattern) – for [ESP32](https://www.espressif.com/en/products/socs/esp32), simulates classic test patterns with old TV effects
-- repo [edent/SVGtestcard](https://github.com/edent/SVGtestcard) – SVG 1080p test Card based on BBC HD pattern
-- repo [jyun9504/tv-test-card](https://github.com/jyun9504/tv-test-card) – a widescreen Vue implementation
-- repo [lordxeorus/Test-Patterns](https://github.com/lordxeorus/Test-Patterns) – FFMpeg colour bars generation: EBU 100/75% for PAL and SMPTE for NTSC
-- [TV Testcard Generator](https://testcardgen.onrender.com/) – interactive online tool for quick TC generation on the [Render](https://render.com/) platform
-
 ### PostScript links
 
 - [PostScript Language Reference Manual](https://www.adobe.com/jp/print/postscript/pdfs/PLRM.pdf) – Adobe Systems PLRM LanguageLevel 3
-- [ttf2pscid2](https://github.com/scriptituk/ttf2pscid2) – TTF to PostScript Type 2 CIDFont Converter by [scriptituk](https://github.com/scriptituk)
-- [Lettering Designer](https://www.tribalsigns.co.uk/shop/custom-lettering/72-custom-lettering.html) – PostScript generated signs developed by [scriptituk](https://github.com/scriptituk)
+- [ttf2pscid2](https://github.com/scriptituk/ttf2pscid2) – TTF to PostScript Type 2 CIDFont Converter by [scriptituk]
+- [Lettering Designer](https://www.tribalsigns.co.uk/shop/custom-lettering/72-custom-lettering.html) – PostScript generated signage developed by [scriptituk]
+
+### Useful tools
+
+- [Affinity Photo] – low cost professional photo editing app
+- [Cairo] – 2D graphics library
+- [DVDAuthor] – for authoring DVD file and directory structure
+- [DVDStyler] – cross-platform free DVD authoring, front end for [DVDAuthor]
+- [ExifTool] – for manipulating metadata in a wide variety of file types
+- [FFmpeg] – software suite that handles multimedia data
+- [FontForge] – comprehensive font editor
+- [Font-Validator] – initially developed by Microsoft, has cross-platform binary downloads
+- [Gifsicle] – GIF editor and optimiser
+- [Gifski] – high-quality GIF animation encoder using [pngquant]
+- [GIMP] – GNU Image Manipulation Program
+- [ImageMagick] – for editing and manipulating digital images
+- [Oxipng] – PNG/APNG compression optimizer
+- [pdf2svg] – simple PDF to SVG converter using [Poppler] and [Cairo]
+- [pdf2svg-windows] – ditto for Windows
+- [Poppler] – PDF rendering library
+- [pngquant] – lossy compression of PNG images
+- [xfade-easing] – video transition effects for FFmpeg Xfade filter by [scriptituk]
+
+Primary: `#007bff` (Blue)
 
 ### Footnotes
 
 <!-- Link references -->
 
-[ImageMagick]: https://imagemagick.org/
+[Affinity Photo]: https://www.affinity.studio/photo-editing-software
+[Bash]: https://www.gnu.org/software/bash/
+[Cairo]: https://cairographics.org/
+[DVDAuthor]: https://dvdauthor.sourceforge.net/
+[DVDStyler]: https://www.dvdstyler.org/
+[ExifTool]: https://exiftool.org/
 [FFmpeg]: https://www.ffmpeg.org/
 [FontForge]: https://fontforge.org/
+[Font-Validator]: https://github.com/HinTak/Font-Validator
+[Gifsicle]: https://www.lcdf.org/gifsicle/
+[Gifski]: https://gif.ski/
+[GIMP]: https://www.gimp.org/
+[ImageMagick]: https://imagemagick.org/
+[Oxipng]: https://github.com/oxipng/oxipng
+[pdf2svg]: https://github.com/dawbarton/pdf2svg
+[pdf2svg-windows]: https://github.com/jalios/pdf2svg-windows
+[Poppler]: https://poppler.freedesktop.org/
+[pngquant]: https://pngquant.org/
+[xfade-easing]: https://github.com/scriptituk/xfade-easing
 
+[scriptituk]: https://github.com/scriptituk
 [^1]: [The PostScript Language: A Comprehensive Guide](https://smallusefultips.com/what-is-postscript-language/) – by SmallUsefulTips
 
 [^2]: [Page Description Language](https://en.wikipedia.org/wiki/Page_description_language) – Wikipedia
@@ -2040,33 +2420,39 @@ RIP GJK.
 
 [^13]: [Document Structuring Conventions](https://en.wikipedia.org/wiki/Document_Structuring_Conventions) – Wikipedia
 
-[^14]: [Sampling theorem](https://en.wikipedia.org/wiki/Nyquist–Shannon_sampling_theorem) – Wikipedia
+[^14] [VideoHelp Forum](https://forum.videohelp.com/) – huge video knowledgebase since 1999
 
-[^15]: [List of common display resolutions](https://en.wikipedia.org/wiki/List_of_common_display_resolutions#Analog_systems) – Wikipedia
+[^15]: [Sampling theorem](https://en.wikipedia.org/wiki/Nyquist–Shannon_sampling_theorem) – Wikipedia
 
-[^16]: [Television lines (TVL)](https://en.wikipedia.org/wiki/Television_lines) – Wikipedia
+[^16]: [List of common display resolutions](https://en.wikipedia.org/wiki/List_of_common_display_resolutions#Analog_systems) – Wikipedia
 
-[^17]: [Technical descriptions of UK test cards: Resolution](https://web.archive.org/web/20160409090425/http://www.pembers.freeserve.co.uk/Test-Cards/Test-Card-Technical.html#Resolution) – Alan Pemberton
+[^17]: [Television lines (TVL)](https://en.wikipedia.org/wiki/Television_lines) – Wikipedia
 
-[^18]: [Kell factor](https://en.wikipedia.org/wiki/Kell_factor) – Wikipedia
+[^18]: [Technical descriptions of UK test cards: Resolution](https://web.archive.org/web/20160409090425/http://www.pembers.freeserve.co.uk/Test-Cards/Test-Card-Technical.html#Resolution) – Alan Pemberton
 
-[^19]: [Unit interval](https://en.wikipedia.org/wiki/Unit_interval) – Wikipedia
+[^19]: [Kell factor](https://en.wikipedia.org/wiki/Kell_factor) – Wikipedia
 
-[^20]: [Y′UV History](https://en.wikipedia.org/wiki/Y′UV#History) – Wikipedia
+[^20]: [Unit interval](https://en.wikipedia.org/wiki/Unit_interval) – Wikipedia
 
-[^21]: [YUV – RGB Conversion](https://archive.ph/okUB) – archived from equasys GmbH
+[^21]: [Y′UV History](https://en.wikipedia.org/wiki/Y′UV#History) – Wikipedia
 
-[^22]: [ITU-R BT.601 conversion](https://en.wikipedia.org/wiki/YCbCr#ITU-R_BT.601_conversion) – Wikipedia
+[^22]: [YUV – RGB Conversion](https://archive.ph/okUB) – archived from equasys GmbH
 
-[^23]: [HSL and HSV](https://en.wikipedia.org/wiki/HSL_and_HSV) – Wikipedia
+[^23]: [ITU-R BT.601 conversion](https://en.wikipedia.org/wiki/YCbCr#ITU-R_BT.601_conversion) – Wikipedia
 
-[^24]: [Green screen / blue screen technique —> Color location](https://www.gerriets.com/gb/page/tv-and-studio-supplies/) – by PremiumBeat (Shutterstock)
+[^24]: [HSL and HSV](https://en.wikipedia.org/wiki/HSL_and_HSV) – Wikipedia
 
-[^25]: [Blue Screen vs Green Screen](https://www.premiumbeat.com/blog/blue-screen-vs-green-screen/) – Gerriets, specialist for stage and event equipment
+[^25]: [X11 colour names](https://en.wikipedia.org/wiki/X11_color_names#Color_name_chart) – Wikipedia
 
-[^26]: [Washington Post](https://kecskebak.blogspot.com/2011/05/washington-post.html) – by Dave Jeffery
+[^26]: [Green screen / blue screen technique —> Color location](https://www.gerriets.com/gb/page/tv-and-studio-supplies/) – by PremiumBeat (Shutterstock)
 
-[^27]: [Test Card J](https://archive.ph/RhAE8) – archived from barney-wol\.net
+[^27]: [Blue Screen vs Green Screen](https://www.premiumbeat.com/blog/blue-screen-vs-green-screen/) – Gerriets, specialist for stage and event equipment
 
-[^28]: [xfade-easing](https://github.com/scriptituk/xfade-easing) – video transition effects for FFmpeg Xfade filter by [scriptituk](https://github.com/scriptituk)
+[^28]: [International Color Consortium](https://www.color.org/)
+
+[^29]: [Ghostscript 9 Color Management](https://ghostscript.com/docs/GS9_Color_Management.pdf)
+
+[^30]: [The Magic Roundabout Series 1 1965–68 (incomplete)](https://youtu.be/jS2IlF9GEco) – 5 episodes, not 224, because of lost media
+
+[^31]: [Rec. 601](https://en.wikipedia.org/wiki/Rec._601) –
 
