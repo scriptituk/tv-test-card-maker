@@ -24,7 +24,7 @@ Aside from TV, it champions the benefits of PostScript[^1] for creating intricat
 This project is dedicated to the memory of **Gordon J. King** whose technical writings inspired so many budding electronics enthusiasts – see [dedication](#in-memoriam).
 
 
-Much of the nitty gritty is contained in collapsible sections revealed in the [Table of Contents](#table-of-contents).
+Much of the nitty gritty is contained in collapsible sections revealed in the [Table of Contents](#user-content-table-of-contents).
 
 <details open><summary>Table of Contents</summary>
 <a name='table-of-contents'></a>
@@ -1489,7 +1489,7 @@ The following are currently supported[^22]:
 > This form of Y′CbCr is used primarily for older standard-definition television systems,
   as it uses an RGB model that fits the phosphor emission characteristics of older CRTs[^23].
 
-<!-- Math in <details> bug: avoid $G_y$, see https://github.com/orgs/community/discussions/57950 -->
+<!-- Math in collapsed section bug: avoid $G_y$, see https://github.com/orgs/community/discussions/57950 -->
 To extend YUV conversions, add a matrix procedure like `YUVDSD` in [tcm-colour.ps](Resource/ProcSet/tcm-colour.ps)
 to convert *Y* *C*<sub>b</sub> *C*<sub>r</sub> components to *R* *G* *B*
 with constants *G*<sub>y</sub> *R*<sub>v</sub> *G*<sub>u</sub> *G*<sub>v</sub> *B*<sub>u</sub> *Y*<sub>o</sub> *C*<sub>o</sub>
@@ -2075,7 +2075,7 @@ Making a DVD involves:
 Colour reproduction is a convoluted topic
 but someone who understands is colour science guru and retro enthusiast Dan Mons.
 His project [FreeCalRec601](https://github.com/danmons/FreeCalRec601)
-is a Rec.601/BT.601[^31] DVD and test pattern generator for calibrating Standard Definition (SD) CRT displays.
+is a Rec.601/BT.601[^31][^23] DVD and test pattern generator for calibrating Standard Definition (SD) CRT displays.
 His [RetroRGB post](https://retrorgb.com/freecalrec601-dvds-for-calibrating-crts.html) about it has useful links and videos.
 
 Like FreeCalRec601, TCM images have sRGB [colour space](#user-content-colour-space) when output by GS RGB devices,
@@ -2446,11 +2446,11 @@ Primary: `#007bff` (Blue)
 
 [^27]: [Blue Screen vs Green Screen](https://www.premiumbeat.com/blog/blue-screen-vs-green-screen/) – Gerriets, specialist for stage and event equipment
 
-[^28]: [International Color Consortium](https://www.color.org/)
+[^28]: [International Color Consortium](https://www.color.org/) – ICC specification
 
-[^29]: [Ghostscript 9 Color Management](https://ghostscript.com/docs/GS9_Color_Management.pdf)
+[^29]: [Ghostscript 9 Color Management](https://ghostscript.com/docs/GS9_Color_Management.pdf) – color architecture in Ghostscript Release 9
 
 [^30]: [The Magic Roundabout Series 1 1965–68 (incomplete)](https://youtu.be/jS2IlF9GEco) – 5 episodes, not 224, because of lost media
 
-[^31]: [Rec. 601](https://en.wikipedia.org/wiki/Rec._601) – Wikipedia
+[^31]: [Rec.601/BT.601](https://en.wikipedia.org/wiki/Rec._601) – Wikipedia, ‘the bridge that joined the analogue and digital worlds’
 
