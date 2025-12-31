@@ -1,0 +1,99 @@
+%================================================================================
+% Test Card Maker replica pattern elements module
+%================================================================================
+100 dict begin
+
+% TCA pattern
+/make {
+    Background
+    StreakBox
+    NeedlePulses
+    Circles
+    FrequencyBars
+    Ident
+    Border
+} def
+
+/StreakBox {
+    SBc colour TCx SBy SBiw SBih rectfillc
+} def
+
+/NeedlePulses {
+    % left/right needle pulse lines are lowest two frequancy half-cycles wide
+    NPc colour
+    NPx TCy FBf 0 get 0 get mhz div2 NPh rectfillc
+    TCw NPx sub TCy FBf 1 get 0 get mhz div2 NPh rectfillc
+} def
+
+/Circles {
+    CClw setlinewidth
+    TCbc colour
+    black TCx TCy CCr 0 360 arc stroke
+} def
+
+/FrequencyBars {
+    10 dict begin
+        FBf {
+            aload pop exch
+            ceargs currentdict copy pop
+            /$y exch TCy SBy sub mul TCy add def
+            2 index cvas period2periodcentered $s cat /$s exch def
+            currentdict customtext
+            /x exch TCx FBx sub mul TCx add def
+            /nc exch def % number of cycles
+            /w exch mhz nc mul def % width
+            /h FBh def % height
+            /y $y def % y centre
+            /ap false def % true for antiphase
+            /gc FBc def % grating colour
+            /bc /white def % between grating colour
+            /hw w nc div div2 def % half-cycle width
+            currentdict squaregrating
+        } forall
+        % top-centre horizontal freq bar equals highest frequency (3MHz)
+        gsave
+        /x 0 def /y 0 def
+        TCx TCh SBy sub translate 90 rotate
+        currentdict squaregrating
+        grestore
+    end
+} def
+
+/Ident {
+    IDc colour
+    IDs IDh IDf sizefont
+    IDx IDy IDs showc
+} def
+
+/Castellations { % fg centre Castellations -
+    gsave
+        5 dict begin
+            concat
+            /d_gsz exch def
+            /d_c exch def
+            /d_len d_c d_gsz div2 tilef d_gsz 4 div sub def
+            [d_gsz div2] d_gsz 0.75 mul setdash
+            d_c 0 moveto d_len 0 rlineto currentpoint
+            d_c 0 moveto d_len neg 0 rlineto currentpoint
+            stroke setnodash
+            moveto d_gsz neg 0 rlineto
+            moveto d_gsz 0 rlineto
+            stroke
+        end
+    grestore
+} def
+
+/Border {
+    black
+    Bw mul2 setlinewidth
+    TCx Gsz [1 0 0 1 0 0] Castellations
+    TCx Gsz [1 0 0 1 0 TCh] Castellations
+    TCy Gszv [0 1 1 0 0 0] Castellations
+    TCy Gszv [0 1 1 0 TCw 0] Castellations
+
+} def
+
+currentdict end
+%================================================================================
+/tcm-pattern-TCA.ps exch /ProcSet defineresource
+

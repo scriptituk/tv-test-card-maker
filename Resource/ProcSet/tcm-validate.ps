@@ -1,0 +1,223 @@
+%================================================================================
+% Test Card Maker argument validation module
+%================================================================================
+100 dict begin
+
+/isnull { type /nulltype eq } bind def
+/isboolean { type /booleantype eq } bind def
+/isname { type /nametype eq } bind def
+/isstring { type /stringtype eq } bind def
+/iskey { dup isname exch isstring or } bind def
+/isinteger { type /integertype eq } bind def
+/isreal { type /realtype eq } bind def
+/isnumber { dup isinteger exch isreal or } bind def
+/isarray { dup type /arraytype eq exch type /packedarraytype eq or } bind def
+/isarraylength { exch dup isarray { length eq }{ pop pop false } ifelse } bind def
+/isarrayof { cvx exch dup isarray { true exch { 2 index exec and } forall }{ pop false } ifelse exch pop } bind def
+/iscustom { parsece { length 0 eq 3 1 roll pop pop }{ false } ifelse } bind def
+/isrgb { dup 3 isarraylength exch /isin255 isarrayof and } bind def
+/ishsb { dup 3 isarraylength { aload pop ispercent exch ispercent and exch ishue and }{ pop false } ifelse } bind def
+/iscolour {
+    {
+        dup isname { cvas } if
+        dup isstring { dup ([) startswith { parse1 } if } if % array string
+        dup isstring { dup (#) startswith { (16) exch cat parse1 isinteger exit } if } if % hex colour
+        dup isstring { dup tolower colours exch known { pop true exit } if } if % named colour
+        dup isin255 { pop true exit } if % grey value
+        dup isrgb 1 index ishsb or { pop true exit } if  % RGB/HSB array
+        pop false exit
+    } loop
+} bind def
+/isshape { dup isname { firstchr (LSCREP) exch contains }{ pop false } ifelse } bind def
+/isjoin { dup isname { cvas (MRB) exch contains }{ pop false } ifelse } bind def
+/isflip { dup isname { cvas true exch { chr (NHVB) exch contains and } forall }{ pop false } ifelse } bind def
+/isalign {
+    dup isname {
+        cvas true exch { chr (CLRJTB) exch contains and } forall
+    }{
+        pop false
+    } ifelse
+} bind def
+/isbetween { 2 index isnumber { 2 index ge 3 1 roll ge and }{ pop pop pop false } ifelse } bind def
+/isui { 0 1 isbetween } bind def % unitinterval
+/isangle { -360 360 isbetween } bind def
+/isin255 { 0 255 isbetween } bind def
+/ishue { 0 360 isbetween } bind def
+/ispercent { 0 100 isbetween } bind def
+/isinGsz { 0 Gsz isbetween } bind def
+/isinTCw { 0 TCw isbetween } bind def
+/isinTCh { 0 TCh isbetween } bind def
+
+/validate {
+    dup xcheck {
+        pop pop % disregard executables
+    }{
+        exch dup parsece { exch pop (0) exch cat cat exch pop } if % custom element #0
+        (=) exch cvas cat dup isdef { % validate proc known
+            cvx exec not { /typecheck signalerror } if
+        }{ % unknown validate proc
+            cvn /undefined signalerror
+        } ifelse
+    } ifelse
+} bind def
+
+% normal args
+/=Bac { dup 2 isarraylength exch /iscolour isarrayof and } bind def
+/=Bah { isui } bind def
+/=Bcc { dup 0 isarraylength exch dup 5 isarraylength exch /iscolour isarrayof and or } bind def
+/=Bw { isinGsz } bind def
+/=B? { isboolean } bind def
+/=CBc { /iscolour isarrayof } bind def
+/=CBew { isui } bind def
+/=CBh { isui } bind def
+/=Cc { 0 20 isbetween } bind def
+/=Cch { isui } bind def
+/=Cr { 0 10 isbetween } bind def
+/=Ct { /iscustom isarrayof } bind def
+/=Cy { isinTCh } bind def
+/=CCbr { isinTCh } bind def
+/=CCf? { isboolean } bind def
+/=CClw { isinGsz } bind def
+/=CCor { isinTCh } bind def
+/=CCr { isinTCh } bind def
+/=CC? { isboolean } bind def
+/=CPi { dup iscustom exch isnull or } bind def
+/=CSa { isangle } bind def
+/=CSbp { isinGsz } bind def
+/=CSc { dup 2 isarraylength exch /iscolour isarrayof and } bind def
+/=CSep { isinGsz } bind def
+/=CShf { 0.1 10 isbetween } bind def
+/=CSlw { isnumber } bind def
+/=CSnl { isnumber } bind def
+/=CSol { isinTCh } bind def
+/=CSow { isinTCh } bind def
+/=CS? { isboolean } bind def
+/=extends { dup isname exch isnull or } bind def
+/=Xp { xcheck } bind def
+/=FB2? { isboolean } bind def
+/=FBc { dup 3 isarraylength exch /iscolour isarrayof and } bind def
+/=FBf { /isarray isarrayof } bind def
+/=FBg { isinGsz } bind def
+/=FBh { isinTCh } bind def
+/=FBoh { isinTCw } bind def
+/=FBp { isinGsz } bind def
+/=FBs? { isboolean } bind def
+/=FBt { dup iscustom exch isnull or } bind def
+/=FBow { isinGsz } bind def
+/=FBx { isinTCw } bind def
+/=FB? { isboolean } bind def
+/=Glc { iscolour } bind def
+/=Glw { isinGsz } bind def
+/=Golw { isinGsz } bind def
+/=Gps? { isboolean } bind def
+/=Gsz { isinTCw } bind def
+/=G? { isboolean } bind def
+/=IDc { iscolour } bind def
+/=IDdr { isinGsz } bind def
+/=IDf { iskey } bind def
+/=IDh { isinGsz } bind def
+/=IDs { isstring } bind def
+/=IDx { isinTCw } bind def
+/=IDy { isinTCh } bind def
+/=NPh { isinTCh } bind def
+/=NPw { isinGsz } bind def
+/=NPx { isinTCw } bind def
+/=pattern { isname } bind def
+/=PP? { isboolean } bind def
+/=PPc { dup 2 isarraylength exch /iscolour isarrayof and } bind def
+/=PPh { isinTCh } bind def
+/=PPw { isinTCw } bind def
+/=PPx { isinTCw } bind def
+/=PP? { isboolean } bind def
+/=SBc { dup 2 isarraylength exch /iscolour isarrayof and } bind def
+/=SBih { isinTCh } bind def
+/=SBiw { isinTCw } bind def
+/=SBoh { isinTCh } bind def
+/=SBow { isinTCw } bind def
+/=SBy { isinTCh } bind def
+/=SB? { isboolean } bind def
+/=SWc { /iscolour isarrayof } bind def
+/=SWdc { /iscolour isarrayof } bind def
+/=SWds { dup isnumber exch /isnumber isarrayof or } bind def
+/=SWoh { isinTCh } bind def
+/=SWw { isinTCw } bind def
+/=SWx { isinTCw } bind def
+/=SW? { isboolean } bind def
+/=TC { isname } bind def
+/=TCar { isnumber } bind def
+/=TCbc { iscolour } bind def
+/=TCdr { isinteger } bind def
+/=TCfb { isinteger } bind def
+/=TCfr { 1 1000 isbetween } bind def
+/=TCh { isnumber } bind def
+/=TChr { isinteger } bind def
+/=TClb { isnumber } bind def
+/=TCll { isnumber } bind def
+/=TClt { isnumber } bind def
+/=TCnl { dup isinteger exch 10 10000 isbetween and } bind def
+/=TCr { 0.1 10 isbetween } bind def
+/=TCvr { isinteger } bind def
+/=TCw { isnumber } bind def
+/=Xwt { iscustom } bind def
+/=X? { isboolean } bind def
+
+% custom shape
+/=S0s { isshape } bind def
+/=S0c { dup iscolour exch isnull or } bind def
+/=S0k { =S0c } bind def
+/=S0x { isinTCw } bind def
+/=S0y { isinTCh } bind def
+/=S0h { isinTCh } bind def
+/=S0w { isinTCw } bind def
+/=S0a { isangle } bind def
+/=S0n { dup isinteger { 3 ge }{ pop false } ifelse } bind def
+/=S0r { isboolean } bind def
+/=S0d { /isnumber isarrayof } bind def
+/=S0t { dup isnumber { 0 ge }{ pop false } ifelse } bind def
+/=S0j { isjoin } bind def
+/=S0q { isflip } bind def
+/=S0z { isinteger } bind def
+/=S0? { isboolean } bind def
+/=S0 { iscustom } bind def
+
+% custom image
+/=I0f { iskey } bind def
+/=I0x { isinTCw } bind def
+/=I0y { isinTCh } bind def
+/=I0h { dup isinTCh exch 0 lt or } bind def
+/=I0w { dup isinTCw exch 0 lt or } bind def
+/=I0a { isangle } bind def
+/=I0s { isnumber } bind def
+/=I0i { TCw neg TCw isbetween } bind def
+/=I0j { TCh neg TCh isbetween } bind def
+/=I0q { isflip } bind def
+/=I0z { isinteger } bind def
+/=I0? { isboolean } bind def
+/=S0 { iscustom } bind def
+
+% custom text
+/=T0s { isstring } bind def
+/=T0f { isname } bind def
+/=T0c { iscolour } bind def
+/=T0x { isinTCw } bind def
+/=T0y { isinTCh } bind def
+/=T0h { isinTCh } bind def
+/=T0w { -100 TCw isbetween } bind def
+/=T0a { isalign } bind def
+/=T0t { -10 10 isbetween } bind def
+/=T0b { isboolean } bind def
+/=T0m { dup isnumber exch iskey or } bind def
+/=T0p { isui } bind def
+/=T0o { 0 100 isbetween } bind def
+/=T0r { isui } bind def
+/=T0g { -10 100 isbetween } bind def
+/=T0i { dup isnull exch isangle or } bind def
+/=T0- { isboolean } bind def
+/=T0z { isinteger } bind def
+/=T0? { isboolean } bind def
+/=T0 { iscustom } bind def
+
+currentdict end
+%================================================================================
+/tcm-validate.ps exch /ProcSet defineresource
+

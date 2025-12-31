@@ -1,0 +1,121 @@
+%================================================================================
+% Test Card Maker common utilities module
+%================================================================================
+100 dict begin
+
+% aggregates
+
+/isdef { where { pop true }{ false } ifelse } bind def
+/keys { [ exch { pop } forall ] } bind def
+/dclone { dup length dict copy } bind def
+/reversearray { dup length array exch dup length 1 sub exch { 3 copy put pop 1 sub } forall pop } bind def
+/insertionsort { % https://github.com/scriptituk/pslutils/blob/master/sort.ps
+    exch 1 1 2 index length 1 sub { 2 copy get 1 index -1 1 {
+    3 index 1 index 1 sub get dup 3 index 7 index exec le { pop exit } if
+    4 index exch 2 index exch put 1 eq { 0 } if
+    } for 3 -1 roll 1 index ne { exch 3 copy put } if pop pop } for exch pop
+} bind def
+
+% string
+
+/parse1 { % parse PS string expr
+    /$EXPR 1 index iskey { % can't use cleartomark as expr might contain mark
+        1 index cvas cvx stopped {
+            { /$EXPR eq { exit } if } loop
+            dup (: parse1 stopped) cat debug /$EXPR
+            $error /newerror false put % reset
+        }{
+            1 index /$EXPR eq { 3 1 roll exch } if % replace arg
+        } ifelse
+    } if
+    { /$EXPR eq { exit } if } loop
+} bind def
+/cat { concatstrings } bind def % gs built-in
+/cata { () exch { cvas cat } forall } bind def
+/split { [ 3 1 roll { search { 3 1 roll }{ exit } ifelse } loop ] } bind def % str seek split array
+/cvas { dup type /stringtype ne { dup type /nametype eq { dup length }{ 20 } ifelse string cvs } if } bind def
+/chr { 1 string dup 0 4 -1 roll put } bind def
+/ord { 0 get } bind def
+/firstchr { cvas 0 1 getinterval } bind def
+/lastchr { cvas dup length 1 sub 1 getinterval } bind def
+/contains { search { pop pop pop true }{ pop false } ifelse } bind def
+/startswith { anchorsearch { pop pop true }{ pop false } ifelse } bind def
+/period2periodcentered { (.) search { exch pop exch <B7> exch cat cat } if } bind def
+/inttok { % <string> inttok <int true> or <false>
+    token {
+        exch length 0 eq 1 index type /integertype eq and dup not { exch pop } if
+    }{
+        false
+    } ifelse
+} bind def
+/tolower {
+    dup length string copy
+    0 1 2 index length 1 sub
+    { 2 copy get dup dup 65 ge exch 90 le and { 32 add 3 copy put } if pop pop } for
+} bind def
+/toupper {
+    dup length string copy
+    0 1 2 index length 1 sub
+    { 2 copy get dup dup 97 ge exch 122 le and { 32 sub 3 copy put } if pop pop } for
+} bind def
+/strrev {
+    dup length string exch dup length exch
+    { exch 1 sub exch 3 copy put pop } forall
+    pop
+} bind def
+/fileext { strrev (.) search { exch pop exch pop strrev toupper cvn }{ pop null } ifelse } bind def
+
+% math
+
+/mul2 { 2 mul } bind def
+/div2 { 2 div } bind def
+/clampui { 0 max 1 min } bind def
+/even { div2 round cvi mul2 } bind def
+/tan { dup sin exch cos div } bind def
+/sq { dup mul } bind def
+/hypot { sq exch sq add sqrt } bind def % x y hypot h (hypotenuse)
+/leg { sq exch sq sub abs sqrt } bind def % h l leg l (cathetus)
+/normalize { 2 copy hypot 3 -1 roll 1 index div 3 1 roll div } bind def % x y normalize x y
+/mulv { exch 4 -1 roll mul 3 1 roll mul } bind def % x1 y1 x2 y2 mulv x1*x2 y1*y2
+/addv { exch 4 -1 roll add 3 1 roll add } bind def % x1 y1 x2 y2 addv x1+x2 y1+y2
+/subv { exch 4 -1 roll sub 3 1 roll exch sub } bind def % x1 y1 x2 y2 subv x2-x1 y2-y1 (careful)
+/lerp { exch 2 index sub mul add } bind def % x y z lerp x+(y-x)*z
+/dot { mulv add } bind def % x1 y1 x2 y2 dot product
+/projection { % width/2 height/2 angle projection length
+    dup cos exch sin
+    2 copy 2 { 6 -1 roll 2 index 0 lt { neg } if } repeat
+    dot dup mulv hypot % scalar product projection
+} bind def
+
+% font
+
+/sizefont { % string height fontname sizefont
+    12 selectfont 0 0 moveto exch true charpath pathbbox newpath subv
+    dup 0 eq { pop pop 0 0 moveto (T) true charpath pathbbox newpath subv } if % use T height if whitespace
+    exch pop div % scale factor
+    currentfont exch scalefont setfont
+} bind def
+
+% grid procs
+
+/xGsz { Gsz mul } bind def % times grid size
+/hGsz { Gsz div2 } bind def % half grid size
+/qGsz { hGsz div2 } bind def % quarter grid size
+/xGlw { Glw mul } bind def % times grid linewidth
+/hGlw { Glw div2 } bind def % half grid linewidth
+/tilef { exch 1 index div floor mul } bind def
+/tilec { exch 1 index div ceiling mul } bind def
+/lGx { TCx dup Bw sub Gsz tilef sub } bind def % leftmost grid centre
+/bboxi { % x y r t bboxi x y r t (return integral bbox)
+    { 4 { ceiling cvi 4 1 roll } repeat }
+    1 index isarray { exch aload pop 5 -1 roll exec 4 array astore }{ exec } ifelse
+} bind def
+/randp { % x y r t randp x y (return random point within bbox)
+    rand exch 3 index sub ceiling cvi mod 3 -1 roll add 3 1 roll
+    rand exch 2 index sub ceiling cvi mod add exch
+} bind def
+
+currentdict end
+%================================================================================
+/tcm-common.ps exch /ProcSet defineresource
+

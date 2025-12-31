@@ -1,0 +1,631 @@
+%================================================================================
+% Test Card Maker templates module
+%================================================================================
+100 dict begin
+
+/Blank { null % extends nothing
+
+% custom shape S0 defaults
+CustomShape { exch cvas 1 1 getinterval (S0) exch cat exch def } forall
+
+% custom image I0 defaults
+CustomImage { exch cvas 1 1 getinterval (I0) exch cat exch def } forall
+
+% custom text T0 defaults
+CustomText { exch cvas 1 1 getinterval (T0) exch cat exch def } forall
+
+% extra processing
+/Xsp {} arg % supplementary rendering procedures
+/Xwt /T-9 arg % watermark text element name, null for no watermark
+/X? true arg % false for no extra processing
+
+% watermark text
+/T-9s (r) arg
+/T-9f /eos-icons--replica arg
+/T-9c 0.5 arg
+/T-9y TCh 50 div arg
+/T-9x TCw T-9y sub arg
+/T-9h 1.6 T-9y mul arg % show in bottom-left 1/25th of height
+/T-9a /C arg
+
+} def
+
+%================================================================================
+
+/TCA { /Blank % extends
+
+405t
+
+% validator overrides
+/=Gszv { isnumber } bind def
+/=FBc { iscolour } bind def
+/=NPc { iscolour } bind def
+/=SBc { iscolour } bind def
+
+/TCbc /white arg
+/Gszv TCh 16.5 div arg % vertical grid size
+/Gsz TCw 20.5 div 1.1 Gszv mul min 0.9 Gszv mul max arg
+/SBiw 3 xGsz arg
+/SBih 0.51 xGsz arg
+/SBy TCy 4.44 xGsz sub arg
+/SBc /black arg
+/CClw 0.74 xGsz arg
+/CCr 2.6 xGsz arg
+/IDs (A) arg
+/IDf /GillSans-alt arg
+/IDc /black arg
+/IDh 0.89 xGsz arg
+/IDx TCx arg
+/IDy TCy 5.51 xGsz sub arg
+/FBh SBiw arg
+/FBc /black arg
+/FBx TCx 4.81 xGsz sub arg
+% freq bars array: MHz, nbars, x-multiplier, custom text element name, y-multiplier
+/FBf [ [1 6 -1 /T-2 1] [1.5 6 1 /T-3 1] [2 6 -1 /T-4 -1] [2.5 6 0 /T-1 0] [3 6 1 /T-5 -1] ] arg
+/NPh FBh arg
+/NPx TCx 5.91 xGsz sub arg
+/NPc /black arg
+/Bw 0.53 xGsz arg
+
+% frequency text
+/T-1s (     MC) arg % (units)
+/T-1f /GillSans-alt arg
+/T-1h 0.53 xGsz arg
+/T-1x TCx arg
+/T-1t 0.1 arg
+/T-1w -0.95 arg
+/T-1 /T0 merge
+
+/T-2s ( MC) arg
+/T-2x FBx 1.95 xGsz sub arg
+/T-2t 0.05 arg
+/T-2 /T-1 merge
+
+/T-3x TCw T-2x sub arg
+/T-3w -0.9 arg
+/T-3 /T-2 merge
+
+/T-4 /T-2 merge
+
+/T-5x TCw FBx sub 1.85 xGsz add arg
+/T-5t 0.15 arg
+/T-5 /T-4 merge
+
+} def
+
+%================================================================================
+
+/TCC-early { /Blank % extends
+
+405t
+
+% test card
+/TCbc 0.6 arg % background colour
+% graticule
+/Gsz TCh 0.129 mul arg % grid size: datum for all measurements
+/Glw Gsz 12 div arg % grid linewidth
+/Golw 0 arg % grid outline width: 0 for no outline (F/J/W/X pattern)
+/Gps? false arg % true to shift grid phase by half a square
+/Glc /white arg % grid line colour
+/G? true arg % false for no graticule
+% streak box
+/SBow 2.66 xGsz arg % streak box outer width
+/SBoh 0.89 xGsz arg % streak box outer height
+/SBiw 1.75 xGsz arg % streak box inner width
+/SBih 0.31 xGsz arg % streak box inner height
+/SBy TCy 2.81 xGsz add arg % streak box vertical centre
+/SBc [/black /white] arg % streak box colours: [inner outer]
+/SB? true arg % false for no streak box
+% pulse panes (left)
+/PPw 2 xGsz Glw add arg % pulse pane width
+/PPh 3 xGsz Glw add arg % pulse pane height
+/PPx TCx 2 xGsz sub arg % pulse pane horizontal centre
+/PPc [/black /white] arg % pulse pane colours: [left right]
+/PP? true arg % false for no pulse panes or needle pulse lines
+% needle pulse lines (left)
+/NPw 0.25 us arg % needle pulse linewidth
+/NPh 1.8 xGsz arg % needle pulse line height
+/NPx PPx 0.725 xGsz sub arg % needle pulse line horizontal centre
+% ident designation
+/IDs (C) arg % ident string: empty for no ident
+/IDf /GillSans arg % ident font
+/IDc /white arg % ident colour
+/IDh 0.63 xGsz arg % ident height
+/IDx TCx 0.07 xGsz sub arg % ident horizontal centre
+/IDy TCy 3 xGsz sub arg % ident vertical centre
+/IDdr 0 arg % ident adjacent dot radius: 0 for none
+% caption (clipped)
+/Ct [] arg % caption custom text element names: empty for no caption
+/Cy TCy 3 xGsz sub arg % caption vertical centre
+/Cr 1 arg % caption rectangle graticule rows
+/Cc 2 arg % caption rectangle graticule columns
+/Cch 1 arg % caption rectangle clip height scale factor
+% centre circles
+/CCf? true arg % false for no fill (empty)
+/CClw 0.1 xGsz arg % centre circles stroke width
+/CCr 2 xGsz arg % white circle stroke radius
+/CCbr CCr CClw add arg % black circle stroke radius: 0 for none
+/CCor CCr CClw mul2 add arg % outer circle stroke radius: 0 for none
+/CC? true arg % false for no circles
+% centre picture
+/CPi null arg % picture custom image element name, null for no image
+% step wedge
+/SWx TCx arg % step wedge horizontal centre
+/SWw 0.5 xGsz arg % step wedge width
+/SWoh 2.5 xGsz arg % step wedge outer height
+/SWc [0 0.3 0.5 0.7 1] arg % step wedge colours: [bottom to top]
+/SWds 0 arg % step wedge dot size 0 for none, diameter or [width height] array
+/SWdc [0.2 1] arg % step wedge dot colours: [bottom top]
+/SW? true arg % false for no step wedge
+% frequency bars (left)
+/FB2? true arg % true for 2 bars, false for 1
+/FBoh PPh arg % freq bar outer height
+/FBow SWw arg % freq bar outer width
+/FBh 0.505 xGsz arg % freq bars height
+/FBg 0 arg % freq bars gap size (>0 for D/E)
+/FBp 0.012 xGsz arg % freq bars padding
+/FBc [0 1 1] arg % freq bars colours: [min max surround]
+/FBs? false arg % true for sinusoidal frequency gratings, false for square
+/FBx TCx CCr CClw 0.4 mul sub FBoh div2 leg sub FBow div2 add arg % freq bars horizontal centre
+/FBf [ [1 4 0] [1.5 6 0] [2 8 0] [2.5 10 0] [3 12 0] ] arg % frequencies: [MHz nbars antiphase] array
+/FBt null arg % custom text element name for freq text template, null for no text
+/FB? true arg % false for no frequency bars
+% corner stripes (bottom-left)
+/CSa 1 TCr atan arg % corner stripes angle from horizontal
+/CSol 3.03 xGsz arg % corner stripes outer length from corner
+/CSow Gsz arg % corner stripes outer width
+/CShf 0.9 arg % corner stripes horizontal fundamental MHz
+/CSlw CShf mhz div2 1 TCar atan sin mul arg % corner stripes linewidth at normal aspect ratio
+/CSnl 10 arg % corner stripes number of lines
+/CSep Glw arg % corner stripes end padding
+/CSbp Glw arg % corner stripes border padding (clipped)
+/CSc [/black /white] arg % corner stripes colours: [grating surround]
+/CS? true arg % false for no corner stripes
+% colour bar
+/CBh 0 arg % colour bar height: 0 for no colour bars (fraction of border width)
+/CBc [] arg % colour bar colours: [left to right]
+/CBew 0 arg % colour bar end widths (fraction of uniform inner widths)
+% border
+/Bw 0.26 xGsz arg % border width
+/Bah 0 arg % border arrow height (fraction of border width, 0 for no arrows)
+/Bac [1 0] arg % border arrow colours: [horizontal vertical]
+/Bcc [] arg % castellation colours: empty or [left-red left-blue bottom-green right-yellow top-cyan]
+/B? true arg % false for no drawn border
+
+} def
+
+%================================================================================
+
+/TCC { /TCC-early % extends
+
+/Gsz TCh 0.129 mul arg
+/SBih 0.28 xGsz arg
+/IDf /TCM-BBC_C-SemiBold arg
+/IDh 0.69 xGsz arg
+/IDx TCx 0.02 xGsz sub arg
+/Ct [/T-1] arg
+/SWoh 2.55 xGsz arg
+/SWw 0.52 xGsz arg
+/NPx PPx 0.7 xGsz sub arg
+/CCor CCr CClw 1.9 mul add arg
+/FBh 0.53 xGsz arg
+/FBp 0.02 xGsz arg
+/CSol 3.08 xGsz arg
+/Bw 0.29 xGsz arg
+/Bah 0.5 arg
+
+% caption text
+/T-1s (BBC) arg
+/T-1f /Courier-Bold arg
+/T-1c 0 arg
+/T-1h 0.41 xGsz arg
+/T-1x TCx 0.06 xGsz add arg
+/T-1y Cy arg
+/T-1w 1.35 xGsz arg
+/T-1t 0.6 arg
+/T-1 /T0 merge
+
+} def
+
+%================================================================================
+
+/TCC-625 { /TCC % extends
+
+625t
+
+/TCbc 0.53 arg
+/Gsz TCh 7.79 div arg
+/Glw Gsz 12 div arg
+/SBy TCy 2.8 xGsz add arg
+/SBoh 0.89 xGsz arg
+/SBow 2.68 xGsz arg
+/NPx TCx 2.74 xGsz sub arg
+/NPw 0.2 us arg
+/IDs () arg
+/Cc 7 arg
+/Ct [/T-3 /T-4] arg
+/CClw 0.12 xGsz arg
+/CCr 2.01 xGsz arg
+/CCbr CCr CClw add arg
+/CCor CCr CClw 1.8 mul add arg
+/SWoh 2.67 xGsz arg
+/SWw 0.535 xGsz arg
+/SWc [0 0.33 0.5 0.8 1] arg
+/FBow 0.6 xGsz arg
+/FBh 0.525 xGsz arg
+/FBg 0 arg
+/FBp 0.023 xGsz arg
+/FBoh 3 xGsz Glw add arg
+/FBx TCx CCr CClw 0.1 mul sub FBoh div2 leg sub FBow div2 add arg
+/FBf [ [1.5 4 0] [2.5 7 0] [3.75 10 0] [4.5 12 0] [5.25 14 0] ] arg
+/FBt /T-1 arg
+/CSol 3.11 xGsz arg
+/CShf 1.3 arg
+/Bw 0.29 xGsz arg
+/Bah 1 arg
+/Xsp { Mcs } arg
+
+% frequency text
+/T-1s (0123456789) arg % supplied by proc
+/T-1f /Helvetica-Bold arg
+/T-1h FBh 0.3 mul arg
+/T-1w -0.9 arg
+/T-1x FBx FBow div2 add TCx SWw div2 sub add div2 arg
+/T-1c 0 arg
+/T-1 /T0 merge
+
+% Mc/s text
+/T-2s (Mc/s) arg
+/T-2x TCx arg
+/T-2y TCy SWoh 0.56 mul add arg
+/T-2 /T-1 merge
+/Mcs { /T-2 ceargs customtext } def
+
+% caption text
+/T-3s (BBC 2) arg
+/T-3f /DerekATItalic arg
+/T-3c 0 arg
+/T-3w 2.39 xGsz arg
+/T-3h 0.46 xGsz arg
+/T-3b true arg
+/T-3m /C arg
+/T-3a /R arg
+/T-3x TCx 0.15 xGsz sub arg
+/T-3y TCy 3 xGsz sub arg
+/T-3t 0.13 arg
+/T-3g 0.45 arg
+/T-3p 0.13 arg
+/T-3o 1.6 arg
+/T-3- true arg
+/T-3 /T0 merge
+/T-4s (625 LINES) arg
+/T-4f /Helvetica-Narrow arg
+/T-4w 2.47 xGsz arg
+/T-4a /L arg
+/T-4x TCx 0.18 xGsz add arg
+/T-4t 0.02 arg
+/T-4b false arg
+/T-4 /T-3 merge
+
+} def
+
+%================================================================================
+
+/TCD-early { /TCC-early % extends
+
+/Gsz TCh 9 div arg
+/Glw Gsz 0.1 mul arg
+/Gps? true arg
+/SBow 3.45 xGsz arg
+/SBoh 0.9 xGsz arg
+/SBiw 2.2 xGsz arg
+/SBih 0.4 xGsz arg
+/SBy TCy 3 xGsz add arg
+/PPw Gsz Glw add arg
+/PPh 2.9 xGsz Glw add arg
+/PPx TCx 4 xGsz sub dup Gsz lt { Gsz add } if arg
+/PPc [/white /black] arg
+/NPw 0.3 us arg
+/NPx PPx arg
+/IDs (D) arg
+/IDf /GillSans arg
+/IDh 0.52 xGsz arg
+/IDy TCy 2.62 xGsz sub arg
+/IDx TCx 0.02 xGsz add arg
+/Cy TCy 3.5 xGsz sub arg
+/Cc 7 arg
+/Cch 0.85 arg
+/Ct [/T-1 /T-2] arg
+/CClw 0.1 xGsz arg
+/CCr 2.05 xGsz arg
+/CCbr CCr CClw add arg
+/CCor CCr CClw mul2 add arg
+/SWw 0.593 xGsz arg
+/SWoh 2.965 xGsz arg
+/SWc [0 0.33 0.55 0.75 0.95] arg
+/SWds 1.6 xGlw arg
+/FBow Gsz Glw sub arg
+/FBh 0.53 xGsz arg
+/FBoh 1.8 xGsz arg
+/FBx TCx 1.58 xGsz sub FBow div2 add arg
+/FBg FBoh FBh 3 mul sub div2 arg
+/FBp 0.075 xGsz arg
+/FBc [ 0.25 0.75 1 ] arg
+/FBs? true arg
+/FBf [ [1 5 0] [1.5 7 1] [2 9 1] [2.5 12 0] [2.75 13 0] [3 14 0] ] arg
+/CSa 45 arg
+/CSol 3.31 xGsz arg
+/CSow 1.05 xGsz arg
+/CSnl 8 arg
+/CSep 1.2 xGlw arg
+/CShf 1.0 arg
+/CSlw CShf mhz div2 CSa sin mul arg
+/Bw hGsz hGlw sub arg
+/Bah 1 arg
+
+% caption text
+/T-1s (BBC 1) arg
+/T-1f /DerekATItalic arg
+/T-1c 1 arg
+/T-1x TCx 0.25 xGsz sub arg
+/T-1y Cy arg
+/T-1w 2.36 xGsz arg
+/T-1h 0.45 xGsz arg
+/T-1b true arg
+/T-1m /C arg
+/T-1a /R arg
+/T-1t 0.13 arg
+/T-1g 0.4 arg
+/T-1p 0.14 arg
+/T-1o 1.2 arg
+/T-1- true arg
+/T-1 /T0 merge
+/T-2s (405 LINES) arg
+/T-2f /Helvetica-Narrow arg
+/T-2a /L arg
+/T-2x TCx 0.09 xGsz add arg
+/T-2w 2.48 xGsz arg
+/T-2t 0.05 arg
+/T-2b false arg
+/T-2 /T-1 merge
+
+} def
+
+%================================================================================
+
+/TCD-improved { /TCD-early % extends
+
+/IDdr 0.07 xGsz arg
+/Ct [/T-1 /T-2] arg
+/FBc [ 0.15 0.85 1 ] arg
+
+% caption text
+/T-1s (BBC 1) arg
+/T-1f /DerekATItalic arg
+/T-1c 1 arg
+/T-1x TCx 0.67 xGsz sub arg
+/T-1y Cy arg
+/T-1w 2.36 xGsz arg
+/T-1h 0.45 xGsz arg
+/T-1b true arg
+/T-1m /C arg
+/T-1a /R arg
+/T-1t 0.13 arg
+/T-1g 0.4 arg
+/T-1p 0.14 arg
+/T-1o 1.2 arg
+/T-1- true arg
+/T-1 /T0 merge
+/T-2s (Reduced Power) arg
+/T-2f /Arial arg
+/T-2h 0.41 xGsz arg
+/T-2a /L arg
+/T-2x TCx 0.42 xGsz sub arg
+/T-2w 3.55 xGsz arg
+/T-2t -0.05 arg
+/T-2b false arg
+/T-2 /T-1 merge
+
+} def
+
+%================================================================================
+
+/TCE { /TCD-early % extends
+
+625t
+
+/TCbc 0.5 arg
+/Glw 7 lines arg
+/NPw 0.2 us arg
+/IDs (E) arg
+/IDy TCy 2.6 xGsz sub arg
+/SWds 1.3 xGlw arg
+/FBh 0.55 xGsz arg
+/FBc [ 0.25 0.75 0.75 ] arg
+/FBf [ [1.5 5 0] [2.5 9 0] [3.5 11 0] [4 13 0] [4.5 15 0] [5.25 17 0] ] arg
+/CShf 1.5 arg
+
+/T-1s (BBC 2) arg
+/T-1x TCx 0.21 xGsz sub arg
+/T-1w 2.33 xGsz arg
+/T-2s (625 LINES) arg
+/T-2x TCx 0.13 xGsz add arg
+/T-2w 2.38 xGsz arg
+
+} def
+
+%================================================================================
+
+/TCF-early { /TCE % extends
+
+625t
+
+/Glw 8 lines arg
+/Golw 0.42 xGlw arg
+/CPi /I-1 arg
+/SBow 3.45 xGsz arg
+/SBoh 0.9 xGsz arg
+/SBiw 2.1 xGsz arg
+/SBih 0.45 xGsz arg
+/PP? false arg
+/IDs (F) arg
+/IDf /Helvetica-Narrow-Bold arg
+/IDh 0.38 xGsz arg
+/IDx TCx arg
+/IDy TCy 2.71 xGsz sub arg
+/IDdr 0 arg
+/Ct [] arg
+/CCf? false arg
+/CClw 0.9 xGlw arg
+/CCr 2.5 xGsz 0.8 xGlw sub arg
+/CCbr 0 arg
+/CCor 0 arg
+/SWw Gsz Glw sub arg
+/SWx lGx 2 xGsz add TCx 3 xGsz sub min arg
+/SWc [0 0.2 0.3 0.4 0.6 0.85] arg
+/SWoh 4 xGsz Glw sub arg
+/SWds 1.2 xGlw arg
+/FB2? false arg
+/FBow SWw arg
+/FBh SWoh SWc length div arg
+/FBx TCx SWx sub TCx add arg
+/FBg 0 arg
+/FBp 0 arg
+/FBc [ 0 0.95 1 ] arg
+/FBf [ [1.5 6 0] [2.5 9 0] [3.5 13 0] [4 15 0] [4.5 17 0] [5.25 20 0] ] arg
+/FBs? false arg
+/FBoh FBh FBf length mul arg
+/FBt /T-1 arg
+/CSol 2.73 xGsz arg
+/CSow 1.1 xGsz arg
+/CSep Glw arg
+/CBh 0 arg
+/Bac [1 1] arg
+/Bcc [ [ 250 19 30 ] [ 27 85 157 ] [ 40 107 47 ] [ 254 203 33 ] [ 17 133 222 ] ] arg
+
+% centre picture
+/I-1f /CH-F-optical.png arg
+/I-1a -1.1 arg
+/I-1s 1.1 arg
+/I-1i 0.16 xGsz arg
+/I-1j -0.21 xGsz arg
+
+% frequency text
+/T-1s () arg % supplied from FBf
+/T-1f /Helvetica-Bold arg
+/T-1h 0.26 xGsz arg
+/T-1x FBx 0.65 xGsz add arg
+/T-1c 0 arg
+/T-1a /L arg
+/T-1 /T0 merge
+
+} def
+
+%================================================================================
+
+/TCF-optical { /TCF-early % extends
+
+/Glw 7 lines arg
+/Golw 0.5 xGlw arg
+/IDy TCy 2.7 xGsz sub arg
+/CBh 0.75 arg
+/CBew 0.78 arg
+/CBc [/white /yellow /cyan /green /magenta /red /blue /black] arg
+/Ct [/T-1 /T-2] arg
+/SBih 0.4 xGsz arg
+/SBiw 2.23 xGsz arg
+/CCr 2.5 xGsz 0.88 xGlw sub arg
+/FBt null arg
+
+% centre picture
+/I-1i 0.19 xGsz arg
+/I-1j -0.17 xGsz arg
+
+% caption text
+/T-1s (BBC 2) arg
+/T-1f /Washington arg
+/T-1c 1 arg
+/T-1x TCx 0.07 xGsz sub arg
+/T-1y Cy arg
+/T-1w 2.4 xGsz arg
+/T-1h 0.45 xGsz arg
+/T-1b true arg
+/T-1a /R arg
+/T-1t 0.22 arg
+/T-1g 0.3 arg
+/T-1p 0.11 arg
+/T-1o 1.5 arg
+/T-1m /C arg
+/T-1- true arg
+/T-1 /T0 merge
+/T-2s (COLOUR) arg
+/T-2f /Helvetica-Bold arg
+/T-2a /L arg
+/T-2x TCx 0.1 xGsz add arg
+/T-2w 2.38 xGsz arg
+/T-2t -0.05 arg
+/T-2b false arg
+/T-2 /T-1 merge
+
+} def
+
+%================================================================================
+
+/TCF-electronic { /TCF-optical % extends
+
+/Glw 5 lines arg
+/Golw 0.65 xGlw arg
+/CCr 2.5 xGsz 1.15 xGlw sub arg
+/CClw 1.33 xGlw arg
+/IDf /Sanchez-Regular arg
+/IDh 0.39 xGsz arg
+/IDy TCy 2.71 xGsz sub arg
+/Ct [/T-2 /T-3] arg
+/Cch 1 arg
+/SBoh 0.87 xGsz arg
+/SBih 0.39 xGsz arg
+/SBiw 2.2 xGsz arg
+/CBh 1 arg
+/CBew 0.5 arg
+/CBc [/white /yellow /cyan /green /magenta /red /blue /black /white] arg
+/SWc [0 47 93 139 183 232] arg
+/SWoh 4 xGsz Golw 3 mul sub arg
+/SWw Gsz hGlw sub Golw 1.5 mul sub arg
+/SWx lGx 2 xGsz add TCx 3 xGsz sub min hGsz add hGlw sub SWw div2 sub arg
+/SWds [ 1.5 xGlw dup TCr div ] arg
+/FBf [ [1.5 6 0] [2.5 10 0] [3.5 13 1] [4 15 0] [4.5 17 0] [5.25 20 0] ] arg
+/FBs? true arg
+/FBt null arg
+/CSol 2.7 xGsz arg
+/CSow 1.05 xGsz arg
+/CSep 1.5 xGlw arg
+/Bcc [ [235 70 70] [70 70 235] [70 253 70] [253 253 70] [70 253 253] ] arg
+
+% centre picture
+/I-1f /CH-F-electronic.png arg
+/I-1i 0.18 xGsz arg
+/I-1j -0.127 xGsz arg
+/I-1s 1.12 arg
+/I-1a -1.15 arg
+
+% caption text
+/T-2s (\251 BBC, ITC & BREMA 1967) arg
+/T-2f /Arial arg
+/T-2h 0.376 xGsz arg
+/T-2c 1 arg
+/T-2x TCx arg
+/T-2y TCy 3.33 xGsz sub arg
+/T-2a /C arg
+/T-2t 0.05 arg
+/T-2 /T0 merge
+/T-3s (BBC Research & Development Department) arg
+/T-3h 0.255 xGsz arg
+/T-3y TCy 3.74 xGsz sub arg
+/T-3 /T-2 merge
+
+} def
+
+currentdict end
+%================================================================================
+/tcm-templates.ps exch /ProcSet defineresource
+

@@ -1,0 +1,518 @@
+%================================================================================
+% Test Card Maker customisation module
+%================================================================================
+100 dict begin
+
+%--------------------------------------------------------------------------------
+% argument override/inherit
+%--------------------------------------------------------------------------------
+
+/arg { 1 index isdef { pop pop }{ 2 copy validate def } ifelse } bind def % def iff undefined
+
+/loadargs { % constructor: dict /pattern loadargs dict
+    dup isdef not { (pattern /) exch cvas ( undefined) cat cat error def } if
+    exch begin
+        {
+            /$PPNAME % marker for following parent pattern name
+            1 index cvx stopped {
+                $error /errorname get /undefined eq { % inherit from parent
+                    % NOTE: does not inherit subsequent defs in current pattern so check warnings
+                    { 1 index /$PPNAME ne { pop }{ exch pop exit } ifelse } loop % parent pattern
+                    100 dict 1 index loadargs
+                    $error /command get cvlit % deepest undefined name
+                    2 copy known { % resolved
+                        [ 4 index (: inherited ) 5 index ( /) 5 index ] cata debug
+                        exch 1 index get def % inherit parent arg
+                        $error /newerror false put % reset
+                    }{
+                        pop pop
+                    } ifelse
+                    pop
+                } if
+                $error /newerror get { stop } if % still undefined or different error
+            }{
+                exch pop exit % parent pattern
+            } ifelse
+        } loop
+        exch /pattern exch arg % pattern
+        /extends 1 index arg % parent pattern
+        currentdict exch
+    end
+    dup null ne { loadargs }{ pop } ifelse % inherit undefined parent args
+} bind def
+
+% merge args iff undefined
+/merge { % destination source merge -
+    2 copy validate
+    10 dict dup begin Blank pop end 3 1 roll
+    exch cvas exch cvas
+    1 index firstchr
+    dup (0) cat
+    4 1 roll exch
+    dup firstchr 2 index ne { /typecheck signalerror } if
+    exch cetypes exch get /vars get {
+        chr
+        2 index 1 index cat
+        2 index 2 index cat
+        dup isdef {
+            load
+        }{
+            pop 5 index 5 index 3 index cat get
+        } ifelse
+        arg
+        pop
+    } forall
+    pop pop pop pop
+} bind def
+
+%--------------------------------------------------------------------------------
+% custom elements
+%--------------------------------------------------------------------------------
+
+% custom shape defaults
+/CustomShape <<
+    /$s /R % shape (required): /S(quare), /C(ircle), /L(ine), /R(ectangle), /E(llipse), /P(olygon)
+    /$c /LightGrey % fill colour: null for no fill
+    /$k /DarkGrey % stroke colour: null for no stroke
+    /$x TCx % horizontal centre
+    /$y TCy % vertical centre
+    /$h TCh 5 div % height/diameter/length
+    /$w TCh 5 div % width (ignored for Square/Circle/Line)
+    /$a 0 % rotation angle (degrees anticlockwise)
+    /$n 3 % number of sides (Polygon)
+    /$r false % true for Reuleaux polygon curve sides (odd-sided only)
+    /$d [] % stroke dash pattern: empty for solid else dash-length gap-length pairs
+    /$t 1 % stroke thickness
+    /$j /M % stroke line join: /M(itre), /R(ound), /B(evel)
+    /$q /N % mirroring: /N(one), /H(orizontal), /V(ertical), /B(oth)
+    /$z 0 % z-index for layering
+    /$? true % true to show this custom shape element
+>> readonly def
+
+% custom image defaults
+/CustomImage <<
+    /$f () % image filename (required), accepts JPEG/PNG/EPS/JFIF
+    /$x TCx % horizontal centre
+    /$y TCy % vertical centre
+    /$h TCh 5 div % height/diameter: -1 to calculate from aspect ratio
+    /$w TCh 5 div % width: 0 for circle, -1 to calculate from aspect ratio
+    /$a 0 % rotation angle (degrees anticlockwise)
+    /$s 0 % scale: 0 to auto-fit to width,height max
+    /$i 0 % horizontal offset from x at auto-fit scaling
+    /$j 0 % vertical offset from y at auto-fit scaling
+    /$q /N % mirroring: /N(one), /H(orizontal), /V(ertical), /B(oth)
+    /$z 0 % z-index for layering
+    /$? true % true to show this custom image element
+>> readonly def
+
+% custom text defaults
+/CustomText <<
+    /$s () % text string (required); T used to size font if string has no height
+    /$f /Helvetica % font name
+    /$c /Black % colour
+    /$x TCx % horizontal alignment anchor
+    /$y TCy % vertical alignment anchor
+    /$h TCh 10 div % overall height
+    /$w 0 % overall width: 0 for auto (unscaled), >0 for absolute, <0 to scale (negated)
+    /$a /C % alignment: /C(entre) /L(eft) /R(ight) /J(ustify) /T(op) /B(ottom) /TJ /TL /TR /BL /BR (+ /JT etc.)
+    /$t 0 % tracking between characters or blocks (fraction of height, auto if width>0 & Justify)
+    /$b false % true to block-invert characters (cameo style)
+    /$m 0 % block monospace width (fraction of height or a character e.g. /M): 0 for no monospace
+    /$p 0.1 % block padding (fraction of height)
+    /$o 1 % block horizontal padding multiplier
+    /$r 0 % block corner radius (fraction of height): 0 for none, 1 for maximum rounding
+    /$g 0 % block gap for whitespace (fraction of height): 0 for auto (use advance width)
+    /$i null % italic angle (degrees anticlockwise): null for auto (font-embedded ItalicAngle)
+    /$- false % true for no `reversepath` of blocked text charpath (use if text blanked out)
+    /$z 0 % z-index for layering
+    /$? true % true to show this custom text element
+>> readonly def
+
+% custom element types and argument names (single character)
+/cevars { () exch { pop cvas 1 1 getinterval cat } forall } bind def
+/cetypes <<
+    /S << /required /s /defaults CustomShape /vars 1 index cevars /order 1 >>
+    /I << /required /f /defaults CustomImage /vars 1 index cevars /order 2 >>
+    /T << /required /s /defaults CustomText /vars 1 index cevars /order 3 >>
+>> readonly def
+
+% parse custom element name
+/parsece { % /name parsece <type index var true> or <false>
+    false exch mark exch cvas
+    dup length 2 ge {
+        dup firstchr
+        cetypes 1 index known {
+            exch dup lastchr
+            dup dup (0) ge exch (9) le and { pop () 1 }{ 2 } ifelse
+            3 -1 roll exch 1 index length exch sub 1 exch getinterval inttok {
+                exch cetypes 3 index get /vars get 1 index contains {
+                    true counttomark 2 add -2 roll exch
+                } if
+            } if
+        } if
+    } if
+    cleartomark
+} bind def
+
+% get custom element arg dict
+/ceargs { % element ceargs dict
+    parsece not { /typecheck signalerror } if
+    10 dict begin
+        pop % should be empty string
+        /e# exch def % element index
+        /e= exch def % element type
+        /ex e= e# cvas cat def % element prefix
+        /edata cetypes e= get def % element data
+        /ed edata /defaults get dclone def % element args
+        ed /$# e# put
+        ed /$= e= cvn put
+        edata /vars get { % each arg
+            /c exch chr def
+            /p ($) c cat def
+            ex c cat dup isdef { load ed exch p exch put }{ pop } ifelse % override default
+        } forall
+        ed dclone % TODO: cache
+    end
+} bind def
+
+% find custom elements for type and create arg dicts
+/ceitems { % type ceitems dicts
+    10 dict begin
+        /e= exch cvas def % element type
+        /edata cetypes e= get def % element data
+        /eds 10 dict def % dict of indexes found
+        e= ord edata /required get cvas ord
+        countdictstack array dictstack { % all keys
+            { % test if key starts with type & ends with arg name
+                pop cvas dup dup 0 get 4 index eq exch dup length 1 sub get 3 index eq and {
+                    1 1 index length 2 sub getinterval % chars between
+                    inttok { eds exch null put } if % index
+                }{
+                    pop
+                } ifelse
+            } forall
+        } forall
+        pop pop
+        % make element args array
+        eds length array
+        0 eds {
+            pop e= exch cvas cat ceargs
+            dup /$# get 0 gt { % omit procedural CEs
+                3 copy put pop
+                1 add
+            }{
+                pop
+            } ifelse
+        } forall
+        0 exch getinterval
+    end
+} bind def
+
+/.ince false def
+/docustom { % any args docustom any args true | false
+    dclone begin % working copy
+        $? .ince $# 0 gt eq and { currentdict true }{ false } ifelse
+    end
+} bind def
+/customshape { docustom { cshape } if } bind def
+/customimage { docustom { cimage } if } bind def
+/customtext { docustom { ctext } if } bind def
+
+%--------------------------------------------------------------------------------
+% custom shape elements
+%--------------------------------------------------------------------------------
+
+% draw a shape centred at a point with options
+/cshape { % args cshape -
+    begin
+        /s $s firstchr def
+        /h $h def
+        /w $w def
+        s /L eq { /w 0 def } if % width=0 for line
+        s /S eq s /C eq or { /w $h def } if % width=height for square/circle
+        gsave
+            /m matrix currentmatrix def % CTM
+            $x $y translate $a rotate w h scale
+            { % construct shape
+                s /L eq { unitline exit } if
+                s /P eq { unitpolygon exit } if
+                s /C eq s /E eq or { unitcircle exit } if
+                unitsquare exit % (default)
+            } loop
+            m setmatrix % restore CTM
+            /p false upath def % path for required shape
+            $k null ne {
+                $d 0 setdash
+                $t setlinewidth
+                $j /R eq { 1 }{ $j /B eq { 2 }{ 0 } ifelse } ifelse setlinejoin
+            } if
+            $q cvas { % quadrant mirroring
+                chr (flip) exch cat load m setmatrix concat
+                $c null ne { $c colour newpath p fill } if
+                $k null ne { $k colour newpath p stroke } if
+            } forall
+        grestore
+    end
+} bind def
+
+/unitpolygon { % regular concave only
+    10 dict begin
+        /e $n 1 and 0 eq def % true if even-sided
+        /a 360 $n div def % exterior angle
+        /o a div2 def % apex angle opposite side
+        /l e { o sin }{ o div2 sin mul2 } ifelse def % side length (straight)
+        /m360 { dup 360 ge { 360 sub } if } def % keep below 360 (not necessary but tidy, cf fmod)
+        [ 0 0.5 ] % first vertex centre-top
+        0 1 $n 2 sub {
+            0.5 add a mul 180 add m360 dup cos l mul exch sin l mul
+            2 index aload pop addv 2 array astore % next vertex
+        } for
+        $n array astore
+        e not { % odd, use Reuleaux to fit unit square
+            newpath
+            0 1 $n 1 sub {
+                2 copy get aload pop 3 -1 roll
+                1 exch 0.25 sub a mul 270 add m360 dup o add m360 arc % Reuleaux curve
+            } for
+            closepath
+            % need a formula for the eccentric centre of a Reuleaux polygon within a square
+            % however its bbox is that square because it touches all sides, so just translate it
+            $a neg rotate % unrotate
+            /p false upath def
+            flattenpath pathbbox pop pop -0.5 dup subv translate
+            $r { newpath p } if % use path if curve sides wanted
+            $a rotate
+        } if
+        e $r not or { % want straight sides
+            newpath
+            0 1 $n 1 sub {
+                2 copy get aload pop 3 -1 roll
+                0 eq { moveto }{ lineto } ifelse % straight line
+            } for
+            closepath
+            e $a 0 ne and { % rotated even polygons likely smaller than unit square so scale up
+                $a neg rotate
+                /p false upath def
+                pathbbox subv max 1 exch div dup scale newpath p
+                $a rotate
+            } if
+        } if
+        pop
+    end
+} bind def
+
+/unitline {
+    newpath 0 -0.5 moveto 0 1 rlineto
+} bind def
+
+/unitsquare {
+    newpath -0.5 -0.5 moveto 1 0 rlineto 0 1 rlineto -1 0 rlineto closepath
+} bind def
+
+/unitcircle {
+    newpath 0 0 0.5 0 360 arc closepath
+} bind def
+
+%--------------------------------------------------------------------------------
+% custom image elements
+%--------------------------------------------------------------------------------
+
+% import and place a JPEG/PNG/EPS image file
+/cimage { % args cimage -
+    begin
+        /fn $f isname { % get filename, check opens
+            /Image /Category findresource begin $f 100 string ResourceFileName end
+            dup findlibfile { closefile pop }{ /undefinedresource signalerror } ifelse
+        }{
+            $f dup (r) file closefile
+        } ifelse def
+        /ext fn fileext def
+        {
+            ext /JPG eq ext /JPEG eq ext /JFIF eq or or {
+                /res /net.anastigmatix.Import /ProcSet findresource def
+                /paint { StatJFIF pop ReadyJFIF currentdict imgplace ExecJPEG } def
+                exit
+            } if
+            ext /PNG eq {
+                /res /net.anastigmatix.PNG /ProcSet findresource def
+                % fails for PNGs with alpha channel
+                % see https://www.anastigmatix.net/postscript/Import.html#png
+                % note ReadyPNG pushes 0 if indexed
+                /paint { StatPNG ReadyPNG dup 0 eq { pop } if currentdict imgplace ExecPNG } def
+                exit
+            } if
+            ext /EPS eq {
+                /res /net.anastigmatix.Import /ProcSet findresource def
+                /paint { StatEPSF 4 copy subv currentdict imgplace 0 0 0 1 1 ReadyEPSF ExecEPSF } def
+                exit
+            } if
+            fn /typecheck signalerror
+        } loop
+        res begin
+            $q cvas { % quadrant mirroring
+                gsave
+                    chr (flip) exch cat load concat
+                    fn $f isname { findlibfile pop exch pop }{ (r) file } ifelse
+                    paint
+                grestore
+            } forall
+        end
+    end
+} bind def
+
+% clip & place a rectangle/circle to centre at a point with offset, rotation, scale options
+/imgplace { % width height args imgplace -
+    dclone begin
+        /h exch div2 def % half source height (may map to unit square)
+        /w exch div2 def % half source width
+        /r w h div def % aspect ratio
+        $w 0 le $h 0 lt and { $w /typecheck signalerror } if
+        /$h $h div2 def % half dest height/diameter
+        /$w $w div2 def % half dest width (0 for circle)
+        /c $w 0 eq def % true if dest is a circle
+        c { /$w $h def }{ $w 0 lt { /$w $h r mul def } if $h 0 lt { /$h $w r div def } if } ifelse % auto size
+        c { $x $y $h 0 360 arc clip newpath }{ $x $w sub $y $h sub $w mul2 $h mul2 rectclip } ifelse % clip dest
+        /m $w w div $h h div max def % scale factor for fitting to dest unrotated
+        /$i $i m div def /$j $j m div def % offsets from centre (empirical) scaled
+        /i w $i sub def /j h $j sub def % offsets from bottom-left
+        /u c { $w }{ $w $h $a projection } ifelse def % minimum horizontal distance to fit
+        /v c { $h }{ $h $w $a projection } ifelse def % minimum vertical distance to fit
+        /w w $i abs sub def /h h $j abs sub def % virtual dims when offset-centred
+        /m u w div v h div max def % scale factor to auto-fit offset shape
+        /$s $s 0 eq { 1 }{ $s } ifelse m mul def % modified scale
+        /$x $x $s div def /$y $y $s div def % dest centre scaled
+        $s $s scale % apply scale
+        i j transform $x $y transform subv % CTM translation to centre offsets
+        i j translate $a rotate i neg j neg translate % apply rotation
+        idtransform translate % apply offsets
+    end
+} bind def
+
+%--------------------------------------------------------------------------------
+% custom text elements
+%--------------------------------------------------------------------------------
+
+% place a string path centred at a point with options
+/ctext { % args ctext -
+    begin
+        /$t $t $h mul def /$p $p $h mul def /$r $r $h mul def /$g $g $h mul def % scale by height
+        /hp $p $o mul def % horizontal padding
+        /align { $a cvas exch cvas contains } bind def
+        $s $h $b { $p mul2 sub } if $f sizefont
+        newpath 0 0 moveto
+        /$m $m isnumber { $m $h mul }{ $m firstchr $i strdata /iw get } ifelse def
+        /sd $s $i strdata def % string data
+        /n $s length def % # characters
+        /d sd /d get def % descent
+        /w $b $m 0 ne and { $m n mul }{ sd /iw get } ifelse def % total width
+        /g $t def % tracking gap
+        $w 0 gt /J align and n 1 gt and { % justify
+            /g $w $b { sd /tw get sub hp mul2 n mul }{ w } ifelse sub n 1 sub div def
+        } if
+        /a 0 def % advance
+        /m matrix currentmatrix def % CTM
+        /p false upath cvlit def % aggregate userpath
+        $s { % each character
+            currentpoint /y exch def /x exch def
+            /cd exch chr $i strdata def % character data
+            /cp cd /up get def % character userpath
+            /aw cd /aw get def % advance width
+            newpath cp uappend
+            $b { % blocked
+                /bw $g 0 eq { aw }{ $g g sub } ifelse def % block width
+                /il cd /il get def
+                /iw cd /iw get def
+                iw 0 gt { % not space
+                    reversepath % enclosed by frame
+                    $- { reversepath } if % TODO: FontForge TT needs this - why?
+                    $m 0 gt { /il il $m iw sub div2 sub def /iw $m def } if % monospaced
+                    /bw iw hp mul2 add def
+                    /l x il hp sub add def /b y d $p sub add def
+                    /r l bw add def /t b $h add def
+                    /cr bw div2 $h div2 min $r min def % clamped radius
+                    cd /im get concat % italic angle matrix (or straight)
+                    l bw div2 add b moveto
+                    r b r t cr arct r t l t cr arct l t l b cr arct l b r b cr arct
+                    closepath % outer anticlockwise
+                    m setmatrix
+                    /cp false upath cvlit def
+                } if
+                a 0 ne { % not first char
+                    i g add il sub % fixed gap (advance width produces variable gaps and looks untidy)
+                    /a exch a sub def
+                    /x x a add def
+                    newpath a 0 translate cp uappend m setmatrix
+                    /cp false upath cvlit def
+                } if
+                /i il bw add def % metrics for next char positioning
+            } if
+            newpath p uappend cp uappend
+            /p false upath cvlit def
+            /a aw g add def
+            /x x a add def
+            x y moveto
+        } forall
+        % scale and align at $x $y
+        /l /L align def /r /R align def /b /B align def /t /T align def
+        pathbbox
+        exch 3 1 roll b { pop }{ t { exch pop }{ add div2 } ifelse } ifelse 3 1 roll % align y
+        $w 0 gt { 2 copy exch sub $w exch div }{ 1 } ifelse % scale to $w
+        $w 0 lt { pop $w neg } if 1 5 2 roll % scale by -$w
+        l { pop }{ r { exch pop }{ add div2 } ifelse } ifelse % align x
+        3 index mul exch $x $y subv % offsets
+        translate scale newpath p uappend m setmatrix
+        % set colour
+        $c colour
+        fill
+    end
+} bind def
+
+% get string metrics
+/strdata { % string strdata dict
+    10 dict begin
+        /i exch def
+        /s exch def
+        i null eq { % use embedded italic angle
+            /i currentfont /FontInfo get /ItalicAngle get dup -180 lt { 65536 add } if def
+        } if
+        /t i tan def
+        currentpoint /y exch def /x exch def
+        gsave
+            newpath x y moveto s true charpath
+            pathbbox /a exch y sub def /r exch x sub def /d exch y sub def /l exch x sub def % relative
+            /up false upath cvlit def % (upath bbox includes advance)
+            flattenpath
+            /il r def /ir l def % italic left, right
+            mark
+            { /my exch y sub def /mx exch x sub def /m true def } % moveto
+            { % lineto
+                m { % do moveto point
+                    mx my t mul add dup
+                    /ir exch ir max def /il exch il min def /m false def
+                } if
+                exch x sub exch y sub t mul add dup
+                /ir exch ir max def /il exch il min def
+            }
+            { cleartomark mark } dup
+            pathforall pop
+            ir il le { /il 0 def /ir 0 def } if % no width
+        grestore
+        <<
+            /x x /y y % position
+            /s s /up up /i i % string, userpath, italic angle
+            /a a /d d % ascent, descent
+            /lb l /rb mx r sub % left-side bearing, right-side bearing
+            /rx r /aw mx % rightmost point x, advance width (=stringwidth)
+            /w r l sub /h a d sub % width, height
+            /il il /ir ir /iw ir il sub % left, right, width projections to baseline at angle
+            dup /tw exch % sum total of projected widths
+            /im [ 1 0 t neg 1 y t mul 0 ] % italic matrix (or straight)
+        >>
+        s length 1 gt { dup /tw 0 s { chr i strdata /iw get add } forall put } if
+    end
+} bind def
+
+currentdict end
+%================================================================================
+/tcm-custom.ps exch /ProcSet defineresource
+

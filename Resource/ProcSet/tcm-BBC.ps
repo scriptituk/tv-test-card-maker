@@ -1,0 +1,406 @@
+%================================================================================
+% Test Card Maker replica group elements module
+%================================================================================
+100 dict begin
+
+% clip caption rect
+/ClipCR {
+    Cc xGsz oGlw sub
+    Cr xGsz Glw sub Cch mul
+    TCx 2 index div2 sub Cy 2 index div2 sub moveto % (rectclip does newpath)
+    1 index 0 rlineto 0 exch rlineto neg 0 rlineto closepath clip
+    newpath
+} def
+
+/Graticule {
+    clipsave
+
+    % clip
+    /TCF peq FBt null ne and { % hack to clip gridlines behind frequency text for F
+        0 0 moveto TCw 0 lineto TCw TCh lineto 0 TCh lineto closepath
+        0.61 xGsz % clip width
+        FBx hGsz add hGlw add TCy 1.25 xGsz sub
+        2 copy moveto 0 hGsz rlineto 2 index 0 rlineto 0 hGsz neg rlineto closepath
+        2 xGsz add moveto 0 hGsz rlineto 0 rlineto 0 hGsz neg rlineto closepath
+        clip newpath
+    } if
+    Glc colour
+    % vertical lines
+    TCx dup Gsz tilec sub hGlw sub TCy moveto
+    [Glw Gsz Glw sub ] Gps? { hGsz }{ 0 } ifelse setdash
+    TCh setlinewidth TCw TCy lineto stroke
+    % horizontal lines
+    TCx TCy dup Gsz tilec sub hGlw sub moveto
+    [Glw Gsz Glw sub ] Gps? { 0 }{ hGsz } ifelse setdash
+    TCw setlinewidth TCx TCh lineto stroke
+    setnodash
+
+    cliprestore
+} def
+
+/StreakBox {
+    SBc 1 get colour TCx SBy SBow SBoh rectfillc
+    SBc 0 get colour TCx SBy SBiw SBih rectfillc
+} def
+
+/GridOutline {
+    5 dict begin
+        /olw cGolw def
+        /2olw olw mul2 def
+        /olo hGlw olw sub def % outline centre-line offset from grid line edge
+        /1gs Gsz 2olw sub def % 1 grid span
+        /2gso 1gs Gsz add olo sub def % 2 grid span minus offset
+        /outline {
+            matrix currentmatrix exch concat
+            clipsave lGx hGsz sub hGlw add 0 TCx 2 index sub TCy hGsz add rectclip
+            black
+            TCx dup SWx sub SWw 3 div add Gsz tilef sub % centre of SW grid
+            hGsz sub olw sub Gsz sub TCy olw sub moveto
+            currentpoint
+            0 1 index moveto lineto
+            0 1gs div2 neg rlineto
+            2olw 0 rmoveto
+            0 1gs div2 rlineto 1gs 0 rlineto
+            0 2gso olo add neg rlineto
+            currentpoint
+            0 1 index lineto
+            0 2olw neg rmoveto
+            2olw sub lineto 0 2gso neg rlineto
+            2olw 0 rmoveto
+            0 2gso rlineto
+            currentpoint
+            TCx hGsz sub olw sub 2 index sub 0 rlineto
+            0 2gso neg rlineto
+            2olw 0 rmoveto
+            0 2gso rlineto
+            stroke
+            iselectronic { % thicker around step wedge and freq bars
+                white
+                2olw add 2gso add olw add moveto
+                0 2gso olw add neg rlineto
+                TCx hGsz sub olw sub currentpoint pop sub 0 rlineto
+                stroke
+            }{
+                pop pop
+            } ifelse
+            cliprestore
+            setmatrix % restore
+        } def
+        olw setlinewidth
+        flipN outline flipH outline flipB outline flipV outline
+    end
+} def
+
+/PulsePanes {
+    /pane {
+        gsave concat
+        colour PPx TCy PPw PPh rectfillc
+        colour NPx TCy NPw NPh rectfillc % needle pulses
+        grestore
+    } def
+    PPc aload pop 2 copy exch
+    flipN pane flipH pane
+} def
+
+/Picture {
+    CPi ceargs begin
+        /$w 0 def
+        /$h CCr CClw div2 0.95 mul sub mul2 def % diameter, no gap
+        currentdict customimage
+    end
+%TCx TCy crosshairs
+} def
+
+/Circles {
+    CClw setlinewidth
+    TCbc colour
+    CCf? { TCx TCy CCr 0 360 arc fill } if
+    CCor 0 gt { TCx TCy CCor 0 360 arc stroke } if
+    CCbr 0 gt { black TCx TCy CCbr 0 360 arc stroke } if
+    white TCx TCy CCr 0 360 arc stroke
+} def
+
+/StepWedge {
+    /sw_h SWoh SWc length div def
+    /sw_o SWc sw_h 0 botstep def
+    TCy sw_o sub
+    SWc {
+        colour
+        SWx 1 index SWw sw_h rectfillc
+        sw_h add
+    } forall
+    pop
+    % dots
+    SWds isarray { % rectangle
+        SWds length 2 ge {
+            SWdc 1 get colour SWx TCy sw_o add SWds 0 get SWds 1 get rectfillc
+            SWdc 0 get colour SWx TCy sw_o sub SWds 0 get SWds 1 get rectfillc
+        } if
+    }{ % circle
+        SWds 0 gt {
+            SWdc 1 get colour SWx TCy sw_o add SWds div2 0 360 arc fill
+            SWdc 0 get colour SWx TCy sw_o sub SWds div2 0 360 arc fill
+        } if
+    } ifelse
+} def
+
+/FrequencyBar { % frequencies matrix FrequencyBar -
+    gsave concat
+    % background
+    FBc 2 get colour % surround
+    FBx TCy 2 index FBh FBg botstep add
+    FBg 0 gt {
+        gsave 2 copy translate
+        2 index length {
+            0 0 FBow FBh rectfillc
+            0 FBh FBg add neg translate
+        } repeat
+        grestore
+    }{
+       FBx TCy FBow FBoh rectfillc
+    } ifelse
+    % gratings
+    translate
+    { % each frequency
+        aload pop
+        10 dict begin
+            /ap exch 0 ne def % true for antiphase
+            /nc exch def % number of cycles
+            /w exch mhz nc mul def % width
+            /h FBh FBp mul2 sub def % height
+            /y 0 def % y centre
+            /x 0 def % x centre
+            /gc FBc 0 get def % grating colour
+            /bc FBc 1 get def % between colour
+            /hw w nc div div2 def % half-cycle width
+           currentdict FBs? { cosinegrating }{ squaregrating } ifelse
+        end
+        0 FBh FBg add neg translate
+    } forall
+    grestore
+} def
+
+/FrequencyText { % frequencies mirror FrequencyText -
+    gsave
+        FBt ceargs begin
+        { /$x TCw $x sub def } if
+        /$y TCy 2 index FBh FBg botstep add def
+        { % each frequency
+            0 get cvr cvas period2periodcentered /$s exch def
+            currentdict customtext
+            /$y $y FBh FBg add sub def
+        } forall
+    end
+    grestore
+} def
+
+/FrequencyBars {
+    /fo FBf def % odd
+    /fe FBf def % even
+    [/TCD /TCE] peq { % 2 columns
+        /fo FBf length 2 idiv array def
+        /fe FBf length 2 idiv array def
+        fo fe 0 FBf {
+            1 index 2 idiv exch
+            2 index 1 and 3 add index 3 1 roll put
+            1 add
+        } forall
+        pop pop /fo exch reversearray def
+    } if
+    % bars
+    fe flipN FrequencyBar
+    FB2? { fo flipB FrequencyBar } if
+    % text
+    FBt null ne {
+        fe false FrequencyText
+        FB2? { fo reversearray true FrequencyText } if
+    } if
+} def
+
+/Ident {
+    IDc colour
+    IDs IDh IDf sizefont
+    IDx IDy IDs showc
+
+    IDdr 0 gt { % dots for D
+        TCy dup IDy sub hGsz tilef sub
+        TCx Gsz sub 1 index IDdr 0 360 arc fill
+        TCx Gsz add exch IDdr 0 360 arc fill
+    } if
+} def
+
+/Caption {
+    Ct {
+        ceargs customtext
+    } forall
+} def
+
+/CornerStripes {
+    /cs_ol CSol TCw TCh hypot 4 div min def
+    /cs_py CSa sin cs_ol mul def
+    /cs_px CSa cos cs_ol mul def
+
+    % background
+    CSc 1 get colour
+    CSow setlinewidth
+    0 0 moveto cs_px cs_py rlineto
+    TCw 0 moveto cs_px neg cs_py rlineto
+    TCw TCh moveto cs_px neg cs_py neg rlineto
+    0 TCh moveto cs_px cs_py neg rlineto
+    stroke
+
+    % grating
+    clipsave
+    CSbp Bw add dup TCw 1 index mul2 sub TCh 2 index mul2 sub rectclip
+
+    /diag {
+        gsave concat
+        CSa 90 sub rotate % angle from vertical
+        0 cs_ol div2 CSlw cs_ol CSep mul2 sub CSnl 0 stripec
+        grestore
+    } def
+
+    CSc 0 get colour
+    flipN diag flipH diag flipB diag flipV diag
+
+    cliprestore
+} def
+
+/Arrow {
+    gsave concat
+    colour
+    qGsz Bah mul dup
+    0 0 moveto dup Bw Bah mul rlineto mul2 neg 0 rlineto closepath
+    0 gt { fill } if
+    grestore
+} def
+
+/Arrows { % centring arrows (July 1958)
+    Bac 0 get [1 0 0 1 TCx 0] Arrow
+    Bac 0 get [1 0 0 -1 TCx TCh] Arrow
+    Bac 1 get [0 1 1 0 0 TCy] Arrow
+    Bac 1 get [0 1 -1 0 TCw TCy] Arrow
+} def
+
+/Castellations { % fg centre Castellations -
+    % TODO: rework this mess
+    gsave concat
+    /d_len 1 index hGsz tilef qGsz [/TCD /TCE /TCF] peq { sub }{ add } ifelse def
+    dup 0 moveto d_len 0 rlineto dup 0 moveto d_len neg 0 rlineto stroke % bg
+    1 index currentgray eq {
+        pop pop
+    }{
+        1 index setgray % fg
+        [hGsz] [/TCC /TCG] peq { qGsz }{ 0.75 xGsz } ifelse setdash
+        dup 0 moveto d_len 0 rlineto dup 0 moveto d_len neg 0 rlineto stroke
+        [/TCD /TCE /TCF /TCJ] peq { % arrow bg
+            setnodash exch setgray hGsz sub 0 moveto Gsz 0 rlineto stroke
+        }{
+            pop pop
+        } ifelse
+    } ifelse
+    grestore
+} def
+
+/ColourBar {
+    /cw TCw CBc length 2 sub CBew mul2 add div def % colour width
+    /ew cw CBew mul def % end widths
+    Bw mul2 CBh mul setlinewidth
+    ew 0 TCh CBc { colour moveto 0 rlineto cw currentpoint stroke } forall
+    pop pop pop
+} def
+
+/BorderBW {
+    white
+    Bw mul2 setlinewidth
+    0 TCx [1 0 0 1 0 0] Castellations
+    0 TCx [1 0 0 -1 0 TCh] Castellations
+    black
+    1 TCy [0 1 1 0 0 0] Castellations
+    1 TCy [0 1 -1 0 TCw 0] Castellations
+
+    [/TCD /TCE] peq { % D & E keep 2 top gridlines
+        white
+        Glw setlinewidth
+        PPx hGsz add TCh moveto 0 Bw neg rlineto
+        TCw PPx sub hGsz sub TCh moveto 0 Bw neg rlineto
+        stroke
+    } if
+
+    Arrows
+} def
+
+/BorderRGB {
+    % empirical measurements from test-card-f-reconstruction-003-01.png
+    /b_hs TCw 1435 div def % horizontal scale
+    /b_vs TCh 1076 div def % vertical scale
+    /b_lb 70 b_vs mul def % left-top/bottom blanks
+    /b_la [91 196 91 90 70] def % left top-half dims
+    /b_ra [91 105 162 70 110] def % right top-half dims
+    /b_ld { b_la exch get b_vs mul } def
+    /b_rd { b_ra exch get b_vs mul } def
+    /b_cw 28 b_hs mul def
+    /b_ch 37 b_vs mul def
+
+    % left
+    Bw mul2 setlinewidth
+    black 0 TCy [0 1 1 0 0 0] Castellations
+    0 TCy 0 b_ld add moveto
+    Bcc 0 get colour 0 1 b_ld rlineto currentpoint stroke
+    2 b_ld add
+    moveto 0 3 b_ld rlineto stroke
+    0 TCy 0 b_ld sub moveto
+    Bcc 1 get colour 0 1 b_ld neg rlineto currentpoint stroke
+    2 b_ld sub
+    moveto 0 3 b_ld neg rlineto stroke
+    % right
+    black 0 TCy [0 1 -1 0 TCw 0] Castellations
+    TCw TCy 0 b_rd add moveto
+    white 0 1 b_rd rlineto currentpoint stroke
+    2 b_rd add
+    Bcc 3 get colour moveto 0 3 b_rd rlineto stroke
+    TCw TCy 0 b_rd sub moveto
+    white 0 1 b_rd neg rlineto currentpoint stroke
+    2 b_rd sub
+    Bcc 3 get colour moveto 0 3 b_rd neg rlineto stroke
+    % bottom
+    Bcc 2 get colour 0 TCx [1 0 0 1 0 0] Castellations
+    % top
+    Bcc 4 get colour 0 TCx [1 0 0 -1 0 TCh] Castellations
+    % colour bar
+    CBh 0 gt {
+        /TCF peq /optical veq and { Arrows } if % Fc colour bars hide top arrow
+        ColourBar
+    } if
+    % arrows
+    /TCF peq /optical veq and not { Arrows } if
+} def
+
+/Border {
+    Bcc length 0 eq { BorderBW }{ BorderRGB } ifelse
+} def
+
+% utilities
+
+% get vertical distance from centre of bottom step to centre of all steps
+% values-array step-height step-gap botstep offset -
+/botstep { add exch length 1 sub mul div2 } def
+
+/iselectronic {
+    /TCF peq /electronic veq and [/TCJ /TCW /TCX] peq or
+} def
+
+% clamped outlined width
+/cGolw {
+    Golw Glw 3 div max Glw min
+} def
+
+% outlined grid linewidth
+/oGlw {
+    Golw 0 ne { cGolw 3 mul }{ Glw } ifelse
+} def
+
+currentdict end
+%================================================================================
+/tcm-BBC.ps exch /ProcSet defineresource
+

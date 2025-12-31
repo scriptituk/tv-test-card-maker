@@ -1,0 +1,138 @@
+%================================================================================
+% Test Card Maker generic elements module
+%================================================================================
+100 dict begin
+
+% clip centre circle
+/ClipCC {
+    TCx TCy moveto currentpoint CCr 0 360 arc closepath clip
+} bind def
+
+/Background {
+    TCbc colour
+    0 0 TCw TCh rectfill
+} bind def
+
+/CustomElements {
+    /.ince true def
+    % collect all types
+    0 array
+    cetypes {
+        /order get exch ceitems
+        dup { /$@ 1 index /$z get 10 mul 4 index add put } forall % sort order
+        exch pop
+        dup length 2 index length add array
+        dup 4 -1 roll 1 index copy length 4 -1 roll putinterval
+    } forall
+    % sort and paint
+    { /$@ get exch /$@ get exch } insertionsort {
+        dup /$@ undef
+        begin
+            {
+                $= /S eq { currentdict customshape exit } if
+                $= /I eq { currentdict customimage exit } if
+                $= /T eq { currentdict customtext exit } if
+            } loop
+        end
+    } forall
+    /.ince false def
+} bind def
+
+/Extra {
+  Xsp
+} bind def
+
+/Watermark {
+    Xwt ceargs customtext
+} bind def
+
+%================================================================================
+
+/showc { % show string centred: x y string showc -
+    gsave
+        0 0 moveto dup true charpath pathbbox newpath
+        addv div2 exch div2 exch 5 -2 roll subv moveto show
+    grestore
+} bind def
+
+/rectfillc { % fill rectangle centred: x y w h rectfillc -
+    2 { 4 -1 roll 2 index div2 sub } repeat 4 2 roll rectfill
+} bind def
+
+/stripec { % stripe centred (left to right): x y linew lineh nlines offset stripec -
+    exch mul2 3 index mul dup 7 1 roll
+    6 -1 roll exch div2 sub 5 1 roll
+    exch setlinewidth
+    1 index div2 sub exch [ exch ] exch setdash
+    moveto 0 rlineto stroke
+    setnodash
+} bind def
+
+/setnodash { [] 0 setdash } bind def
+
+/squaregrating { % dict squaregrating - (see FrequencyBar for dict)
+    gsave
+    begin
+        /ps ap { hw }{ 0 } ifelse def % phase shift
+        bc colour
+        x w div2 sub y h div2 sub w h rectfill % background
+        gc colour
+        x y hw h nc ps stripec
+    end
+    grestore
+} bind def
+
+/cosinegrating { % dict cosinegrating - (see FrequencyBar for dict)
+    gsave
+    begin
+        % samples for sinusoidal shading function: round((1 + cos(a)) / 2 * 14) for 0 <= a < 360
+        /sc 20 def % samples per cycle
+        /ns nc sc mul def % number of samples
+        /sx 14 def % sample maximum to give odd number of grey levels (0 to 14) so that mid-grey = 7
+        /dx 16 sx div def % decode maximum
+        /as 360 sc div def % angle step
+        /ps ap { 180 }{ 0 } ifelse def % phase shift
+        /is [ 0 as 360 1 sub { ps add cos 1 add div2 sx mul round cvi } for ] def % integer samples
+        /bs [ 0 2 sc 1 sub { is 1 index get 4 bitshift exch 1 add is exch get or } for ] def % byte samples
+        /ss bs length string 0 1 bs length 1 sub { 1 index exch dup bs exch get put } for def % string samples
+        /ds ss length nc mul string def % data source
+        0 ss length ds length 1 sub { ds exch ss putinterval } for % concat cycle samples
+        /c1 [ gc colour currentrgbcolor ] def % grating colour
+        /cs currentcolorspace 0 get def % colour space
+        /c2 [ bc colour currentrgbcolor ] def % between colour
+        currentcolorspace 0 get /DeviceRGB eq { /cs /DeviceRGB def } if % prioritise RGB
+        /fd << % function dict
+            /FunctionType 0 % sampled
+            /Domain [ 0 1 ] % axial travel unit interval
+            /Range [ 0 1 ] % colour component unit interval
+            /Decode [ c1 0 get dx mul c2 0 get dx mul ] % grey/red unit interval
+            /BitsPerSample 4
+            /Size [ ns ]
+            /DataSource ds
+        >> def
+        cs /DeviceRGB eq { % 3 components
+            /fd [ fd dup dclone dup dclone ] def % RGB function dicts
+            fd 1 get /Decode [ c1 1 get dx mul c2 1 get dx mul ] put % green unit interval
+            fd 2 get /Decode [ c1 2 get dx mul c2 2 get dx mul ] put % blue unit interval
+        } if
+        /sd << % shading dict
+            /ShadingType 2 % axial
+            /ColorSpace cs
+            /Coords [0 0 w 0]
+            /Function fd % dict for grey or [dict dict dict] for RGB
+        >> def
+        /cw nc mul2 ap not { 1 sub } if hw mul def % clip width
+        /cr [ x cw div2 sub y h div2 sub cw h ] def % clip rect
+        clipsave
+        cr rectclip
+        x w div2 sub y h div2 sub translate
+        sd shfill
+        cliprestore
+    end
+    grestore
+} bind def
+
+currentdict end
+%================================================================================
+/tcm-generic.ps exch /ProcSet defineresource
+
