@@ -1,0 +1,57 @@
+%!PS
+
+% gs -q -IResource -sDEVICE=pdfwrite -o ps-fonts.pdf ps-fonts.ps
+
+/tcm-common.ps /ProcSet findresource currentdict copy pop
+
+false {
+(*) {
+    findfont begin
+        (FontName: ) currentdict /FontName get cvas cat =
+        currentdict /.Alias .knownget { (.Alias: ) exch cvas cat = } if
+        currentdict /FontInfo .knownget {
+            /FullName .knownget { (FullName: ) exch cat = } if
+        } if
+        () =
+    end
+} 100 string /Font resourceforall
+} if
+
+/fontnames isdef not {
+    /d 100 dict def
+    (*) { findfont /FontName get d exch null put } 100 string /Font resourceforall
+    /fontnames [ d { pop cvas } forall ] {} insertionsort [ exch { cvn } forall ] def
+    %fontnames {=} forall
+} if
+
+/mm { 25.4 div 72 mul } def
+/N fontnames length def
+/M 5 mm def % margin
+/h 5 mm def
+/g 2 mm def
+/l h g add def
+/W 210 mm def
+/H N l mul M 2 mul add def
+/S 15 def
+/T (ABCDEFGHIJKLMNOPQRST abcdefghijklmnopqrst 0123456789) def
+
+<< /PageSize [ W H ] /ImagingBBox null >> setpagedevice
+M M W M M add sub H M M add sub rectclip
+
+M H M sub h sub
+fontnames {
+    cvas
+    /Helvetica-Narrow findfont S scalefont setfont
+    2 index 2 index moveto
+    (/) 1 index cat show
+    currentpoint exch g add exch
+    T h 5 -1 roll sizefont
+    moveto
+    T show
+    l sub
+} forall
+pop pop
+
+showpage
+%(EOF) = pstack
+quit
