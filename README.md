@@ -1,4 +1,9 @@
+# TV Test Card Maker
 
+### authentic replicas &bull; easily customised &bull; vector and raster formats &bull; cross-platform
+
+> [!NOTE]
+> This repo is still in progress…
 
 ## Summary
 
