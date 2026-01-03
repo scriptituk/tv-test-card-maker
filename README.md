@@ -2062,8 +2062,8 @@ Making a DVD involves:
 
 #### Retro RGB
 
-Colour reproduction is a convoluted topic
-but someone who understands is colour science guru and retro enthusiast Dan Mons.
+First a word about colour reproduction because it is so convoluted.
+Someone who understands is colour science guru and retro enthusiast Dan Mons.
 His project [FreeCalRec601](https://github.com/danmons/FreeCalRec601)
 is a Rec.601/BT.601[^31][^23] DVD and test pattern generator for calibrating Standard Definition (SD) CRT displays.
 His [RetroRGB post](https://retrorgb.com/freecalrec601-dvds-for-calibrating-crts.html) about it has useful links and videos.
@@ -2093,7 +2093,7 @@ if [[ $vf = pal ]]; then
 else # ntsc
     cs=bt601-6-525 cp=smpte170m ct=smpte170m s=${width}x480
 fi
-ffmpeg -y -v warning -loop 1 -i myTC.tif -i myTC.wav \
+ffmpeg -y -v warning -loop 1 -i myTC.png -i myTC.wav \
     -vf "
         zscale=s=$s:f=spline36,
         colorspace=$cs:iall=bt709:irange=tv:range=tv,
@@ -2104,15 +2104,13 @@ ffmpeg -y -v warning -loop 1 -i myTC.tif -i myTC.wav \
     -video_format $vf -aspect 4:3 -shortest myTC.vob
 ```
 
-This makes an anamorphic 4:3 interlaced DVD VOB in PAL or NTSC standards with audio
-(ignore the `Multiple -s options specified…` warning).
+This makes an anamorphic 4:3 interlaced DVD VOB in PAL or NTSC standard of an image and audio.
 
 #### VOB explanation
 
 - `vf`,`width`,`cs`,`cp`,`ct`,`s` shell variables for PAL/NTSC variants and width
 - `-loop` ([image2 demuxer](https://www.ffmpeg.org/ffmpeg-formats.html#image2-1)) loops the image frame
 - `-vf` video filters:
-  - [`pad`](https://www.ffmpeg.org/ffmpeg-filters.html#pad) added by me, see [720 vs 704](#user-content-720-vs-704)
   - [`zscale`](https://www.ffmpeg.org/ffmpeg-filters.html#zscale) scale input for correct interlacing and size
   - [`colorspace`](https://www.ffmpeg.org/ffmpeg-filters.html#colorspace) converts the colour primaries, white point and gamma from bt709 (=sRGB) to bt601 for the target
   - [`tinterlace`](https://www.ffmpeg.org/ffmpeg-filters.html#tinterlace) makes the video interlaced, top field first, with vertical low-pass filtering (reduces interline twitter and Moiré artifacts)
@@ -2128,10 +2126,12 @@ This makes an anamorphic 4:3 interlaced DVD VOB in PAL or NTSC standards with au
 
 There’s a bewildering amount of discussion on DVD aspect ratios and the 720 vs 704 debate.
 I am no expert but I gather digital sources like TCM are not subject to overscan and padding considerations.
-Furthermore, apparently nobody adheres to the ITU standard capture resolution width 720[^32] anyway.
-I have tested padding wider and scaling back for overscan[^33] but distortion occurs and black side bands appear. You can try it with `pad=iw*720/704:ih:-1:0` before the `zscale` filter.
+Furthermore, apparently nobody adheres to the ITU standard capture resolution width 720 anyway[^32].
+I have tested padding wider and scaling back for overscan[^33] but distortion occurs and black side bands appear. You can try it with `pad=iw*720/704:ih:-1` before the `zscale` filter.
 
-However, 704 is a DVD standard width too for legacy analogue sources but I see no difference in DVDs made with 720 and 704 width.
+However, width 704 is standard DVD too for legacy analogue sources but I see no difference in DVDs made with 720 and 704 width using the code above.
+Therefore sticking with 720 is probably best,
+and remove the `-s $s` after the `target` option as it causes a `Multiple -s options…` warning.
 
 
 #### Authoring and burning
@@ -2139,7 +2139,7 @@ However, 704 is a DVD standard width too for legacy analogue sources but I see n
 For free DVD authoring check out the [DVDAuthor] CLI and [DVDStyler] app.
 [FreeCalRec601](https://github.com/danmons/FreeCalRec601) shows DVDAuthor in use with a menu.
 
-To make a basic DVD file system, create a configuration file, say `myDVD.xml`:
+To make a basic DVD file system with DVDAuthor, create a configuration file, say `myDVD.xml`:
 
 ```
 <dvdauthor>
@@ -2154,7 +2154,7 @@ To make a basic DVD file system, create a configuration file, say `myDVD.xml`:
 </dvdauthor>
 ```
 
-then author it:
+then make the file structure `myDVDdir/`:
 
 ```
 rm -fr myDVDdir
@@ -2169,14 +2169,14 @@ Linux:\
 `mkisofs -V 'Volume Name' -dvd-video -udf -J -o myDVD.iso myDVDdir
 
 Mac:\
-`hdiutil makehybrid -default-volume-name 'Volume Name' -udf -iso -joliet -o myDVD.iso myDVDdir
+`hdiutil makehybrid -default-volume-name 'Volume Name' -udf -iso -joliet -ov -o myDVD.iso myDVDdir
 
 Windows:\
 `Oscdimg.exe -l"Volume Name" -u1 -j1 myDVDdir myDVD.iso`
 
-See [ISOs](assets/video) for DVD variants discussed here.
+See [ISOs](assets/video) for built DVD variants discussed here.
 
-Burning is usuallly a platform dependent proprietary command.
+Burning is usuallly a platform-dependent proprietary command.
 
 </details>
 
