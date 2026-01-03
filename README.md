@@ -3,7 +3,7 @@
 ### authentic replicas &bull; easily customised &bull; vector and raster formats &bull; cross-platform
 
 > [!NOTE]
-> This repo is still in progress…
+> This repo is under construction; corrections and comments are welcome…
 
 ## Summary
 
@@ -14,16 +14,17 @@ and those created by drawing tools cannot be altered because master files are un
 
 This test card maker (TCM) recreates memorable TV test patterns
 with a high level of empirical accuracy.
-It exposes rendering parameters for adjustment
-and enables custom elements – shapes, images and text – to be superimposed anywhere.
+Rendering parameters are adjustable and custom elements
+– [shapes](#custom-shapes), [images](#custom-images) and [text](#custom-text) –
+can be superimposed anywhere.
 
 As a novel PostScript application,
 TCM demonstrates precision control of vector graphic creation
 and some interesting coding paradigms that add structure and adaptability.
-Indeed the implementation was key to the project rationale, so the takeaway is intentionaly twofold.
+Indeed the [implementation](#implementation) was also key to the project rationale.
 
-Hopefully TCM may prove useful to retro TV enthusiasts and the amateur TV community,
-and perhaps spark wider interest for generic pattern generation.
+Hopefully TCM may prove useful to retro TV enthusiasts and the amateur TV community
+and perhaps spark wider interest as a generic pattern maker.
 Aside from TV, it champions the benefits of PostScript[^1] for creating intricate graphics programmatically.
 
 This project is dedicated to the memory of **Gordon J. King** whose technical writings inspired so many budding electronics enthusiasts – see [dedication](#in-memoriam).
@@ -143,6 +144,7 @@ Much of the nitty gritty is contained in collapsible sections revealed in the [T
 &bull; [Retro&nbsp;RGB](#user-content-retro-rgb)
 &bull; [VOB&nbsp;commands](#user-content-vob-commands)
 &bull; [VOB&nbsp;explanation](#user-content-vob-explanation)
+&bull; [720&nbsp;vs&nbsp;704](#user-content-720-vs-704)
 &bull; [Authoring&nbsp;and&nbsp;burning](#user-content-authoring-and-burning)
 - [Test&nbsp;card&nbsp;sources](#test-card-sources)
   - [Originals](#originals)
@@ -173,9 +175,9 @@ Much of the nitty gritty is contained in collapsible sections revealed in the [T
 - show overlay animations to demonstrate authentic accuracy
 - indicate replication with removable watermark
 - reference original test card image sources used to model replicas
-- options to alter, add content, decorate, generally customise to requirements
+- options to alter, add content, and generally customise to requirements
 - options to superimpose shapes, images and styled text anywhere
-- enable transparency
+- enable transparency for image and video layering
 - be robust enough to calibrate television receivers
 - clear instructions and numerous examples
 - guidance for generating videos with audio and making DVDs
@@ -272,13 +274,13 @@ Further info: [GS User Guide: Installing](https://ghostscript.readthedocs.io/en/
 
 ## PostScript basics
 
-All you need to grasp to tweak TCM patterns are the [objects](#user-content-objects) and [operators](#user-content-operators) detailed below and three basic concepts:
+All you need to know to tweak TCM patterns are the [objects](#user-content-objects) and [operators](#user-content-operators) detailed below and three basic concepts:
 
 - PostScript uses *postfix* notation, a.k.a. Reverse Polish, where operands preceed operators –
 like Forth[^7].
 - PostScript is *stack-based*, where operands and intermediate results are stored on a stack
 - everything is an *object* (all data and procedures, that is)
-- whitespace seperates tokens and % begins a comment (to end of line)
+- whitespace separates tokens and % to end of line is a comment
 
 
 The following tables show basic object types and operators needed to modify test cards.
@@ -292,15 +294,15 @@ see for instance the [`TCC`](#user-content-tcc-arguments) set.
 
 
 | type | examples | comment |
-| :--- | :--- | :--- |
+| ---: | :---: | :--- |
 | boolean | `true` `false` | these are keywords |
 | numeric | `1` `-2.3` `4.5e3` | integers and reals |
-| string | `(Hello)` | enclose text in `(` and `)` |
+| string | `(Hello)` | enclose text in `(` and `)` <br> escape with backslash `\` |
 | name | `/TCh` <br> `TCh 4 div` <br> `/CCf?` | names have a slash `/` <br> drop the `/` to get named objects <br> names can have any characters |
 | array | `[]` <br> `[ 1 2 3 ]` <br> `[ true 4.5 (Hi) /Lo [6 7] ]` | empty array <br> array of numbers <br> array of mixed objects |
-| dictionary | `/Is? true def` <br> `/Value 8.9 def` <br> `/Text (Bye) def` <br> `/Colour /Red def` <br> `/Numbers [1 2 3] def` | these are name-object pairs <br> `def` is the *define* operator |
+| dictionary | `/Is? true def` <br> `/Value 8.9 def` <br> `/Text (Bye) def` <br> `/Colour /Red def` <br> `/Numbers [1 2 3] def` | name-object pairs <br> `def` is the *define* operator |
 | null | `null` | empty or missing value |
-| procedure | `{ 2 sqrt }` | an executable array of tokens |
+| procedure | `{ 2 sqrt }` | an executable array of objects |
 
 Further info: [PLRM §3.3: Data Types and Objects](https://www.adobe.com/jp/print/postscript/pdfs/PLRM.pdf#page=48)
 
@@ -2015,8 +2017,8 @@ ffmpeg -y -v warning -ss 13:5.1 -t 5 -i magic.mkv -i tcD.png -filter_complex '
        monochrome, cas=0.75, normalize=smoothing=50, setsar=1/1, setdar=4/3,
        zscale=-2:260*504/768:f=spline36, pad=504:378:-1:-1[v];
     [1]zscale=504:378:f=spline36[i];
-    [v][i]overlay, fps=20[g];
-    ' -map [g]:v -pix_fmt yuv420p -f yuv4mpegpipe | gifski -q -o magicD.gif -
+    [v][i]overlay[g];
+    ' -map [g]:v -r 20 -pix_fmt yuv420p -f yuv4mpegpipe | gifski -q -o magicD.gif -
 ```
 
 #### Overlay explanation
@@ -2039,7 +2041,7 @@ Filters:
 - [`pad`](https://www.ffmpeg.org/ffmpeg-filters.html#pad) to `504:378` pads the video to the GIF size
 - [`zscale`](https://www.ffmpeg.org/ffmpeg-filters.html#zscale) to `504:378` reduces the test card image source to the GIF size
 - [`overlay`](https://www.ffmpeg.org/ffmpeg-filters.html#overlay) overlays the test card mask over the centred video
-- [`fps`](https://www.ffmpeg.org/ffmpeg-filters.html#fps) sets the frame rate to 20 fps for the GIF
+- `-r 20` sets the frame rate to 20 fps for the GIF
 - `-pix_fmt yuv420p` converts to YUV for `yuv4mpegpipe`
 - `-f yuv4mpegpipe` concatenates frames, see [animated GIF](#user-content-animated-gif)
 
@@ -2067,7 +2069,7 @@ is a Rec.601/BT.601[^31][^23] DVD and test pattern generator for calibrating Sta
 His [RetroRGB post](https://retrorgb.com/freecalrec601-dvds-for-calibrating-crts.html) about it has useful links and videos.
 
 Like FreeCalRec601, TCM images have sRGB [colour space](#user-content-colour-space) when output by GS RGB devices,
-so we just deploy the same [FFmpeg] options for SD DVD conformance.
+so we just deploy the same FFmpeg options for SD DVD conformance.
 
 > ![Aside](assets/icons/aside-16.svg)\
 > FreeCalRec601 [build_images.sh](https://github.com/danmons/FreeCalRec601/blob/master/build_images.sh) makes sRGB colour chunks using [ImageMagick],
@@ -2084,58 +2086,95 @@ FreeCalRec601 [build_vob.sh](https://github.com/danmons/FreeCalRec601/blob/maste
 comparable to this Bash snippet:
 
 ```bash
-target=pal-dvd # or ntsc-dvd
-vf=${target%-*}
+vf=pal # or ntsc
+width=720 # or 704
 if [[ $vf = pal ]]; then
-    cs=bt601-6-625 cp=bt470bg ct=gamma28 s=704x576
+    cs=bt601-6-625 cp=bt470bg ct=gamma28 s=${width}x576
 else # ntsc
-    cs=bt601-6-525 cp=smpte170m ct=smpte170m s=704x480
+    cs=bt601-6-525 cp=smpte170m ct=smpte170m s=${width}x480
 fi
-
 ffmpeg -y -v warning -loop 1 -i myTC.tif -i myTC.wav \
     -vf "
-        colorspace=$cs:iall=bt709:range=tv:irange=tv,
+        zscale=s=$s:f=spline36,
+        colorspace=$cs:iall=bt709:irange=tv:range=tv,
         tinterlace=interleave_top:flags=low_pass_filter
     " \
-    -target $target -flags +ildct+ilme \
-    -color_primaries $cp -colorspace $cp -color_trc $ct -video_format $vf \
-    -aspect 4:3 -shortest myTC-$vf.vob
+    -target $vf-dvd -s $s -flags +ildct+ilme \
+    -color_primaries $cp -colorspace $cp -color_trc $ct \
+    -video_format $vf -aspect 4:3 -shortest myTC.vob
 ```
 
-This makes an anamorphic (720x576/480 4:3) interlaced DVD VOB in PAL or NTSC standards with audio.
-Now, given 4:3 broadcast is 704x, not 720x, it does not break DVD standards to override the size:
-`-target $target -s $s` and ignore the ensuing `Multiple -s options specified…` warning.
-Alternatively, scale to 704x then pad to 720x in the `-vf` filter chain.
+This makes an anamorphic 4:3 interlaced DVD VOB in PAL or NTSC standards with audio
+(ignore the `Multiple -s options specified…` warning).
 
 #### VOB explanation
 
-- `target`,`vf`,`cs`,`cp`,`ct` shell variables for PAL and NTSC variants
+- `vf`,`width`,`cs`,`cp`,`ct`,`s` shell variables for PAL/NTSC variants and width
 - `-loop` ([image2 demuxer](https://www.ffmpeg.org/ffmpeg-formats.html#image2-1)) loops the image frame
 - `-vf` video filters:
+  - [`pad`](https://www.ffmpeg.org/ffmpeg-filters.html#pad) added by me, see [720 vs 704](#user-content-720-vs-704)
+  - [`zscale`](https://www.ffmpeg.org/ffmpeg-filters.html#zscale) scale input for correct interlacing and size
   - [`colorspace`](https://www.ffmpeg.org/ffmpeg-filters.html#colorspace) converts the colour primaries, white point and gamma from bt709 (=sRGB) to bt601 for the target
   - [`tinterlace`](https://www.ffmpeg.org/ffmpeg-filters.html#tinterlace) makes the video interlaced, top field first, with vertical low-pass filtering (reduces interline twitter and Moiré artifacts)
 - `-target` ([main options](https://www.ffmpeg.org/ffmpeg.html#Main-options)) sets video and audio format options for the target output, `pal-dvd` or `ntsc-dvd`
+- `-s $s` added by me, see [below](#user-content-720-vs-704)
 - `-flags` ([generic codec options](https://www.ffmpeg.org/ffmpeg-codecs.html#Codec-Options)) sets interlace encoding flags (discrete cosine transform (DCT) and motion estimation)
 - `-color_primaries`, `-colorspace`, `-color_trc` ([generic codec options](https://www.ffmpeg.org/ffmpeg-codecs.html#Codec-Options)) sets colour encoding values
 - `-video_format` ([mpeg2 codec options](https://www.ffmpeg.org/ffmpeg-codecs.html#mpeg2)) format written into the sequence display extension
 - `-aspect` ([video options](https://www.ffmpeg.org/ffmpeg.html#Video-Options)) sets display aspect ratio (DAR)
 - `-shortest` ([advanced options](https://www.ffmpeg.org/ffmpeg.html#Advanced-options)) limits duration to the shortest output stream (audio here)
 
+#### 720 vs 704
+
+There’s a bewildering amount of discussion on DVD aspect ratios and the 720 vs 704 debate.
+I am no expert but I gather digital sources like TCM are not subject to overscan and padding considerations.
+Furthermore, apparently nobody adheres to the ITU standard capture resolution width 720[^32] anyway.
+I have tested padding wider and scaling back for overscan[^33] but distortion occurs and black side bands appear. You can try it with `pad=iw*720/704:ih:-1:0` before the `zscale` filter.
+
+However, 704 is a DVD standard width too for legacy analogue sources but I see no difference in DVDs made with 720 and 704 width.
+
+
 #### Authoring and burning
 
 For free DVD authoring check out the [DVDAuthor] CLI and [DVDStyler] app.
 [FreeCalRec601](https://github.com/danmons/FreeCalRec601) shows DVDAuthor in use with a menu.
 
-To make an ISO image from the CLI:
+To make a basic DVD file system, create a configuration file, say `myDVD.xml`:
+
+```
+<dvdauthor>
+    <vmgm />
+    <titleset>
+        <titles>
+            <pgc>
+                <vob file="myTC.vob" />
+            </pgc>
+        </titles>
+    </titleset>
+</dvdauthor>
+```
+
+then author it:
+
+```
+rm -fr myDVDdir
+mkdir -p myDVDdir
+export VIDEO_FORMAT=PAL # or NTSC
+dvdauthor -o myDVDdir -x myDVD.xml
+```
+
+To make an ISO image for this example from the CLI :
 
 Linux:\
-`mkisofs -V 'Volume Name' -dvd-video -udf -J -o output.iso source-dir`
+`mkisofs -V 'Volume Name' -dvd-video -udf -J -o myDVD.iso myDVDdir
 
 Mac:\
-`hdiutil makehybrid -default-volume-name 'Volume Name' -udf -iso -joliet -o output.iso source-dir`
+`hdiutil makehybrid -default-volume-name 'Volume Name' -udf -iso -joliet -o myDVD.iso myDVDdir
 
 Windows:\
-`Oscdimg.exe -l"Volume Name" -u1 -j1 source-dir output.iso`
+`Oscdimg.exe -l"Volume Name" -u1 -j1 myDVDdir myDVD.iso`
+
+See [ISOs](assets/video) for DVD variants discussed here.
 
 Burning is usuallly a platform dependent proprietary command.
 
@@ -2358,8 +2397,6 @@ RIP GJK.
 - [pngquant] – lossy compression of PNG images
 - [xfade-easing] – video transition effects for FFmpeg Xfade filter by [scriptituk]
 
-Primary: `#007bff` (Blue)
-
 ### Footnotes
 
 <!-- Link references -->
@@ -2412,7 +2449,7 @@ Primary: `#007bff` (Blue)
 
 [^13]: [Document Structuring Conventions](https://en.wikipedia.org/wiki/Document_Structuring_Conventions) – Wikipedia
 
-[^14] [VideoHelp Forum](https://forum.videohelp.com/) – huge video knowledgebase since 1999
+[^14]: [VideoHelp Forum](https://forum.videohelp.com/) – huge video knowledgebase since 1999
 
 [^15]: [Sampling theorem](https://en.wikipedia.org/wiki/Nyquist–Shannon_sampling_theorem) – Wikipedia
 
@@ -2447,4 +2484,8 @@ Primary: `#007bff` (Blue)
 [^30]: [The Magic Roundabout Series 1 1965–68 (incomplete)](https://youtu.be/jS2IlF9GEco) – 5 episodes, not 224, because of lost media
 
 [^31]: [Rec.601/BT.601](https://en.wikipedia.org/wiki/Rec._601) – Wikipedia, ‘the bridge that joined the analogue and digital worlds’
+
+[^32]: [Capture-Cards and aspect-ratio for Dummies](http://www.arachnotron.nl/permanent/doom9/capguide_downloads/Karl_cap_v1_en.pdf) – by Der Karl
+
+[^33]: [Scaling interlaced video](https://ffmpeg.org/pipermail/ffmpeg-user/2014-March/020384.html) – Mark Himsley on FFmpeg-user
 
