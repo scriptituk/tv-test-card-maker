@@ -280,7 +280,7 @@ All you need to know to tweak TCM patterns are the [objects](#user-content-objec
 like Forth[^7].
 - PostScript is *stack-based*, where operands and intermediate results are stored on a stack
 - everything is an *object* (all data and procedures, that is)
-- whitespace separates tokens and % to end of line is a comment
+- whitespace separates tokens and % starts a line comment
 
 
 The following tables show basic object types and operators needed to modify test cards.
@@ -2125,13 +2125,13 @@ This makes an anamorphic 4:3 interlaced DVD VOB in PAL or NTSC standard of an im
 #### 720 vs 704
 
 There’s a bewildering amount of discussion on DVD aspect ratios and the 720 vs 704 debate.
-I am no expert but I gather digital sources like TCM are not subject to overscan and padding considerations.
-Furthermore, apparently nobody adheres to the ITU standard capture resolution width 720 anyway[^32].
-I have tested padding wider and scaling back for overscan[^33] but distortion occurs and black side bands appear. You can try it with `pad=iw*720/704:ih:-1` before the `zscale` filter.
+I am no expert but I gather digital sources like TCM are not subject to padding considerations.
+For analogue sources I think the options are either to pad wider then scale back[^32]
+(by adding `pad=iw*720/704:ih:-1` before the `zscale` filter)
+or use the 704 width option of the DVD standard.
 
-However, width 704 is standard DVD too for legacy analogue sources but I see no difference in DVDs made with 720 and 704 width using the code above.
-Therefore sticking with 720 is probably best,
-and remove the `-s $s` after the `target` option as it causes a `Multiple -s options…` warning.
+I see no empirical difference between DVDs made with 720 and 704 width using the code above for a 768 (square pixel) source.
+If using the default 720, removing `-s $s` after the `target` option avoids the `Multiple -s options…` warning.
 
 
 #### Authoring and burning
@@ -2157,8 +2157,8 @@ To make a basic DVD file system with DVDAuthor, create a configuration file, say
 then make the file structure `myDVDdir/`:
 
 ```
-rm -fr myDVDdir
 mkdir -p myDVDdir
+rm -fr myDVDdir/*
 export VIDEO_FORMAT=PAL # or NTSC
 dvdauthor -o myDVDdir -x myDVD.xml
 ```
@@ -2211,7 +2211,7 @@ and the cards, monoscopes and slides all differed slightly.
   with excellent discussion on optical and digital features
   (see also [Eng Inf No.10 p.8](https://www.bbceng.info/Eng_Inf/eng-inf-files/EngInf10.pdf#page=8)
    and [Eng Inf No.18 p.9](https://www.bbceng.info/Eng_Inf/eng-inf-files/EngInf18.pdf#page=9))
-- [Test Card F (electronic)](https://www.thesun.co.uk/wp-content/uploads/2016/08/nintchdbpict000000243337.jpg) 
+- [Test Card F (electronic)](https://www.thesun.co.uk/wp-content/uploads/2016/08/nintchdbpict000000243337.jpg)
   – as confirmed by its [subtle errors](https://archive.ph/VpVwc), from [Remember the test card girl?](https://www.thesun.ie/tv/8237463/remember-tes-card-girl-tv-carole-hersee-unrecognisable/)
 - [Test Card J](https://archive.ph/RhAE8)
   – from the archived barney-wol site,
@@ -2336,6 +2336,7 @@ RIP GJK.
 - [Limiting of YUV Digital Video Signals](https://downloads.bbc.co.uk/rd/pubs/reports/1987-22.pdf) – a BBC Research Report
 - [YUV Color Calculator](https://res18h39.netlify.app/color) – colour conversion calculator
 - [BBC HD test signals](https://www.bbc.co.uk/blogs/bbcinternet/2008/12/a_christmas_present_from_the_h.html) – Andy Quested, BBC Internet Blog
+- [Capture-Cards and aspect-ratio for Dummies](http://www.arachnotron.nl/videocap/doc/Karl_cap_v1_en.pdf) – analogue digitisation guide by by Der Karl
 
 ### Test cards
 
@@ -2485,7 +2486,5 @@ RIP GJK.
 
 [^31]: [Rec.601/BT.601](https://en.wikipedia.org/wiki/Rec._601) – Wikipedia, ‘the bridge that joined the analogue and digital worlds’
 
-[^32]: [Capture-Cards and aspect-ratio for Dummies](http://www.arachnotron.nl/permanent/doom9/capguide_downloads/Karl_cap_v1_en.pdf) – by Der Karl
-
-[^33]: [Scaling interlaced video](https://ffmpeg.org/pipermail/ffmpeg-user/2014-March/020384.html) – Mark Himsley on FFmpeg-user
+[^32]: [Scaling interlaced video](https://ffmpeg.org/pipermail/ffmpeg-user/2014-March/020384.html) – Mark Himsley on FFmpeg-user
 
