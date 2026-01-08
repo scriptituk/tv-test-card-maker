@@ -8,9 +8,9 @@
 /$stdout (%stdout) (w) file def
 /$stderr (%stderr) (w) file def
 
-/debug { $stderr exch (DEBUG: ) exch cat (\n) cat writestring $stderr flushfile } def
-/warning { $stderr exch (WARNING: ) exch cat (\n) cat writestring $stderr flushfile } def
-/error { $stderr exch (ERROR: ) exch cat (\n) cat writestring $stderr flushfile quit } def
+/debug { $stderr exch (DEBUG: ) exch cat (\n) cat writestring $stderr flushfile } bind def
+/warning { $stderr exch (WARNING: ) exch cat (\n) cat writestring $stderr flushfile } bind def
+/error { $stderr exch (ERROR: ) exch cat (\n) cat writestring $stderr flushfile quit } bind def
 
 % resources
 
@@ -24,7 +24,7 @@ setglobal
 % see https://www.anastigmatix.net/postscript/
 (ProcSet/anastigmatix.ps) runlibfile % combined Anastigmatix PostScript resources
 
-% seed random number generator (from tempfile name, how else?)
+% seed random number generator (from a tempfile name, how else?)
 
 /rands isdef { rands }{ null (r) .tempfile closefile 0 exch { 257 mul xor } forall } ifelse srand
 
@@ -40,35 +40,35 @@ setglobal
     /arguments exch def
 } if
 
-% sizes
+% sizes & translations
 
-/TCh isdef { /TCh TCh even def } if % height (even)
-/TCw isdef { /TCw TCw even def } if % width (even)
-/TCr isdef not { /TCr 4 3 div def } if % default aspect ratio
-% CLI can specify 2 sizes, 3rd is calculated, TCh & TCw have precedence over TCr (stretches horizontally)
-/TCh isdef {
-    /TCw isdef {
-        /TCr TCw TCh div def
+/initdims {
+    /TCh isdef { /TCh TCh even def } if % height (even)
+    /TCw isdef { /TCw TCw even def } if % width (even)
+    /TCr isdef not { /TCr 4 3 div def } if % default aspect ratio
+    % CLI can specify 2 sizes, 3rd is calculated, TCh & TCw have precedence over TCr (stretches horizontally)
+    /TCh isdef {
+        /TCw isdef {
+            /TCr TCw TCh div def
+        }{
+            /TCw TCh TCr mul even def
+        } ifelse
     }{
-        /TCw TCh TCr mul even def
+        /TCw isdef {
+            /TCh TCw TCr div even def
+        }{
+            /TCh 576 def % default height
+            /TCw TCh TCr mul even def
+        } ifelse
     } ifelse
-}{
-    /TCw isdef {
-        /TCh TCw TCr div even def
-    }{
-        /TCh 576 def % default height
-        /TCw TCh TCr mul even def
-    } ifelse
-} ifelse
-/TCx TCw div2 def % TC horizontal centre
-/TCy TCh div2 def % TC vertical centre
-
-% mirroring translations
-
-/flipN [1 0 0 1 0 0] def % no flip
-/flipH [-1 0 0 1 TCw 0] def % flip horizontal
-/flipV [1 0 0 -1 0 TCh] def % flip vertical
-/flipB [-1 0 0 -1 TCw TCh] def % flip both
+    /TCx TCw div2 def % TC horizontal centre
+    /TCy TCh div2 def % TC vertical centre
+    % mirroring
+    /flipN [1 0 0 1 0 0] def % no flip
+    /flipH [-1 0 0 1 TCw 0] def % flip horizontal
+    /flipV [1 0 0 -1 0 TCh] def % flip vertical
+    /flipB [-1 0 0 -1 TCw TCh] def % flip both
+} def
 
 % timings
 
@@ -91,9 +91,11 @@ setglobal
     /TClb 18.3 arg % line blanking microseconds
     /TCfb 14 arg % frame blanking lines
     /TClt 80.3 arg % active line time microseconds
-    /TCvr 378 arg % vertical resolution (active scanning lines)
+    /TCvr 376 arg % vertical resolution (active scanning lines)
     /TChr 503 arg % approximate horizontal resolution (active dots)
 %   /TClh 360 arg % horizontal resolution TVL (TV lines per picture height)
+%   /TCdw 512 arg % would-be digital line width (@ PAR=1) ?
+%   /TCdh 384 arg % would-be digital line height ?
     625t % inherit 625 digital args
 } def
 
@@ -103,12 +105,28 @@ setglobal
     /TCar 4 3 div arg % aspect ratio
     /TClb 12.05 arg % line blanking microseconds
     /TCfb 25 arg % frame blanking lines
-    /TClt 51.95 arg % active line time microseconds
-    /TCvr 576 arg % vertical resolution (active scanning lines)
+    /TClt 52 arg % active line time microseconds
+    /TCvr 576 arg % vertical resolution (575 active scanning lines)
     /TChr 573 arg % approximate horizontal resolution (active dots)
 %   /TClh 429 arg % horizontal resolution TVL (TV lines per picture height)
-    /TCll 720 arg % digital line length (BT.601)
-    /TCdr 702 arg % active digital horizontal resolution (for BT.470(2) 52us line time)
+%   /TCdw 720 arg % digital line width (BT.601)
+%   /TCdh 576 arg % digital line height (BT.601)
+%   /TCdr 702 arg % active digital horizontal resolution (for BT.470(2) 52us line time)
+} def
+
+/525t { % ITU-R CCIR System M
+    /TCnl 525 arg % number of scanning lines
+    /TCfr 29.97 arg % frame rate (30 mono)
+    /TCar 4 3 div arg % aspect ratio
+    /TClb 10.9 arg % line blanking microseconds
+    /TCfb 25 arg % frame blanking lines
+    /TClt 52.7 arg % active line time microseconds
+    /TCvr 486 arg % vertical resolution (485 active scanning lines)
+    /TChr 440 arg % approximate horizontal resolution (active dots)
+%   /TClh 340 arg % horizontal resolution TVL (TV lines per picture height)
+%   /TCdw 720 arg % digital line width (BT.601)
+%   /TCdh 480 arg % digital line height (BT.601)
+%   /TCdr 702 arg % active digital horizontal resolution
 } def
 
 /1080t { % EBU–TECH 3299 1080i/25
@@ -139,10 +157,14 @@ setglobal
 
 % debugging
 
-/pdict { dup keys {cvas tolower exch cvas tolower exch} insertionsort {
-    2 copy get == ==
-} forall pop (-pdict-) = } def
-/pvars { ] { dup load == == } forall (-vars-) = } def
+/pdict {
+    (-pdict+) =
+    dup keys {cvas tolower exch cvas tolower exch} insertionsort {
+        2 copy get exch == ==
+    } forall pop
+    (-pdict-) =
+} bind def
+/pvars { ] { dup load == == } forall (-vars-) = } bind def
 /crosshairs {
     gsave 1 setlinewidth cyan
     moveto currentpoint hGlw 0 rmoveto Gsz hGlw sub 0 rlineto

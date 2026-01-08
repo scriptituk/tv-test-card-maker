@@ -9,7 +9,7 @@
 
 /arg { 1 index isdef { pop pop }{ 2 copy validate def } ifelse } bind def % def iff undefined
 
-/loadargs { % constructor: dict /pattern loadargs dict
+/loadargs { % dict /pattern loadargs dict
     dup isdef not { (pattern /) exch cvas ( undefined) cat cat error def } if
     exch begin
         {
@@ -68,6 +68,8 @@
 %--------------------------------------------------------------------------------
 % custom elements
 %--------------------------------------------------------------------------------
+
+/initce {
 
 % custom shape defaults
 /CustomShape <<
@@ -135,6 +137,8 @@
     /I << /required /f /defaults CustomImage /vars 1 index cevars /order 2 >>
     /T << /required /s /defaults CustomText /vars 1 index cevars /order 3 >>
 >> readonly def
+
+} bind def
 
 % parse custom element name
 /parsece { % /name parsece <type index var true> or <false>

@@ -6,6 +6,7 @@
 % aggregates
 
 /isdef { where { pop true }{ false } ifelse } bind def
+/istrue { dup isdef { cvx exec }{ pop false } ifelse } bind def
 /keys { [ exch { pop } forall ] } bind def
 /dclone { dup length dict copy } bind def
 /reversearray { dup length array exch dup length 1 sub exch { 3 copy put pop 1 sub } forall pop } bind def

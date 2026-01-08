@@ -166,7 +166,7 @@ CustomText { exch cvas 1 1 getinterval (T0) exch cat exch def } forall
 /FBp 0.012 xGsz arg % freq bars padding
 /FBc [0 1 1] arg % freq bars colours: [min max surround]
 /FBs? false arg % true for sinusoidal frequency gratings, false for square
-/FBx TCx CCr CClw 0.4 mul sub FBoh div2 leg sub FBow div2 add arg % freq bars horizontal centre
+/FBx TCx 1.21 xGsz sub FBow div2 add arg % freq bars horizontal centre
 /FBf [ [1 4 0] [1.5 6 0] [2 8 0] [2.5 10 0] [3 12 0] ] arg % frequencies: [MHz nbars antiphase] array
 /FBt null arg % custom text element name for freq text template, null for no text
 /FB? true arg % false for no frequency bars
@@ -256,7 +256,7 @@ CustomText { exch cvas 1 1 getinterval (T0) exch cat exch def } forall
 /FBg 0 arg
 /FBp 0.023 xGsz arg
 /FBoh 3 xGsz Glw add arg
-/FBx TCx CCr CClw 0.1 mul sub FBoh div2 leg sub FBow div2 add arg
+/FBx TCx 1.27 xGsz sub FBow div2 add arg
 /FBf [ [1.5 4 0] [2.5 7 0] [3.75 10 0] [4.5 12 0] [5.25 14 0] ] arg
 /FBt /T-1 arg
 /CSol 3.11 xGsz arg
