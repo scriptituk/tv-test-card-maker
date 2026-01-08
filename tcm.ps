@@ -10,28 +10,32 @@
 % replicates hi-resolution and vector graphics of vintage television test cards
 % easily refashioned and customised by CLI parameters and arguments files
 
-/tcm-common.ps /ProcSet findresource currentdict copy pop
-/tcm-init.ps /ProcSet findresource currentdict copy pop
-/tcm-colour.ps /ProcSet findresource currentdict copy pop
-/tcm-custom.ps /ProcSet findresource currentdict copy pop
-/tcm-validate.ps /ProcSet findresource currentdict copy pop
-/tcm-generic.ps /ProcSet findresource currentdict copy pop
+/procdict currentdict def
+/tcm-common.ps /ProcSet findresource procdict copy pop
+/tcm-init.ps /ProcSet findresource procdict copy pop
+/tcm-colour.ps /ProcSet findresource procdict copy pop
+/tcm-custom.ps /ProcSet findresource procdict copy pop
+/tcm-validate.ps /ProcSet findresource procdict copy pop
+/tcm-generic.ps /ProcSet findresource procdict copy pop
 
-/arguments isdef { % have CLI arguments array
-    { arguments } stopped { stop } if % TODO: improve error msg
-}{
-    100 dict
-} ifelse
-dup begin
+100 dict begin % args dict
+
+    initdims initce
+    /arguments isdef { % have CLI arguments array
+        { arguments currentdict copy pop } stopped { stop } if % TODO: improve error msg
+    } if
+
     /TC /BBC-F-electronic arg % default pattern
     { /TCg group TC get def } stopped { TC /undefined signalerror } if % check pattern
     TC cvas (-) cat (-) split dup 0 get cvn /TCp exch def 1 get cvn /TCv exch def
     /args isdef { /args dup load 0 TC put }{ TC } ifelse % set extends=TC
-end
-/tcm-templates.ps /ProcSet findresource currentdict copy pop
-loadargs begin
+    /tcm-templates.ps /ProcSet findresource procdict copy pop
+    currentdict exch loadargs pop
+    /TCMDEBUGARGS istrue { /TC TC def currentdict pdict } if
+
     << /PageSize [ TCw TCh ] /ImagingBBox null >> setpagedevice
 %   true setstrokeadjust
+
     /TC? isdef not { /TC? true def } if % false for CEs only, no TC elements or watermark
     {
         TC? not { exit } if
@@ -51,6 +55,7 @@ loadargs begin
     X? TC? and { Extra } if
     CustomElements
     X? TC? and /Blank geq not and Xwt null ne and { Watermark } if
+
 end
 
 showpage

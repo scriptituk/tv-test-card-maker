@@ -7,7 +7,7 @@
 
 ## Summary
 
-<img src='assets/tv-test-card-maker.gif' alt='Summary' align='right'>
+<a href='assets/video/tcm.png'><img src='assets/video/tcm-thumb.png' alt='TV Test Card Maker' align='right'></a>
 
 Accurate high-resolution and vector graphic replicas of vintage TV test patterns are hard to come by,
 and those created by drawing tools cannot be altered because master files are unavailable.
@@ -559,7 +559,7 @@ Inheritance: `TCC-early` <— [`Blank`](#user-content-blank-arguments)
 | `/FBp` | `0.012 xGsz` | freq bars padding |
 | `/FBc` | `[0 1 1]` | freq bars colours: [min max surround] |
 | `/FBs?` | `false` | true for sinusoidal frequency gratings, false for square |
-| `/FBx` | `TCx CCr CClw 0.4 mul sub FBoh div2 leg sub FBow div2 add` | freq bars horizontal centre |
+| `/FBx` | `TCx 1.21 xGsz sub FBow div2 add` | freq bars horizontal centre |
 | `/FBf` | `[ [1 4 0] [1.5 6 0] [2 8 0] [2.5 10 0] [3 12 0] ]` | frequencies: [MHz nbars antiphase] array |
 | `/FBt` | `null` | custom text element name for freq text template, null for no text |
 | `/FB?` | `true` | false for no frequency bars |
@@ -657,7 +657,7 @@ Inheritance: `TCC-625` <— [`TCC`](#user-content-tcc-arguments) <— [`TCC-earl
 | `/FBg` | `0` | freq bars gap size (>0 for D/E) |
 | `/FBp` | `0.023 xGsz` | freq bars padding |
 | `/FBoh` | `3 xGsz Glw add` | freq bar outer height |
-| `/FBx` | `TCx CCr CClw 0.1 mul sub FBoh div2 leg sub FBow div2 add` | freq bars horizontal centre |
+| `/FBx` | `TCx 1.27 xGsz sub FBow div2 add` | freq bars horizontal centre |
 | `/FBf` | `[ [1.5 4 0] [2.5 7 0] [3.75 10 0] [4.5 12 0] [5.25 14 0] ]` | frequencies: [MHz nbars antiphase] array |
 | `/FBt` | `/T-1` | custom text element name for freq text template, null for no text |
 | ***/CS…*** | ![corner stripes](assets/elements/TCC-625-CS.png) | ***corner stripes arguments*** |
