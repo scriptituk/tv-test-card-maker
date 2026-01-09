@@ -155,25 +155,6 @@ setglobal
     /TCJ /BBC
 >> readonly def
 
-% debugging
-
-/pdict {
-    (-pdict+) =
-    dup keys {cvas tolower exch cvas tolower exch} insertionsort {
-        2 copy get exch == ==
-    } forall pop
-    (-pdict-) =
-} bind def
-/pvars { ] { dup load == == } forall (-vars-) = } bind def
-/crosshairs {
-    gsave 1 setlinewidth cyan
-    moveto currentpoint hGlw 0 rmoveto Gsz hGlw sub 0 rlineto
-    moveto currentpoint hGlw neg 0 rmoveto hGlw Gsz sub 0 rlineto
-    moveto currentpoint 0 hGlw rmoveto 0 Gsz hGlw sub rlineto
-    moveto 0 hGlw neg rmoveto 0 hGlw Gsz sub rlineto
-    stroke grestore
-} bind def
-
 currentdict end
 %================================================================================
 /tcm-init.ps exch /ProcSet defineresource

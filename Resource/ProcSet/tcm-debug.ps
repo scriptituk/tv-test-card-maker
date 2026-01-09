@@ -1,0 +1,60 @@
+%================================================================================
+% Test Card Maker debugging module
+%================================================================================
+100 dict begin
+
+/pdict {
+    dup keys {cvas tolower exch cvas tolower exch} insertionsort {
+        2 copy get exch /$=== 1 def === ( ) print /$=== 0 def ===
+    } forall pop
+    (-pdict-) =
+} bind def
+
+/pvars { ] { dup load == == } forall (-vars-) = } bind def
+
+/crosshairs {
+    gsave 1 setlinewidth cyan
+    moveto currentpoint hGlw 0 rmoveto Gsz hGlw sub 0 rlineto
+    moveto currentpoint hGlw neg 0 rmoveto hGlw Gsz sub 0 rlineto
+    moveto currentpoint 0 hGlw rmoveto 0 Gsz hGlw sub rlineto
+    moveto 0 hGlw neg rmoveto 0 hGlw Gsz sub rlineto
+    stroke grestore
+} bind def
+
+/$=== 0 def
+/=== { % improved ==
+    dup type { % case stmt
+        dup /dicttype eq {
+            pop
+            (<<) print
+            /$=== $=== 1 add def
+            { exch ( ) print === ( ) print === } forall
+            /$=== $=== 1 sub def
+            ( >>) print
+            exit
+        } if
+        dup /arraytype eq 1 index /packedarraytype eq or {
+            pop
+            dup xcheck { (}) ({) }{ (]) ([) } ifelse print exch
+            /$=== $=== 1 add def
+            { ( ) print === } forall
+            /$=== $=== 1 sub def
+            ( ) print print
+            exit
+        } if
+        dup /stringtype eq { pop (\() print print (\)) print exit } if
+        dup /nametype eq { pop (/) print cvas print exit } if
+        dup /integertype eq { pop cvas print exit } if
+        dup /realtype eq { pop cvas print exit } if
+        dup /booleantype eq { pop cvas print exit } if
+        dup /nulltype eq { pop pop (null) print exit } if
+        cvas 0 1 index length 4 sub getinterval (-) print print (-) print pop exit % show type
+    } loop
+    $=== 0 eq { (\n) print } if
+    flush
+} bind def
+
+currentdict end
+%================================================================================
+/tcm-debug.ps exch /ProcSet defineresource
+
