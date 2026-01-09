@@ -3,7 +3,7 @@
 ### authentic replicas &bull; easily customised &bull; vector and raster formats &bull; cross-platform
 
 > [!NOTE]
-> This repo is under construction; corrections and comments are welcome…
+> This repo is still growing – any observations are most welcome…
 
 ## Summary
 
@@ -139,6 +139,7 @@ Much of the nitty gritty is contained in collapsible sections revealed in the [T
 &bull; [Overlay example](#user-content-overlay-example)
 &bull; [Overlay&nbsp;commands](#user-content-overlay-commands)
 &bull; [Overlay&nbsp;explanation](#user-content-overlay-explanation)
+  - [Dynamic&nbsp;elements](#dynamic-elements)
   - [DVDs](#dvds)
 &bull; [DVD example](#user-content-dvd-example)
 &bull; [Retro&nbsp;RGB](#user-content-retro-rgb)
@@ -256,7 +257,7 @@ For native Windows, run the 64-bit AGPL release from [GS Downloads](https://ghos
 and restart to update `%PATH%`\
 (WSL and MSYS2 are good alternatives)
 
-For ArchLinux and [MSYS2](https://www.msys2.org/), use Pacman\
+For Arch Linux and [MSYS2](https://www.msys2.org/), use Pacman\
 e.g. `pacman -S mingw-w64-ucrt-x86_64-ghostscript` for Windows MSYS2
 
 For Debian/Ubuntu and WSL, use APT\
@@ -1406,7 +1407,7 @@ This unit is named `/Gsz` and the main scaling [operator](#user-content-operator
 
 TODO: note about 405/625 constants
 
-TODO: note about rise/fall times In simulating analogue test cards digitally
+TODO: note about rise/fall times in simulating analogue test cards digitally
 
 ## Colours
 
@@ -1521,7 +1522,7 @@ Use `/RandomColour` or `/RandomGrey` (case-insensitive) for a randomly generated
 ### Unit interval colour components
 
 Whichever colour representation above is used, TCM has to convert all colour component values to the
-unit interval[^20] (UI), i.e. real numbers between 0.0&nbsp;and&nbsp;1.0 incusive,
+unit interval[^20] (UI), i.e. real numbers between 0.0&nbsp;and&nbsp;1.0 inclusive,
 for PostScript to process.
 
 Therefore TCM also accepts UI values for all colour components, with automatic UI detection.
@@ -1565,7 +1566,7 @@ PS can paint any gradient, not necessarily continuous, by interpolation between 
 
 TCM uses PS DeviceRGB and DeviceGray colour spaces which, by default, GS renders as sRGB and sRGB-linearised grey respectively.
 
-Since GS release 9.0 the color architecture uses the ICC[^28] format for color management.
+Since GS release 9.0 the colour architecture uses the ICC[^28] format for colour management.
 Specifically, for DeviceRGB and DeviceGray, the GS Color Management document[^29] states:
 
 > “The profile default_gray.icc is defined to provide output along the neutral axis with an sRGB linearization.
@@ -1937,7 +1938,7 @@ Optimise (if beneficial) with [Gifsicle].
 > [!TIP]
 > Use ffmpeg options:\
   &bull; `-y` to overwrite output file\
-  &bull; `-hide_banner` to suppress copyright and build infomation\
+  &bull; `-hide_banner` to suppress copyright and build information\
   &bull; `-v warning` to show warnings and errors only (hides banner too)\
   &bull; `-v error` to show errors only
 
@@ -2031,8 +2032,8 @@ Filters:
 - [`crop`](https://www.ffmpeg.org/ffmpeg-filters.html#crop) cuts out the episodes
 - crop rectangle obtained using [`cropdetect`](https://www.ffmpeg.org/ffmpeg-filters.html#cropdetect) on video source
 - [`zscale`](https://www.ffmpeg.org/ffmpeg-filters.html#zscale) to `ih*4/3` width corrects the aspect from 3:2 to 4:3
-  (you can use [`scale`](https://www.ffmpeg.org/ffmpeg-filters.html#scale) of course but [`zscale`](https://www.ffmpeg.org/ffmpeg-filters.html#zscale) passes color characteristics unchanged)
-- the `spline36` scaling algorithm is good for downscaling sharp sources like test cards and animated content, as `lanczos` tends to introduce haloing/ringing artifacts
+  (you can use [`scale`](https://www.ffmpeg.org/ffmpeg-filters.html#scale) of course but [`zscale`](https://www.ffmpeg.org/ffmpeg-filters.html#zscale) passes colour characteristics unchanged)
+- the `spline36` scaling algorithm is good for downscaling sharp sources like test cards and animated content, as `lanczos` tends to introduce haloing/ringing artefacts
 - [`monochrome`](https://www.ffmpeg.org/ffmpeg-filters.html#monochrome) converts video to grey (it looks grey but we don’t know), omit for a colour video
 - [`cas`](https://www.ffmpeg.org/ffmpeg-filters.html#cas) sharpens video
 - [`normalize`](https://www.ffmpeg.org/ffmpeg-filters.html#normalize) stretches dynamic range from black to white
@@ -2047,6 +2048,13 @@ Filters:
 
 
 </details>
+
+### Dynamic elements
+
+The [Summary](#summary) animation is made from frames with linear interpolated element arguments,
+combined with easing and a [xfade-easing] transition.
+
+[Custom elements](#custom-elements) can be animated in a similar manner.
 
 ### DVDs
 
@@ -2113,7 +2121,7 @@ This makes an anamorphic 4:3 interlaced DVD VOB in PAL or NTSC standard of an im
 - `-vf` video filters:
   - [`zscale`](https://www.ffmpeg.org/ffmpeg-filters.html#zscale) scale input for correct interlacing and size
   - [`colorspace`](https://www.ffmpeg.org/ffmpeg-filters.html#colorspace) converts the colour primaries, white point and gamma from bt709 (=sRGB) to bt601 for the target
-  - [`tinterlace`](https://www.ffmpeg.org/ffmpeg-filters.html#tinterlace) makes the video interlaced, top field first, with vertical low-pass filtering (reduces interline twitter and Moiré artifacts)
+  - [`tinterlace`](https://www.ffmpeg.org/ffmpeg-filters.html#tinterlace) makes the video interlaced, top field first, with vertical low-pass filtering (reduces interline twitter and Moiré artefacts)
 - `-target` ([main options](https://www.ffmpeg.org/ffmpeg.html#Main-options)) sets video and audio format options for the target output, `pal-dvd` or `ntsc-dvd`
 - `-s $s` added by me, see [below](#user-content-720-vs-704)
 - `-flags` ([generic codec options](https://www.ffmpeg.org/ffmpeg-codecs.html#Codec-Options)) sets interlace encoding flags (discrete cosine transform (DCT) and motion estimation)
@@ -2124,7 +2132,7 @@ This makes an anamorphic 4:3 interlaced DVD VOB in PAL or NTSC standard of an im
 
 #### 720 vs 704
 
-There’s a bewildering amount of discussion on DVD aspect ratios and the 720 vs 704 debate.
+There’s a bewildering amount of discussion about DVD aspect ratios and the 720 vs 704 debate.
 I am no expert but I gather digital sources like TCM are not subject to padding considerations.
 For analogue sources I think the options are either to pad wider then scale back[^32]
 (by adding `pad=iw*720/704:ih:-1` before the `zscale` filter)
@@ -2176,7 +2184,7 @@ Windows:\
 
 See [ISOs](assets/video) for built DVD variants discussed here.
 
-Burning is usuallly a platform-dependent proprietary command.
+Burning is usually a platform-dependent proprietary command.
 
 </details>
 
@@ -2231,7 +2239,7 @@ and the cards, monoscopes and slides all differed slightly.
   – many thumbnail re-creations by artist Dave Jeffery
 - [DeviantArt LDD101](https://www.deviantart.com/ldd101/gallery)
   – lots of patterns from a Vietnam artist
-- all manor of commercial outlets like Alamy, Adobe Stock etc. sell test cards of dubious authenticity
+- all manner of commercial outlets like Alamy, Adobe Stock etc. sell test cards of dubious authenticity
 
 In general, any analogue-era test pattern with uniform grey background or perfect typography or lacking telltale signs of handcrafted workmanship is likely to be a reconstruction.
 
@@ -2336,7 +2344,7 @@ RIP GJK.
 - [Limiting of YUV Digital Video Signals](https://downloads.bbc.co.uk/rd/pubs/reports/1987-22.pdf) – a BBC Research Report
 - [YUV Color Calculator](https://res18h39.netlify.app/color) – colour conversion calculator
 - [BBC HD test signals](https://www.bbc.co.uk/blogs/bbcinternet/2008/12/a_christmas_present_from_the_h.html) – Andy Quested, BBC Internet Blog
-- [Capture-Cards and aspect-ratio for Dummies](http://www.arachnotron.nl/videocap/doc/Karl_cap_v1_en.pdf) – analogue digitisation guide by by Der Karl
+- [Capture-Cards and aspect-ratio for Dummies](http://www.arachnotron.nl/videocap/doc/Karl_cap_v1_en.pdf) – analogue digitisation guide by Der Karl
 
 ### Test cards
 
@@ -2356,7 +2364,7 @@ RIP GJK.
 - repo [georgik/esp32-monoscope-pattern](https://github.com/georgik/esp32-monoscope-pattern) – for [ESP32](https://www.espressif.com/en/products/socs/esp32), simulates classic test patterns with old TV effects
 - repo [edent/SVGtestcard](https://github.com/edent/SVGtestcard) – SVG 1080p test Card based on BBC HD pattern
 - repo [jyun9504/tv-test-card](https://github.com/jyun9504/tv-test-card) – a widescreen Vue implementation
-- repo [lordxeorus/Test-Patterns](https://github.com/lordxeorus/Test-Patterns) – FFMpeg colour bars generation: EBU 100/75% for PAL and SMPTE for NTSC
+- repo [lordxeorus/Test-Patterns](https://github.com/lordxeorus/Test-Patterns) – FFmpeg colour bars generation: EBU 100/75% for PAL and SMPTE for NTSC
 - [TV Testcard Generator](https://testcardgen.onrender.com/) – interactive online tool for quick TC generation on the [Render](https://render.com/) platform
 - [FML Test Card Maker](https://web.archive.org/web/20151010221017/http://www.oodletuz.fsnet.co.uk/soft/tcmaker.htm) – Windows tool, creates test cards and patterns from elements, see [CardMaker](#user-content-cardmaker)
 
@@ -2480,7 +2488,7 @@ RIP GJK.
 
 [^28]: [International Color Consortium](https://www.color.org/) – ICC specification
 
-[^29]: [Ghostscript 9 Color Management](https://ghostscript.com/docs/GS9_Color_Management.pdf) – color architecture in Ghostscript Release 9
+[^29]: [Ghostscript 9 Color Management](https://ghostscript.com/docs/GS9_Color_Management.pdf) – colour architecture in Ghostscript Release 9
 
 [^30]: [The Magic Roundabout Series 1 1965–68 (incomplete)](https://youtu.be/jS2IlF9GEco) – 5 episodes, not 224, because of lost media
 
