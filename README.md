@@ -18,14 +18,14 @@ Rendering parameters are adjustable and custom elements
 – [shapes](#custom-shapes), [images](#custom-images) and [text](#custom-text) –
 can be superimposed anywhere.
 
-As a novel PostScript application,
+As a novel PostScript[^1] application,
 TCM demonstrates precision control of vector graphic creation
 and some interesting coding paradigms that add structure and adaptability.
-Indeed the [implementation](#implementation) was also key to the project rationale.
+Indeed the [implementation](#implementation) was key to the project rationale.
 
 Hopefully TCM may prove useful to retro TV enthusiasts and the amateur TV community
-and perhaps spark wider interest as a generic pattern maker.
-Aside from TV, it champions the benefits of PostScript[^1] for creating intricate graphics programmatically.
+and spark wider interest as a generic pattern maker.
+Aside from TV, it champions the benefits of PostScript for creating intricate graphics programmatically.
 
 This project is dedicated to the memory of **Gordon J. King** whose technical writings inspired so many budding electronics enthusiasts – see [dedication](#in-memoriam).
 
@@ -76,11 +76,14 @@ Much of the nitty gritty is contained in collapsible sections revealed in the [T
 &bull; [CE example notes](#user-content-ce-example-notes)
   - [Layering&nbsp;and&nbsp;mirroring](#layering-and-mirroring)
   - [Custom&nbsp;shapes](#custom-shapes)
-&bull; [Shape arguments](#user-content-shape-arguments)
+&bull; [Shape&nbsp;arguments](#user-content-shape-arguments)
+&bull; [Shape&nbsp;notes](#user-content-shape-notes)
   - [Custom&nbsp;images](#custom-images)
-&bull; [Image arguments](#user-content-image-arguments)
+&bull; [Image&nbsp;arguments](#user-content-image-arguments)
+&bull; [Image&nbsp;notes](#user-content-image-notes)
   - [Custom&nbsp;text](#custom-text)
-&bull; [Text arguments](#user-content-text-arguments)
+&bull; [Text&nbsp;arguments](#user-content-text-arguments)
+&bull; [Text&nbsp;notes](#user-content-text-notes)
 - [Resolution](#resolution)
 - [Aspect&nbsp;ratio](#aspect-ratio)
 - [Scaling](#scaling)
@@ -344,9 +347,10 @@ Further info: [PLRM §3.3: Data Types and Objects](https://www.adobe.com/jp/prin
 | <code>_num_ **lines** _height_</code><sup>※</sup> | <code>7 **lines**</code> | return height corresponding to number of scan lines |
 | <code>_left_ _bot_ _rt_ _top_ **randp** _x_ _y_</code><sup>※</sup> | <code>0 0 TCw TCh **randp**</code> | return random point within bounding box |
 | <code>_any_ **cvas** _str_</code><sup>※</sup> | <code>3.14 **cvas**</code> | return number or name converted to string |
-| <code>_str<sub>1</sub>_ _str<sub>2</sub>_ **cat** _str<sub>1</sub>str<sub>2</sub>_</code><sup>※</sup> | <code>(<) IDs (>) **cat** **cat**</code> | return concatenated strings |
+| <code>_str<sub>1</sub>_ _str<sub>2</sub>_ **cat** _str<sub>1</sub>str<sub>2</sub>_</code><sup>※</sup> | <code>(") IDs (") **cat** **cat**</code> | return concatenated strings |
 | <code>_name_ _value_ **arg** –</code><sup>※</sup> | <code>/IDh hGsz **arg**</code> | define argument (name-object pair) iff not already defined |
 | <code>_to_ _from_ **merge** –</code><sup>※</sup> | <code>/T7 /T4 **merge**</code> | define undefined args from another custom element of same type |
+| <code>_any_ **=\=\=** –</code><sup>※</sup> | <code>Gsz **=\=\=**</code> | dump <code>any</code> to standard output (improved <code>=\=</code>) |
 
 <sup>※</sup> TCM procedures, as opposed to built-in PS operators
 
@@ -941,12 +945,12 @@ but they can be overridden in the normal way, for instance to change captions.
 [![custom elements](assets/ce/ce-example-small.png)](assets/ce/ce-example.png)
 
 *Example*:
-pattern *TCD-early* with 500 custom elements
+pattern *TCD-improved* with 500 custom elements
 
 Here is a 1960s-themed example to illustrate the concept (click to enlarge).
 It is created from the arguments below extracted from the [args file](assets/ce-example.ps) used.
 Unspecified arguments take default values –
-see [shape arguments](#user-content-shape-arguments), [image arguments](#user-content-image-arguments), [text arguments](#user-content-text-arguments).
+see [shape arguments](#user-content-shape-arguments-and-notes), [image arguments](#user-content-image-arguments-and-notes), [text arguments](#user-content-text-arguments-and-notes).
 
 <details><summary>CE example arguments</summary>
 <a name='ce-example-arguments'></a>
@@ -1021,17 +1025,21 @@ see [shape arguments](#user-content-shape-arguments), [image arguments](#user-co
 | `/I2h` | `I2w` | height |
 | `/I2q` | `/NHVB` | mirror in other quadrants |
 | `/I2z` | `10` | z-index |
-| ***T10*** | ![T10](assets/ce/T10.png) | ***blue block-inverted CE caption*** |
+| ***T10*** | ![T10](assets/ce/T10.png) | ***blue block-inverted CE caption with beige background*** |
 | `/T10s` | `(Custom Elements)` | text string |
 | `/T10f` | `/Helvetica-Bold` | font name |
 | `/T10h` | `0.4 xGsz` | height |
 | `/T10w` | `5 xGsz` | width |
-| `/T10o` | `1.2` | horizontal padding multiplier |
+| `/T10p` | `0.1` | block padding |
+| `/T10o` | `1.2` | horizontal block padding multiplier |
 | `/T10y` | `Cy` | vertical centre |
 | `/T10a` | `/J` | alignment |
 | `/T10c` | `/Blue` | colour |
-| `/T10b` | `true` | block-inverted |
-| `/T10r` | `0.15` | corner radius (fraction of height) |
+| `/T10i` | `true` | block-inverted |
+| `/T10r` | `0.15` | block corner radius |
+| `/T10b` | `/Beige` | background colour |
+| `/T10v` | `0.5` | background bleed |
+| `/T10d` | `T10r` | background corner radius |
 | `/T10z` | `10` | z-index |
 | ***I4*** | ![I4](assets/ce/I4.png) | ***PNG8: Florence*** |
 | `/I4f` | `(CE/Florence.png)` | image filename |
@@ -1175,16 +1183,16 @@ By combining reflection and translation transformations,
 custom [shapes](#custom-shapes) and [images](#custom-images) (text makes no sense)
 can be mirrored as though painted relative to any corner, and get flipped over accordingly.
 
-The mirroring argument determines which quadrant corners act as the origin:
-`/N` (Q3, default) the Normal origin,
-`/H` (Q4) to paint Horizontally mirrored,
-`/V` (Q2) for Vertically mirrored,
-`/B` (Q1) for Both horizontally and vertically mirrored.
+The mirroring argument determines which quadrant corners act as the origins:
+`/N` Normal origin (bottom-left),
+`/H` Horizontally mirrored (bottom-right),
+`/V` Vertically mirrored (top-left),
+`/B` Both horizontally and vertically mirrored (top-right).
 The order of the letters determines the painting order, i.e. the layering.
 For instance for `/NHBV`, a CE painted in Q3 is then mirrored in Q4 then Q1 then Q2,
 but if it paints into Q2 then it mirrors into Q1 then Q4 then Q3.
 Similarly `/HB` paints the horizontal and diagonally opposite reflections only,
-without painting from the Q3 origin at all.
+without painting from the normal drawing origin at all.
 
 
 ### Custom shapes
@@ -1199,9 +1207,11 @@ therefore the centroid is offset from the specified centre as this animation sho
 All shapes can be rotated and distorted, filled and/or stroked, and selectively [mirrored](#layering-and-mirroring) in all quadrants.
 See also [colour arguments](#user-content-colour-arguments).
 
-<details><summary>Shape arguments</summary>
-<a name='shape-arguments'></a>
+<details><summary>Shape arguments and notes</summary>
+<a name='shape-arguments-and-notes'></a>
 
+
+#### Shape arguments
 
 | arg | default | description |
 | :---: | :---: | :--- |
@@ -1224,6 +1234,8 @@ See also [colour arguments](#user-content-colour-arguments).
 
 (`#` is the shape element number)
 
+#### Shape notes
+
 </details>
 
 
@@ -1235,9 +1247,11 @@ Scaling is relative to the auto-fit scale which is calculated using offset trans
 Images are then clipped to that shape.
 Unlike custom shapes and text, images cannot be distorted, but like shapes they can be selectively [mirrored](#layering-and-mirroring) in all quadrants.
 
-<details><summary>Image arguments</summary>
-<a name='image-arguments'></a>
+<details><summary>Image arguments and notes</summary>
+<a name='image-arguments-and-notes'></a>
 
+
+#### Image arguments
 
 | arg | default | description |
 | :---: | :---: | :--- |
@@ -1256,13 +1270,12 @@ Unlike custom shapes and text, images cannot be distorted, but like shapes they 
 
 (`#` is the image element number)
 
-> ![Tip](assets/icons/tip-16.svg)\
-  To position, use auto-fit scale to centre the offset point then rotate and scale.
+#### Image notes
 
-> ![Caution](assets/icons/caution-16.svg)\
-  GS fails for EPS files with DOS/Windows line endings, so use:\
-  `sed $'s/\r$//' bad.eps > good.eps` to remove CR characters.
-  EPS files with Document Structuring Convention (DSC)[^13] errors can be fixed by regenerating through GS:
+- to position, use auto-fit scale to centre the offset point, `/I#s 0`, then rotate and scale
+- GS fails for EPS files with DOS/Windows line endings, so use:\
+  `sed $'s/\r$//' bad.eps > good.eps` to remove CR characters
+- EPS files with Document Structuring Convention (DSC)[^13] errors can be fixed by regenerating through GS:
   `eps2eps bad.eps good.eps`
 
 
@@ -1274,6 +1287,7 @@ Text can be aligned around the compass, justified, scaled, distorted to fit widt
 and block-inverted to replicate logos like ![BBC](assets/fonts/bbc.png) (sometimes called cameo fonts).
 There are many arguments to control block-inversion,
 including monospacing, padding, rounded corners, tracking.
+Text can also have an opaque background, optionally skewed and rounded.
 See also [font resources](#user-content-font-resources) and [colour arguments](#user-content-colour-arguments).
 
 For styled text, create it in a word processor and export to PDF,
@@ -1281,9 +1295,11 @@ then use the GhostScript `eps2eps` utility to convert to EPS:\
 `eps2eps text.pdf text.eps`\
 and render it as a [custom image](#custom-images) instead.
 
-<details><summary>Text arguments</summary>
-<a name='text-arguments'></a>
+<details><summary>Text arguments and notes</summary>
+<a name='text-arguments-and-notes'></a>
 
+
+#### Text arguments
 
 | arg | default | description |
 | :---: | :---: | :--- |
@@ -1296,28 +1312,36 @@ and render it as a [custom image](#custom-images) instead.
 | `/T#w` | `0` | overall width: 0 for auto (unscaled), >0 for absolute, <0 to scale (negated) |
 | `/T#a` | `/C` | alignment: /C(entre) /L(eft) /R(ight) /J(ustify) /T(op) /B(ottom) /TJ /TL /TR /BL /BR (+ /JT etc.) |
 | `/T#t` | `0` | tracking between characters or blocks (fraction of height, auto if width>0 & Justify) |
-| `/T#b` | `false` | true to block-invert characters (cameo style) |
+| `/T#i` | `false` | true to block-invert characters (cameo style) |
 | `/T#m` | `0` | block monospace width (fraction of height or a character e.g. /M): 0 for no monospace |
 | `/T#p` | `0.1` | block padding (fraction of height) |
-| `/T#o` | `1` | block horizontal padding multiplier |
+| `/T#o` | `1` | horizontal block padding multiplier |
 | `/T#r` | `0` | block corner radius (fraction of height): 0 for none, 1 for maximum rounding |
 | `/T#g` | `0` | block gap for whitespace (fraction of height): 0 for auto (use advance width) |
-| `/T#i` | `null` | italic angle (degrees anticlockwise): null for auto (font-embedded ItalicAngle) |
-| `/T#-` | `false` | true for no `reversepath` of blocked text charpath (use if text blanked out) |
+| `/T#k` | `null` | italic skew (degrees anticlockwise): null for auto (use font-embedded ItalicAngle) |
+| `/T#b` | `null` | background colour: null for no background |
+| `/T#v` | `0` | background bleed (fraction of height) |
+| `/T#u` | `1` | horizontal background bleed multiplier |
+| `/T#d` | `0` | background corner radius (fraction of background height): 0 for none, 1 for maximum rounding |
+| `/T#e` | `0` | background skew (degrees anticlockwise): /k to use effective italic skew |
 | `/T#z` | `0` | z-index for layering |
+| `/T#-` | `false` | true for no `reversepath` of blocked text charpath (use if text blanked out) |
 | `/T#?` | `true` | true to show this custom text element |
 
 (`#` is the text element number)
 
-> ![Tip](assets/icons/tip-16.svg)\
-> The string width is squeezed or stretched to the overall width `/T#w`
-  which if negative is scaled, e.g. `/T#w -1.2 arg` stretches to 120%,
-  whereas positive is an absolute width and zero is the default string width.
+#### Text notes
 
-> ![Caution](assets/icons/caution-16.svg)\
-> Faulty fonts can cause problems.
-  If blocked text shows no characters, try `/T#- true arg`.
-  If italic text blocks do not slant, try `/T#i -10 arg` for,say, 10&deg; slant.
+- the text width is squeezed or stretched to the overall width `/T#w`
+  which if negative is a negated scale factor, e.g. `/T#w -1.2 arg` stretches by 120%,
+  whereas positive is an absolute width and zero is the default string width
+- faulty fonts can cause problems:
+  if blocked text shows no characters, try `/T#- true arg`;
+  if italic text blocks do not skew, try `/T#k -10 arg` for,say, 10&deg; skew
+- `/T#w` and `/T#h` specify the overall lettering size, whether blocked or not
+- opaque backgrounds may bleed beyond the lettering but are not considered when sizing
+- use `/T#e /k` to skew the background with the italic angle of the font
+- use `/T#d T#r` to round the background in proportion to block character rounding
 
 </details>
 
@@ -1622,9 +1646,9 @@ Block-inverted fonts (a.k.a cameo) are hard to find
 so TCM fashions them in PostScript by modifying the glyphs
 (reversing paths and appending padded anticlockwise border).
 Consequently, any font can be block-inverted.
-The `ItalicAngle` embedded in the font determines the default slant
+The `ItalicAngle` embedded in the font determines the default skew
 and characters can be monospaced with fixed width and tracking.
-See [Text arguments](#user-content-text-arguments) for all block rendering argument details.
+See [Text arguments](#user-content-text-arguments-and-notes) for all block rendering argument details.
 
 ### BBC logo fonts
 
@@ -1836,7 +1860,7 @@ The `tiffscaled` devices support the `DownScaleFactor` option:\
 
 JPEG is not intended for graphics but `-dJPEGQ=100` maximises the quality.
 Although undocumented, the `jpeg` device also supports `DownScaleFactor` but sets the DPI to the GS resolution, so\
-`gs -IResource -sDEVICE=jpeg -dJPEGQ=100 -r576 -dDownScaleFactor=8 -o tcf576.jpg tcm.ps`\
+`gs -q -IResource -sDEVICE=jpeg -dJPEGQ=100 -r576 -dDownScaleFactor=8 -o tcf576.jpg tcm.ps`\
 for the default 576 pixel height makes a best-quality JPEG at 576 dpi downscaled from 6144x4608 internally (8x).
 For normal display resolution, change the JFIF density metadata to 72, e.g. with [ExifTool] (open source):\
 `exiftool -XResolution=72 -YResolution=72 -o tcf72.jpg tcf576.jpg`
@@ -1982,7 +2006,8 @@ Create a 1-hour MP4 video from image and looped audio:\
 
 ### Overlays
 
-Here is *TCD-improved* (1965 version) with transparent centre overlaying a mono video:
+*Example*:
+pattern *TCD-improved* with transparent centre overlaying a mono video:
 
 [![video example](assets/video/mrd-example-small.png)](assets/video/mrd-example.png)
 
@@ -1993,7 +2018,7 @@ Here is *TCD-improved* (1965 version) with transparent centre overlaying a mono 
 #### Overlay commands
 
 ```bash
-gs -IResource -sDEVICE=png16malpha -r1200 -dDownScaleFactor=4 -o tcD.png \
+gs -q -IResource -sDEVICE=png16malpha -r1200 -dDownScaleFactor=4 -o tcD.png \
    -+ tcm.ps /TC /TCD-improved /CCf? false /SW? false /FB? false \
    /T-1s '(1965)' /T-2s '(The Magic Roundabout)'
 
@@ -2060,9 +2085,10 @@ combined with easing and a [xfade-easing] transition.
 
 Making a DVD involves:
 
-1. creating the needed media files to specification
-1. building the directory structure
-1. making an ISO image and burning it physical disk
+1. creating the needed media files to DVD standards
+1. authoring and building the DVD file structure
+1. making an ISO image
+1. burning to a physical disk
 
 <details><summary>DVD example</summary>
 <a name='dvd-example'></a>
@@ -2134,12 +2160,12 @@ This makes an anamorphic 4:3 interlaced DVD VOB in PAL or NTSC standard of an im
 
 There’s a bewildering amount of discussion about DVD aspect ratios and the 720 vs 704 debate.
 I am no expert but I gather digital sources like TCM are not subject to padding considerations.
-For analogue sources I think the options are either to pad wider then scale back[^32]
-(by adding `pad=iw*720/704:ih:-1` before the `zscale` filter)
+For analogue sources (702?) I think the options are either to pad wider then scale back[^32]
+(insert `pad=iw*720/704:ih:-1` before the `zscale` filter)
 or use the 704 width option of the DVD standard.
 
-I see no empirical difference between DVDs made with 720 and 704 width using the code above for a 768 (square pixel) source.
-If using the default 720, removing `-s $s` after the `target` option avoids the `Multiple -s options…` warning.
+In practice, there is no noticeable difference between DVDs made with 720 and 704 width using the code above for a 768 (square pixel) source.
+If using the default 720, remove `-s $s` after the `target` option to avoid the `Multiple -s options…` warning.
 
 
 #### Authoring and burning
@@ -2162,27 +2188,27 @@ To make a basic DVD file system with DVDAuthor, create a configuration file, say
 </dvdauthor>
 ```
 
-then make the file structure `myDVDdir/`:
+then make the file structure `myDVDfs/`:
 
 ```
-mkdir -p myDVDdir
-rm -fr myDVDdir/*
+mkdir -p myDVDfs
+rm -fr myDVDfs/*
 export VIDEO_FORMAT=PAL # or NTSC
-dvdauthor -o myDVDdir -x myDVD.xml
+dvdauthor -o myDVDfs -x myDVD.xml
 ```
 
 To make an ISO image for this example from the CLI :
 
 Linux:\
-`mkisofs -V 'Volume Name' -dvd-video -udf -J -o myDVD.iso myDVDdir
+`mkisofs -V 'Volume Name' -dvd-video -udf -J -o myDVD.iso myDVDfs
 
 Mac:\
-`hdiutil makehybrid -default-volume-name 'Volume Name' -udf -iso -joliet -ov -o myDVD.iso myDVDdir
+`hdiutil makehybrid -default-volume-name 'Volume Name' -udf -iso -joliet -ov -o myDVD.iso myDVDfs
 
 Windows:\
-`Oscdimg.exe -l"Volume Name" -u1 -j1 myDVDdir myDVD.iso`
+`Oscdimg.exe -l"Volume Name" -u1 -j1 myDVDfs myDVD.iso`
 
-See [ISOs](assets/video) for built DVD variants discussed here.
+See [ISOs](assets/video) for built DVD variants discussed here of the [overlay example](#overlays).
 
 Burning is usually a platform-dependent proprietary command.
 

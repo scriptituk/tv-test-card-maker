@@ -26,7 +26,7 @@
         { arguments currentdict copy pop } stopped { stop } if % TODO: improve error msg
     } if
 
-    /TC /BBC-F-electronic arg % default pattern
+    /TC /TCF-electronic arg % default pattern
     { /TCg group TC get def } stopped { TC /undefined signalerror } if % check pattern
     TC cvas (-) cat (-) split dup 0 get cvn /TCp exch def 1 get cvn /TCv exch def
     /args isdef { /args dup load 0 TC put }{ TC } ifelse % set extends=TC
@@ -39,8 +39,8 @@
 
     /TC? isdef not { /TC? true def } if % false for CEs only, no TC elements or watermark
     {
-        TC? not { exit } if
-        /Blank geq { exit } if
+        /Blank peq { exit } if % blank canvas
+        TC? not { exit } if % no elements painted
         null geq { % no group
             (tcm-pattern-) TCp cvas (.ps) cat cat cvn /ProcSet % pattern
         }{ % in group
