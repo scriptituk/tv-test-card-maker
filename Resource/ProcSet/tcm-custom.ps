@@ -118,15 +118,20 @@
     /$w 0 % overall width: 0 for auto (unscaled), >0 for absolute, <0 to scale (negated)
     /$a /C % alignment: /C(entre) /L(eft) /R(ight) /J(ustify) /T(op) /B(ottom) /TJ /TL /TR /BL /BR (+ /JT etc.)
     /$t 0 % tracking between characters or blocks (fraction of height, auto if width>0 & Justify)
-    /$b false % true to block-invert characters (cameo style)
+    /$i false % true to block-invert characters (cameo style)
     /$m 0 % block monospace width (fraction of height or a character e.g. /M): 0 for no monospace
     /$p 0.1 % block padding (fraction of height)
-    /$o 1 % block horizontal padding multiplier
+    /$o 1 % horizontal block padding multiplier
     /$r 0 % block corner radius (fraction of height): 0 for none, 1 for maximum rounding
     /$g 0 % block gap for whitespace (fraction of height): 0 for auto (use advance width)
-    /$i null % italic angle (degrees anticlockwise): null for auto (font-embedded ItalicAngle)
-    /$- false % true for no `reversepath` of blocked text charpath (use if text blanked out)
+    /$k null % italic skew (degrees anticlockwise): null for auto (use font-embedded ItalicAngle)
+    /$b null % background colour: null for no background
+    /$v 0 % background bleed (fraction of height)
+    /$u 1 % horizontal background bleed multiplier
+    /$d 0 % background corner radius (fraction of background height): 0 for none, 1 for maximum rounding
+    /$e 0 % background skew (degrees anticlockwise): /k to use effective italic skew
     /$z 0 % z-index for layering
+    /$- false % true for no `reversepath` of blocked text charpath (use if text blanked out)
     /$? true % true to show this custom text element
 >> readonly def
 
@@ -400,41 +405,44 @@
 /ctext { % args ctext -
     begin
         /$t $t $h mul def /$p $p $h mul def /$r $r $h mul def /$g $g $h mul def % scale by height
-        /hp $p $o mul def % horizontal padding
+        /hp $p $o mul def % horizontal block padding
         /align { $a cvas exch cvas contains } bind def
-        $s $h $b { $p mul2 sub } if $f sizefont
+        $s $h $i { $p mul2 sub } if $f sizefont
+        $k null eq { % use embedded italic angle
+            /$k currentfont /FontInfo get /ItalicAngle get dup -180 lt { 65536 add } if def
+        } if
         newpath 0 0 moveto
-        /$m $m isnumber { $m $h mul }{ $m firstchr $i strdata /iw get } ifelse def
-        /sd $s $i strdata def % string data
+        /$m $m isnumber { $m $h mul }{ $m firstchr $k pathdata /iw get } ifelse def
+        /sd $s $k pathdata def % string data
         /n $s length def % # characters
         /d sd /d get def % descent
-        /w $b $m 0 ne and { $m n mul }{ sd /iw get } ifelse def % total width
+        /w $i $m 0 ne and { $m n mul }{ sd /iw get } ifelse def % total width
         /g $t def % tracking gap
         $w 0 gt /J align and n 1 gt and { % justify
-            /g $w $b { sd /tw get sub hp mul2 n mul }{ w } ifelse sub n 1 sub div def
+            /sw 0 $s { chr $k pathdata /iw get add } forall def % sum of widths
+            /g $w $i { sw sub hp mul2 n mul }{ w } ifelse sub n 1 sub div def
         } if
         /a 0 def % advance
         /m matrix currentmatrix def % CTM
         /p false upath cvlit def % aggregate userpath
         $s { % each character
             currentpoint /y exch def /x exch def
-            /cd exch chr $i strdata def % character data
+            /cd exch chr $k pathdata def % character data
             /cp cd /up get def % character userpath
             /aw cd /aw get def % advance width
             newpath cp uappend
-            $b { % blocked
+            $i { % blocked
                 /bw $g 0 eq { aw }{ $g g sub } ifelse def % block width
                 /il cd /il get def
                 /iw cd /iw get def
                 iw 0 gt { % not space
-                    reversepath % enclosed by frame
-                    $- { reversepath } if % TODO: FontForge TT needs this - why?
+                    $- not { reversepath } if % enclosed by frame (TODO: for FontForge TT - why?)
                     $m 0 gt { /il il $m iw sub div2 sub def /iw $m def } if % monospaced
                     /bw iw hp mul2 add def
                     /l x il hp sub add def /b y d $p sub add def
                     /r l bw add def /t b $h add def
                     /cr bw div2 $h div2 min $r min def % clamped radius
-                    cd /im get concat % italic angle matrix (or straight)
+                    cd /sm get concat % skew angle matrix (or straight)
                     l bw div2 add b moveto
                     r b r t cr arct r t l t cr arct l t l b cr arct l b r b cr arct
                     closepath % outer anticlockwise
@@ -465,28 +473,42 @@
         l { pop }{ r { exch pop }{ add div2 } ifelse } ifelse % align x
         3 index mul exch $x $y subv % offsets
         translate scale newpath p uappend m setmatrix
-        % set colour
-        $c colour
-        fill
+        % paint
+        $b null ne { % background
+            gsave
+                $e /k eq { /$e $k def } if
+                /pd null $e pathdata def % path data
+                /y $h $v mul def /x y $u mul def
+                /l pd /il get x sub def /r pd /ir get x add def
+                /b pd /d get y sub def /t pd /a get y add def
+                pd /sm get concat
+                /w r l sub def /h t b sub def
+                /cr w div2 h div2 min $d h mul min def % clamped radius
+                newpath l w div2 add b moveto
+                r b r t cr arct r t l t cr arct l t l b cr arct l b r b cr arct
+                closepath
+                $b colour fill
+            grestore
+        } if
+        $c colour fill
     end
 } bind def
 
-% get string metrics
-/strdata { % string strdata dict
+% get path metrics
+/pathdata { % string/null skew pathdata dict
     10 dict begin
-        /i exch def
+        /k exch def
         /s exch def
-        i null eq { % use embedded italic angle
-            /i currentfont /FontInfo get /ItalicAngle get dup -180 lt { 65536 add } if def
-        } if
-        /t i tan def
-        currentpoint /y exch def /x exch def
+        /t k tan def /x 0 def /y 0 def
         gsave
-            newpath x y moveto s true charpath
+            s null ne {
+                currentpoint /y exch def /x exch def
+                newpath x y moveto s true charpath
+            } if
             pathbbox /a exch y sub def /r exch x sub def /d exch y sub def /l exch x sub def % relative
             /up false upath cvlit def % (upath bbox includes advance)
             flattenpath
-            /il r def /ir l def % italic left, right
+            /il r def /ir l def % skewed left, right
             mark
             { /my exch y sub def /mx exch x sub def /m true def } % moveto
             { % lineto
@@ -503,16 +525,14 @@
         grestore
         <<
             /x x /y y % position
-            /s s /up up /i i % string, userpath, italic angle
+            /s s /up up /k k % string, userpath, skew
             /a a /d d % ascent, descent
             /lb l /rb mx r sub % left-side bearing, right-side bearing
             /rx r /aw mx % rightmost point x, advance width (=stringwidth)
             /w r l sub /h a d sub % width, height
             /il il /ir ir /iw ir il sub % left, right, width projections to baseline at angle
-            dup /tw exch % sum total of projected widths
-            /im [ 1 0 t neg 1 y t mul 0 ] % italic matrix (or straight)
+            /sm [ 1 0 t neg 1 y t mul 0 ] % skew matrix (or straight)
         >>
-        s length 1 gt { dup /tw 0 s { chr i strdata /iw get add } forall put } if
     end
 } bind def
 
