@@ -81,17 +81,21 @@
 /I2q /NHVB arg % mirror in other quadrants
 /I2z 10 arg % z-index
 
-% custom text element T10 (blue block-inverted CE caption)
+% custom text element T10 (blue block-inverted CE caption with beige background)
 /T10s (Custom Elements) arg % text string
 /T10f /Helvetica-Bold arg % font name
 /T10h 0.4 xGsz arg % height
 /T10w 5 xGsz arg % width
-/T10o 1.2 arg % horizontal padding multiplier
+/T10p 0.1 arg % block padding
+/T10o 1.2 arg % horizontal block padding multiplier
 /T10y Cy arg % vertical centre
 /T10a /J arg % alignment
 /T10c /Blue arg % colour
-/T10b true arg % block-inverted
-/T10r 0.15 arg % corner radius (fraction of height)
+/T10i true arg % block-inverted
+/T10r 0.15 arg % block corner radius
+/T10b /Beige arg % background colour
+/T10v 0.5 arg % background bleed
+/T10d T10r arg % background corner radius
 /T10z 10 arg % z-index
 
 % custom image element I4 (PNG8: Florence)
