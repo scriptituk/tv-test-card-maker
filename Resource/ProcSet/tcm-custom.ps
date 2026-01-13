@@ -114,16 +114,16 @@
     /$c /Black % colour
     /$x TCx % horizontal alignment anchor
     /$y TCy % vertical alignment anchor
-    /$h TCh 10 div % overall height
-    /$w 0 % overall width: 0 for auto (unscaled), >0 for absolute, <0 to scale (negated)
+    /$h TCh 10 div % maximum text height
+    /$w 0 % maximum text width: 0 for auto (unscaled), >0 for absolute, <0 to scale (negated)
     /$a /C % alignment: /C(entre) /L(eft) /R(ight) /J(ustify) /T(op) /B(ottom) /TJ /TL /TR /BL /BR (+ /JT etc.)
     /$t 0 % tracking between characters or blocks (fraction of height, auto if width>0 & Justify)
     /$i false % true to block-invert characters (cameo style)
-    /$m 0 % block monospace width (fraction of height or a character e.g. /M): 0 for no monospace
     /$p 0.1 % block padding (fraction of height)
     /$o 1 % horizontal block padding multiplier
     /$r 0 % block corner radius (fraction of height): 0 for none, 1 for maximum rounding
     /$g 0 % block gap for whitespace (fraction of height): 0 for auto (use advance width)
+    /$m 0 % block monospace width (fraction of height or a character e.g. /M): 0 for no monospace
     /$k null % italic skew (degrees anticlockwise): null for auto (use font-embedded ItalicAngle)
     /$b null % background colour: null for no background
     /$v 0 % background bleed (fraction of height)

@@ -143,9 +143,9 @@ CustomText { exch cvas 1 1 getinterval (T0) exch cat exch def } forall
 % centre circles
 /CCf? true arg % false for no fill (empty)
 /CClw 0.1 xGsz arg % centre circles stroke width
-/CCr 2 xGsz arg % white circle stroke radius
-/CCbr CCr CClw add arg % black circle stroke radius: 0 for none
-/CCor CCr CClw mul2 add arg % outer circle stroke radius: 0 for none
+/CCr 2 xGsz arg % white circle radius
+/CCbr CCr CClw add arg % black circle radius: 0 for none
+/CCor CCr CClw mul2 add arg % outer circle radius: 0 for none
 /CC? true arg % false for no circles
 % centre picture
 /CPi null arg % picture custom image element name, null for no image
