@@ -23,7 +23,7 @@
 
     initdims initce
     /arguments isdef { % have CLI arguments array
-        { arguments currentdict copy pop } stopped { stop } if % TODO: improve error msg
+        { arguments { 2 copy validate def } forall } stopped { stop } if
     } if
 
     /TC /TCF-electronic arg % default pattern

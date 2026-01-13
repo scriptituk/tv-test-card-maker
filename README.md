@@ -541,9 +541,9 @@ Inheritance: `TCC-early` <— [`Blank`](#user-content-blank-arguments)
 | ***/CC…*** | ![centre circles](assets/elements/TCC-early-CC.png) | ***centre circles arguments*** |
 | `/CCf?` | `true` | false for no fill (empty) |
 | `/CClw` | `0.1 xGsz` | centre circles stroke width |
-| `/CCr` | `2 xGsz` | white circle stroke radius |
-| `/CCbr` | `CCr CClw add` | black circle stroke radius: 0 for none |
-| `/CCor` | `CCr CClw mul2 add` | outer circle stroke radius: 0 for none |
+| `/CCr` | `2 xGsz` | white circle radius |
+| `/CCbr` | `CCr CClw add` | black circle radius: 0 for none |
+| `/CCor` | `CCr CClw mul2 add` | outer circle radius: 0 for none |
 | `/CC?` | `true` | false for no circles |
 | ***/CP…*** |  | ***centre picture arguments*** |
 | `/CPi` | `null` | picture custom image element name, null for no image |
@@ -613,7 +613,7 @@ Inheritance: `TCC` <— [`TCC-early`](#user-content-tcc-early-arguments) <— [`
 | ***/NP…*** |  | ***needle pulse line arguments*** |
 | `/NPx` | `PPx 0.7 xGsz sub` | needle pulse line horizontal centre |
 | ***/CC…*** | ![centre circles](assets/elements/TCC-CC.png) | ***centre circles arguments*** |
-| `/CCor` | `CCr CClw 1.9 mul add` | outer circle stroke radius: 0 for none |
+| `/CCor` | `CCr CClw 1.9 mul add` | outer circle radius: 0 for none |
 | ***/FB…*** | ![frequency bars](assets/elements/TCC-FB.png) | ***frequency bars arguments*** |
 | `/FBh` | `0.53 xGsz` | freq bars height |
 | `/FBp` | `0.02 xGsz` | freq bars padding |
@@ -649,9 +649,9 @@ Inheritance: `TCC-625` <— [`TCC`](#user-content-tcc-arguments) <— [`TCC-earl
 | `/Ct` | `[/T-3 /T-4]` | caption custom text element names: empty for no caption |
 | ***/CC…*** | ![centre circles](assets/elements/TCC-625-CC.png) | ***centre circles arguments*** |
 | `/CClw` | `0.12 xGsz` | centre circles stroke width |
-| `/CCr` | `2.01 xGsz` | white circle stroke radius |
-| `/CCbr` | `CCr CClw add` | black circle stroke radius: 0 for none |
-| `/CCor` | `CCr CClw 1.8 mul add` | outer circle stroke radius: 0 for none |
+| `/CCr` | `2.01 xGsz` | white circle radius |
+| `/CCbr` | `CCr CClw add` | black circle radius: 0 for none |
+| `/CCor` | `CCr CClw 1.8 mul add` | outer circle radius: 0 for none |
 | ***/SW…*** | ![step wedge](assets/elements/TCC-625-SW.png) | ***step wedge arguments*** |
 | `/SWoh` | `2.67 xGsz` | step wedge outer height |
 | `/SWw` | `0.535 xGsz` | step wedge width |
@@ -712,9 +712,9 @@ Inheritance: `TCD-early` <— [`TCC-early`](#user-content-tcc-early-arguments) <
 | `/Ct` | `[/T-1 /T-2]` | caption custom text element names: empty for no caption |
 | ***/CC…*** | ![centre circles](assets/elements/TCD-early-CC.png) | ***centre circles arguments*** |
 | `/CClw` | `0.1 xGsz` | centre circles stroke width |
-| `/CCr` | `2.05 xGsz` | white circle stroke radius |
-| `/CCbr` | `CCr CClw add` | black circle stroke radius: 0 for none |
-| `/CCor` | `CCr CClw mul2 add` | outer circle stroke radius: 0 for none |
+| `/CCr` | `2.05 xGsz` | white circle radius |
+| `/CCbr` | `CCr CClw add` | black circle radius: 0 for none |
+| `/CCor` | `CCr CClw mul2 add` | outer circle radius: 0 for none |
 | ***/SW…*** | ![step wedge](assets/elements/TCD-early-SW.png) | ***step wedge arguments*** |
 | `/SWw` | `0.593 xGsz` | step wedge width |
 | `/SWoh` | `2.965 xGsz` | step wedge outer height |
@@ -812,9 +812,9 @@ Inheritance: `TCF-early` <— [`TCE`](#user-content-tce-arguments) <— [`TCD-ea
 | ***/CC…*** | ![centre circles](assets/elements/TCF-early-CC.png) | ***centre circles arguments*** |
 | `/CCf?` | `false` | false for no fill (empty) |
 | `/CClw` | `0.9 xGlw` | centre circles stroke width |
-| `/CCr` | `2.5 xGsz 0.8 xGlw sub` | white circle stroke radius |
-| `/CCbr` | `0` | black circle stroke radius: 0 for none |
-| `/CCor` | `0` | outer circle stroke radius: 0 for none |
+| `/CCr` | `2.5 xGsz 0.8 xGlw sub` | white circle radius |
+| `/CCbr` | `0` | black circle radius: 0 for none |
+| `/CCor` | `0` | outer circle radius: 0 for none |
 | ***/SW…*** | ![step wedge](assets/elements/TCF-early-SW.png) | ***step wedge arguments*** |
 | `/SWw` | `Gsz Glw sub` | step wedge width |
 | `/SWx` | `lGx 2 xGsz add TCx 3 xGsz sub min` | step wedge horizontal centre |
@@ -865,7 +865,7 @@ Inheritance: `TCF-optical` <— [`TCF-early`](#user-content-tcf-early-arguments)
 | `/SBih` | `0.4 xGsz` | streak box inner height |
 | `/SBiw` | `2.23 xGsz` | streak box inner width |
 | ***/CC…*** | ![centre circles](assets/elements/TCF-optical-CC.png) | ***centre circles arguments*** |
-| `/CCr` | `2.5 xGsz 0.88 xGlw sub` | white circle stroke radius |
+| `/CCr` | `2.5 xGsz 0.88 xGlw sub` | white circle radius |
 | ***/FB…*** | ![frequency bars](assets/elements/TCF-optical-FB.png) | ***frequency bars arguments*** |
 | `/FBt` | `null` | custom text element name for freq text template, null for no text |
 </details>
@@ -880,7 +880,7 @@ Inheritance: `TCF-electronic` <— [`TCF-optical`](#user-content-tcf-optical-arg
 | `/Glw` | `5 lines` | grid linewidth |
 | `/Golw` | `0.65 xGlw` | grid outline width: 0 for no outline (F/J/W/X pattern) |
 | ***/CC…*** | ![centre circles](assets/elements/TCF-electronic-CC.png) | ***centre circles arguments*** |
-| `/CCr` | `2.5 xGsz 1.15 xGlw sub` | white circle stroke radius |
+| `/CCr` | `2.5 xGsz 1.15 xGlw sub` | white circle radius |
 | `/CClw` | `1.33 xGlw` | centre circles stroke width |
 | ***/ID…*** | ![ident designation](assets/elements/TCF-electronic-ID.png) | ***ident designation arguments*** |
 | `/IDf` | `/Sanchez-Regular` | ident font |
@@ -1207,6 +1207,11 @@ therefore the centroid is offset from the specified centre as this animation sho
 All shapes can be rotated and distorted, filled and/or stroked, and selectively [mirrored](#layering-and-mirroring) in all quadrants.
 See also [colour arguments](#user-content-colour-arguments).
 
+For other shapes, consider using dingbat fonts and render as [custom text](#custom-text) instead.
+Font ZapfDingbats comes with GS.
+Microsoft Webdings and Wingdings TrueType fonts come with Windows,
+see [adding fonts](#user-content-adding-fonts).
+
 <details><summary>Shape arguments and notes</summary>
 <a name='shape-arguments-and-notes'></a>
 
@@ -1235,6 +1240,9 @@ See also [colour arguments](#user-content-colour-arguments).
 (`#` is the shape element number)
 
 #### Shape notes
+
+- polygons with `/S#n 4` shows a diamond shape
+- `/S#r true` shows the Reuleaux curves used to size odd-sided polygons maximally instead of straight sides
 
 </details>
 
@@ -1272,6 +1280,7 @@ Unlike custom shapes and text, images cannot be distorted, but like shapes they 
 
 #### Image notes
 
+- see [finding files](#user-content-finding-files) on locating image files
 - to position, use auto-fit scale to centre the offset point, `/I#s 0`, then rotate and scale
 - GS fails for EPS files with DOS/Windows line endings, so use:\
   `sed $'s/\r$//' bad.eps > good.eps` to remove CR characters
@@ -1284,7 +1293,7 @@ Unlike custom shapes and text, images cannot be distorted, but like shapes they 
 ### Custom text
 
 Text can be aligned around the compass, justified, scaled, distorted to fit width,
-and block-inverted to replicate logos like ![BBC](assets/fonts/bbc.png) (sometimes called cameo fonts).
+and block-inverted to replicate logos like ![BBC](assets/fonts/bbc-16.svg) (sometimes called cameo fonts).
 There are many arguments to control block-inversion,
 including monospacing, padding, rounded corners, tracking.
 Text can also have an opaque background, optionally skewed and rounded.
@@ -1308,16 +1317,16 @@ and render it as a [custom image](#custom-images) instead.
 | `/T#c` | `/Black` | colour |
 | `/T#x` | `TCx` | horizontal alignment anchor |
 | `/T#y` | `TCy` | vertical alignment anchor |
-| `/T#h` | `TCh 10 div` | overall height |
-| `/T#w` | `0` | overall width: 0 for auto (unscaled), >0 for absolute, <0 to scale (negated) |
+| `/T#h` | `TCh 10 div` | maximum text height |
+| `/T#w` | `0` | maximum text width: 0 for auto (unscaled), >0 for absolute, <0 to scale (negated) |
 | `/T#a` | `/C` | alignment: /C(entre) /L(eft) /R(ight) /J(ustify) /T(op) /B(ottom) /TJ /TL /TR /BL /BR (+ /JT etc.) |
 | `/T#t` | `0` | tracking between characters or blocks (fraction of height, auto if width>0 & Justify) |
 | `/T#i` | `false` | true to block-invert characters (cameo style) |
-| `/T#m` | `0` | block monospace width (fraction of height or a character e.g. /M): 0 for no monospace |
 | `/T#p` | `0.1` | block padding (fraction of height) |
 | `/T#o` | `1` | horizontal block padding multiplier |
 | `/T#r` | `0` | block corner radius (fraction of height): 0 for none, 1 for maximum rounding |
 | `/T#g` | `0` | block gap for whitespace (fraction of height): 0 for auto (use advance width) |
+| `/T#m` | `0` | block monospace width (fraction of height or a character e.g. /M): 0 for no monospace |
 | `/T#k` | `null` | italic skew (degrees anticlockwise): null for auto (use font-embedded ItalicAngle) |
 | `/T#b` | `null` | background colour: null for no background |
 | `/T#v` | `0` | background bleed (fraction of height) |
@@ -1338,8 +1347,8 @@ and render it as a [custom image](#custom-images) instead.
 - faulty fonts can cause problems:
   if blocked text shows no characters, try `/T#- true arg`;
   if italic text blocks do not skew, try `/T#k -10 arg` for,say, 10&deg; skew
-- `/T#w` and `/T#h` specify the overall lettering size, whether blocked or not
-- opaque backgrounds may bleed beyond the lettering but are not considered when sizing
+- `/T#w` and `/T#h` control the overall lettering size, whether blocked or not
+- `/T#v` and `/T#u` make opaque backgrounds bleed beyond the lettering but are not considered when sizing
 - use `/T#e /k` to skew the background with the italic angle of the font
 - use `/T#d T#r` to round the background in proportion to block character rounding
 
@@ -1605,7 +1614,7 @@ How to
 [list](#user-content-listing-fonts),
 [add](#user-content-adding-fonts) and
 [edit](#user-content-editing-fonts) fonts,
-with notes about [![Block](assets/fonts/block.png)](#user-content-block-inverted-fonts) characters and historical [logo](#user-content-bbc-logo-fonts) fonts:
+with notes about [![Block](assets/fonts/block-16.svg)](#user-content-block-inverted-fonts) characters and historical [logo](#user-content-bbc-logo-fonts) fonts:
 
 <details><summary>Font resources</summary>
 <a name='font-resources'></a>
@@ -2324,7 +2333,7 @@ Even now they are a fascinating read, and many principles explained are relevant
 
 This year (2025) I became aware that I had been living just two streets away from Mr&nbsp;King
 in Furzeham, Brixham, for 14 years until he died in 2010.
-That August, soon after his funeral service at [St. Mary’s](https://youtu.be/OmLH3yhwXrQ), I joined the organist rota, still unaware.
+That August soon after his funeral service at [St. Mary’s](https://youtu.be/OmLH3yhwXrQ) I joined the organist rota there, still unaware.
 Anyway, he mentored through his writings, covering the heyday of analogue electronics
 and milestone transitions from valve to semiconductor, monochrome to colour, analogue to digital…
 RIP GJK.
