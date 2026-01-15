@@ -131,6 +131,7 @@ Much of the nitty gritty is contained in collapsible sections revealed in the [T
 &bull; [H.264/AAC&nbsp;(MP4)](#user-content-h264aac-mp4)
 &bull; [FFV1/PCM&nbsp;(MKV)](#user-content-ffv1pcm-mkv)
 &bull; [VP9/Opus&nbsp;(WEBM)](#user-content-vp9opus-webm)
+&bull; [Animated&nbsp;WEBP](#user-content-animated-webp)
 &bull; [Animated&nbsp;PNG](#user-content-animated-png)
 &bull; [Animated&nbsp;GIF](#user-content-animated-gif)
 - [Video&nbsp;generation](#video-generation)
@@ -1918,6 +1919,12 @@ WebM 1280x720p@24,25,30, see [Recommended Settings for VP9](https://developers.g
 `-c:v libvpx-vp9 -b:v 1024k -minrate 512k -maxrate 1485k -crf 32 -quality good -g 240 -tile-columns 4 -threads 4 -pix_fmt yuv420p`\
 `-c:a libopus`
 
+#### Animated WEBP
+
+WebP Image encoder wrapper, see [libwebp](https://ffmpeg.org/ffmpeg-codecs.html#libwebp).
+
+`-c:v libwebp -r 20 -pix_fmt yuv420p -loop 0`
+
 #### Animated PNG
 
 APNG muxer, see [apng](https://www.ffmpeg.org/ffmpeg-formats.html#toc-apng).
@@ -1940,8 +1947,8 @@ Or for even smaller and better quality, use [pngquant] on each frame together wi
 
 For this README I make high quality [animated GIFs](#user-content-animated-gif) with [gifski] (which uses [pngquant]) then convert to animated PNG:
 
-`ffmpeg -y -v warning -i animated.gif -r 20 frame-%03d.png`\
-`apngasm output.png frame-001.png 1 20`
+`convert animated.gif -coalesce $TMP/a/frame-%03d.png`\
+`apngasm output.png frame-000.png 1 20`
 
 Optimise (if beneficial) with [Oxipng].
 
@@ -2058,14 +2065,14 @@ ffmpeg -y -v warning -ss 13:5.1 -t 5 -i magic.mkv -i tcD.png -filter_complex '
 
 #### Overlay explanation
 
-The `magic.mkv` source[^30] is a 1920x1080 60 fps progressive video with 3:2 aspect centred episodes.
+The `magic.mkv` source[^30] is a HD (BT.709) 1920x1080 60 fps progressive video with 3:2 aspect centred episodes.
 A 5 second clip is extracted 13 minutes 5.1 seconds in.
 
 Filters:
 
 - [`crop`](https://www.ffmpeg.org/ffmpeg-filters.html#crop) cuts out the episodes
 - crop rectangle obtained using [`cropdetect`](https://www.ffmpeg.org/ffmpeg-filters.html#cropdetect) on video source
-- [`zscale`](https://www.ffmpeg.org/ffmpeg-filters.html#zscale) to `ih*4/3` width corrects the aspect from 3:2 to 4:3
+- [`zscale`](https://www.ffmpeg.org/ffmpeg-filters.html#zscale) to `ih*4/3` width corrects the aspect from 3:2 to 4:3 and convert to full range colour like the sRGB PNG source
   (you can use [`scale`](https://www.ffmpeg.org/ffmpeg-filters.html#scale) of course but [`zscale`](https://www.ffmpeg.org/ffmpeg-filters.html#zscale) passes colour characteristics unchanged)
 - the `spline36` scaling algorithm is good for downscaling sharp sources like test cards and animated content, as `lanczos` tends to introduce haloing/ringing artefacts
 - [`monochrome`](https://www.ffmpeg.org/ffmpeg-filters.html#monochrome) converts video to grey (it looks grey but we don’t know), omit for a colour video
@@ -2106,21 +2113,13 @@ Making a DVD involves:
 #### Retro RGB
 
 First a word about colour reproduction because it is so convoluted.
-Someone who understands is colour science guru and retro enthusiast Dan Mons.
-His project [FreeCalRec601](https://github.com/danmons/FreeCalRec601)
-is a Rec.601/BT.601[^31][^23] DVD and test pattern generator for calibrating Standard Definition (SD) CRT displays.
-His [RetroRGB post](https://retrorgb.com/freecalrec601-dvds-for-calibrating-crts.html) about it has useful links and videos.
+The project [FreeCalRec601](https://github.com/danmons/FreeCalRec601) by Dan Mons
+is a Rec.601/BT.601[^23][^31] DVD and test pattern generator for calibrating Standard Definition (SD) CRT displays from sRGB colour chunks made with ImageMagick.
+TCM images also have sRGB [colour space](#user-content-colour-space) when output by GS RGB devices,
+so we just deploy similar FFmpeg options for SD DVD conformance
+(FreeCalRec601 ISOs built from GS-made colour chunks are binary-identical – tested for TIFF and PNG).
+See also an excellent post on color space at Canva Developers[^32].
 
-Like FreeCalRec601, TCM images have sRGB [colour space](#user-content-colour-space) when output by GS RGB devices,
-so we just deploy the same FFmpeg options for SD DVD conformance.
-
-> ![Aside](assets/icons/aside-16.svg)\
-> FreeCalRec601 [build_images.sh](https://github.com/danmons/FreeCalRec601/blob/master/build_images.sh) makes sRGB colour chunks using [ImageMagick],
-  for instance magenta75:\
-  `convert -colorspace sRGB -type truecolor -depth 8 -size 180x144 xc:'rgb(218,98,218)' chunk_magenta75.tif`\
-  the equivalent GS command being:\
-  `gs -q -sDEVICE=tiff24nc -o chunk_magenta75.tif -dDEVICEWIDTHPOINTS=180 -dDEVICEHEIGHTPOINTS=144 -c '218 255 div 98 255 div 218 255 div setrgbcolor 0 0 180 144 rectfill showpage'`\
-  and FreeCalRec601 ISOs built from GS-made sRGB colour chunks are empirically binary-identical to those built from ImageMagick chunks (tested for TIFF and PNG).
 
 
 #### VOB commands
@@ -2132,18 +2131,18 @@ comparable to this Bash snippet:
 vf=pal # or ntsc
 width=720 # or 704
 if [[ $vf = pal ]]; then
-    cs=bt601-6-625 cp=bt470bg ct=gamma28 s=${width}x576
+    cs=bt601-6-625 cp=bt470bg ct=gamma28 r=50 s=${width}x576
 else # ntsc
-    cs=bt601-6-525 cp=smpte170m ct=smpte170m s=${width}x480
+    cs=bt601-6-525 cp=smpte170m ct=smpte170m r=60000/1001 s=${width}x480
 fi
 ffmpeg -y -v warning -loop 1 -i myTC.png -i myTC.wav \
     -vf "
-        zscale=s=$s:f=spline36,
-        colorspace=$cs:iall=bt709:irange=tv:range=tv,
+        fps=$r, zscale=s=$s:f=spline36,
+        colorspace=all=$cs:iall=bt709:itrc=srgb:irange=tv:range=tv,
         tinterlace=interleave_top:flags=low_pass_filter
     " \
     -target $vf-dvd -s $s -flags +ildct+ilme \
-    -color_primaries $cp -colorspace $cp -color_trc $ct \
+    -colorspace $cp -color_primaries $cp -color_trc $ct \
     -video_format $vf -aspect 4:3 -shortest myTC.vob
 ```
 
@@ -2154,8 +2153,11 @@ This makes an anamorphic 4:3 interlaced DVD VOB in PAL or NTSC standard of an im
 - `vf`,`width`,`cs`,`cp`,`ct`,`s` shell variables for PAL/NTSC variants and width
 - `-loop` ([image2 demuxer](https://www.ffmpeg.org/ffmpeg-formats.html#image2-1)) loops the image frame
 - `-vf` video filters:
-  - [`zscale`](https://www.ffmpeg.org/ffmpeg-filters.html#zscale) scale input for correct interlacing and size
-  - [`colorspace`](https://www.ffmpeg.org/ffmpeg-filters.html#colorspace) converts the colour primaries, white point and gamma from bt709 (=sRGB) to bt601 for the target
+  - [`fps`](https://www.ffmpeg.org/ffmpeg-filters.html#fps) set the frame rate to twice required rate
+    ([`framerate`](https://www.ffmpeg.org/ffmpeg-filters.html#framerate) is better for video input with rate lower than twice output rate to interpolate new frames)
+  - [`zscale`](https://www.ffmpeg.org/ffmpeg-filters.html#zscale) scale input for correct interlacing and size with no colour conversion
+  - [`colorspace`](https://www.ffmpeg.org/ffmpeg-filters.html#colorspace) converts the colour primaries, white point and gamma from bt709 (sRGB) to bt601 for the target
+    (`irange=tv` because `colorspace` doesn’t support RGB input so inserts a limited range YUV convertion[^32])
   - [`tinterlace`](https://www.ffmpeg.org/ffmpeg-filters.html#tinterlace) makes the video interlaced, top field first, with vertical low-pass filtering (reduces interline twitter and Moiré artefacts)
 - `-target` ([main options](https://www.ffmpeg.org/ffmpeg.html#Main-options)) sets video and audio format options for the target output, `pal-dvd` or `ntsc-dvd`
 - `-s $s` added by me, see [below](#user-content-720-vs-704)
@@ -2169,7 +2171,7 @@ This makes an anamorphic 4:3 interlaced DVD VOB in PAL or NTSC standard of an im
 
 There’s a bewildering amount of discussion about DVD aspect ratios and the 720 vs 704 debate.
 I am no expert but I gather digital sources like TCM are not subject to padding considerations.
-For analogue sources (702?) I think the options are either to pad wider then scale back[^32]
+For analogue sources (702?) I think the options are either to pad wider then scale back[^33]
 (insert `pad=iw*720/704:ih:-1` before the `zscale` filter)
 or use the 704 width option of the DVD standard.
 
@@ -2529,5 +2531,7 @@ RIP GJK.
 
 [^31]: [Rec.601/BT.601](https://en.wikipedia.org/wiki/Rec._601) – Wikipedia, ‘the bridge that joined the analogue and digital worlds’
 
-[^32]: [Scaling interlaced video](https://ffmpeg.org/pipermail/ffmpeg-user/2014-March/020384.html) – Mark Himsley on FFmpeg-user
+[^32]: [A journey through color space with FFmpeg](https://www.canva.dev/blog/engineering/a-journey-through-colour-space-with-ffmpeg/) – excellent article by Sven Schindler
+
+[^33]: [Scaling interlaced video](https://ffmpeg.org/pipermail/ffmpeg-user/2014-March/020384.html) – Mark Himsley on FFmpeg-user
 
