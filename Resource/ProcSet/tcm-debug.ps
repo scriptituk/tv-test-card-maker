@@ -21,24 +21,27 @@
     stroke grestore
 } bind def
 
-/$=== 0 def
+userdict /$=== 0 put
+/===inc { userdict /$=== 2 copy get 1 add put } bind def
+/===dec { userdict /$=== 2 copy get 1 sub put } bind def
+/===0eq { userdict /$=== get 0 eq } bind def
 /=== { % improved ==
     dup type { % case stmt
         dup /dicttype eq {
             pop
             (<<) print
-            /$=== $=== 1 add def
+            ===inc
             { exch ( ) print === ( ) print === } forall
-            /$=== $=== 1 sub def
+            ===dec
             ( >>) print
             exit
         } if
         dup /arraytype eq 1 index /packedarraytype eq or {
             pop
             dup xcheck { (}) ({) }{ (]) ([) } ifelse print exch
-            /$=== $=== 1 add def
+            ===inc
             { ( ) print === } forall
-            /$=== $=== 1 sub def
+            ===dec
             ( ) print print
             exit
         } if
@@ -50,7 +53,7 @@
         dup /nulltype eq { pop pop (null) print exit } if
         cvas 0 1 index length 4 sub getinterval (-) print print (-) print pop exit % show type
     } loop
-    $=== 0 eq { (\n) print } if
+    ===0eq { (\n) print } if
     flush
 } bind def
 
