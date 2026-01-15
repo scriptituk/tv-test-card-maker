@@ -3,7 +3,7 @@
 ### authentic replicas &bull; easily customised &bull; vector and raster formats &bull; cross-platform
 
 > [!NOTE]
-> This repo is still growing – any observations are most welcome…
+> This repo is still growing – feedback welcome…
 
 ## Summary
 
@@ -2118,8 +2118,7 @@ is a Rec.601/BT.601[^23][^31] DVD and test pattern generator for calibrating Sta
 TCM images also have sRGB [colour space](#user-content-colour-space) when output by GS RGB devices,
 so we just deploy similar FFmpeg options for SD DVD conformance
 (FreeCalRec601 ISOs built from GS-made colour chunks are binary-identical – tested for TIFF and PNG).
-See also an excellent post on color space at Canva Developers[^32].
-
+See also an excellent post on FFmpeg color space at Canva Developers[^32].
 
 
 #### VOB commands
@@ -2154,15 +2153,15 @@ This makes an anamorphic 4:3 interlaced DVD VOB in PAL or NTSC standard of an im
 - `-loop` ([image2 demuxer](https://www.ffmpeg.org/ffmpeg-formats.html#image2-1)) loops the image frame
 - `-vf` video filters:
   - [`fps`](https://www.ffmpeg.org/ffmpeg-filters.html#fps) set the frame rate to twice required rate
-    ([`framerate`](https://www.ffmpeg.org/ffmpeg-filters.html#framerate) is better for video input with rate lower than twice output rate to interpolate new frames)
+    (or use [`framerate`](https://www.ffmpeg.org/ffmpeg-filters.html#framerate) to interpolate new frames when video input rate is lower than twice output rate)
   - [`zscale`](https://www.ffmpeg.org/ffmpeg-filters.html#zscale) scale input for correct interlacing and size with no colour conversion
   - [`colorspace`](https://www.ffmpeg.org/ffmpeg-filters.html#colorspace) converts the colour primaries, white point and gamma from bt709 (sRGB) to bt601 for the target
-    (`irange=tv` because `colorspace` doesn’t support RGB input so inserts a limited range YUV convertion[^32])
+    (`irange=tv` because `colorspace` doesn’t support RGB input so inserts a limited range YUV conversion[^32])
   - [`tinterlace`](https://www.ffmpeg.org/ffmpeg-filters.html#tinterlace) makes the video interlaced, top field first, with vertical low-pass filtering (reduces interline twitter and Moiré artefacts)
 - `-target` ([main options](https://www.ffmpeg.org/ffmpeg.html#Main-options)) sets video and audio format options for the target output, `pal-dvd` or `ntsc-dvd`
-- `-s $s` added by me, see [below](#user-content-720-vs-704)
+- `-s $s` override size, see [720 vs 704](#user-content-720-vs-704)
 - `-flags` ([generic codec options](https://www.ffmpeg.org/ffmpeg-codecs.html#Codec-Options)) sets interlace encoding flags (discrete cosine transform (DCT) and motion estimation)
-- `-color_primaries`, `-colorspace`, `-color_trc` ([generic codec options](https://www.ffmpeg.org/ffmpeg-codecs.html#Codec-Options)) sets colour encoding values
+- `-color_primaries`, `-colorspace`, `-color_trc` ([generic codec options](https://www.ffmpeg.org/ffmpeg-codecs.html#Codec-Options)) sets colour encoding metadata
 - `-video_format` ([mpeg2 codec options](https://www.ffmpeg.org/ffmpeg-codecs.html#mpeg2)) format written into the sequence display extension
 - `-aspect` ([video options](https://www.ffmpeg.org/ffmpeg.html#Video-Options)) sets display aspect ratio (DAR)
 - `-shortest` ([advanced options](https://www.ffmpeg.org/ffmpeg.html#Advanced-options)) limits duration to the shortest output stream (audio here)
@@ -2219,7 +2218,7 @@ Mac:\
 Windows:\
 `Oscdimg.exe -l"Volume Name" -u1 -j1 myDVDfs myDVD.iso`
 
-See [ISOs](assets/video) for built DVD variants discussed here of the [overlay example](#overlays).
+See [ISOs](assets/video) for built BT.601 DVD variants discussed here of the [overlay example](#overlays) which overlays a TCD-improved sRGB PNG over a BT.709 60fps progressive video.
 
 Burning is usually a platform-dependent proprietary command.
 
@@ -2531,7 +2530,7 @@ RIP GJK.
 
 [^31]: [Rec.601/BT.601](https://en.wikipedia.org/wiki/Rec._601) – Wikipedia, ‘the bridge that joined the analogue and digital worlds’
 
-[^32]: [A journey through color space with FFmpeg](https://www.canva.dev/blog/engineering/a-journey-through-colour-space-with-ffmpeg/) – excellent article by Sven Schindler
+[^32]: [A journey through color space with FFmpeg](https://www.canva.dev/blog/engineering/a-journey-through-colour-space-with-ffmpeg/) – excellent article by Sven Schindler, Canva
 
 [^33]: [Scaling interlaced video](https://ffmpeg.org/pipermail/ffmpeg-user/2014-March/020384.html) – Mark Himsley on FFmpeg-user
 
