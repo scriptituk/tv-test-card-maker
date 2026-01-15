@@ -281,7 +281,7 @@ Further info: [GS User Guide: Installing](https://ghostscript.readthedocs.io/en/
 
 All you need to know to tweak TCM patterns are the [objects](#user-content-objects) and [operators](#user-content-operators) detailed below and three basic concepts:
 
-- PostScript uses *postfix* notation, a.k.a. Reverse Polish, where operands preceed operators –
+- PostScript uses *postfix* notation, a.k.a. Reverse Polish, where operands precede operators –
 like Forth[^7].
 - PostScript is *stack-based*, where operands and intermediate results are stored on a stack
 - everything is an *object* (all data and procedures, that is)
@@ -1347,11 +1347,11 @@ and render it as a [custom image](#custom-images) instead.
   whereas positive is an absolute width and zero is the default string width
 - faulty fonts can cause problems:
   if blocked text shows no characters, try `/T#- true arg`;
-  if italic text blocks do not skew, try `/T#k -10 arg` for,say, 10&deg; skew
+  if italic text blocks do not skew, try `/T#k -10 arg` for, say, 10&deg; skew
 - `/T#w` and `/T#h` control the overall lettering size, whether blocked or not
 - `/T#v` and `/T#u` make opaque backgrounds bleed beyond the lettering but are not considered when sizing
 - use `/T#e /k` to skew the background with the italic angle of the font
-- use `/T#d T#r` to round the background in proportion to block character rounding
+- use `/T#d T#r` to round the background in proportion to the block character rounding
 
 </details>
 
@@ -1924,6 +1924,8 @@ WebM 1280x720p@24,25,30, see [Recommended Settings for VP9](https://developers.g
 WebP Image encoder wrapper, see [libwebp](https://ffmpeg.org/ffmpeg-codecs.html#libwebp).
 
 `-c:v libwebp -r 20 -pix_fmt yuv420p -loop 0`
+
+The APNG animations in this README will become WEBP when it has wider Apple support.
 
 #### Animated PNG
 
