@@ -120,13 +120,13 @@ setglobal
     /TCar 4 3 div arg % aspect ratio
     /TClb 10.9 arg % line blanking microseconds
     /TCfb 25 arg % frame blanking lines
-    /TClt 52.7 arg % active line time microseconds
+    /TClt 52.7 arg % approx active line time microseconds
     /TCvr 486 arg % vertical resolution (485 active scanning lines)
     /TChr 440 arg % approximate horizontal resolution (active dots)
 %   /TClh 340 arg % horizontal resolution TVL (TV lines per picture height)
 %   /TCdw 720 arg % digital line width (BT.601)
 %   /TCdh 480 arg % digital line height (BT.601)
-%   /TCdr 702 arg % active digital horizontal resolution
+%   /TCdr 713.5 arg % active digital horizontal resolution (52.856us)
 } def
 
 /1080t { % EBU–TECH 3299 1080i/25

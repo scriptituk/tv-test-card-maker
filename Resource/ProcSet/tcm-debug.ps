@@ -3,14 +3,7 @@
 %================================================================================
 100 dict begin
 
-/pdict {
-    dup keys {cvas tolower exch cvas tolower exch} insertionsort {
-        2 copy get exch /$=== 1 def === ( ) print /$=== 0 def ===
-    } forall pop
-    (-pdict-) =
-} bind def
-
-/pvars { ] { dup load == == } forall (-vars-) = } bind def
+% graphics
 
 /crosshairs {
     gsave 1 setlinewidth cyan
@@ -21,39 +14,86 @@
     stroke grestore
 } bind def
 
-userdict /$=== 0 put
-/===inc { userdict /$=== 2 copy get 1 add put } bind def
-/===dec { userdict /$=== 2 copy get 1 sub put } bind def
-/===0eq { userdict /$=== get 0 eq } bind def
-/=== { % improved ==
+% Introspection
+
+/grwx { % check object access
+    dup dup gcheck { 8 }{ 0 } ifelse exch xcheck { 1 or } if
+    1 index type false [/arraytype /packedarraytype /dicttype /filetype /stringtype] {
+        2 index eq or
+    } forall
+    exch pop {
+        1 index wcheck { 2 or } if
+        1 index rcheck { 4 or } if
+    }{
+        4 or
+    } ifelse
+    exch pop
+} bind def
+
+/isr { % check read access
+    grwx 4 and 0 ne
+} bind def
+
+/pvars { ] { dup load == == } forall (-vars-) = } bind def
+
+/cvts { % convert any to token string or -type-
     dup type { % case stmt
+        dup /stringtype eq { pop (\() exch (\)) cat cat exit } if
+        dup /nametype eq { pop (/) exch dup length string cvs cat exit } if
+        dup /integertype eq { pop 20 string cvs exit } if % -9223372036854775807
+        dup /realtype eq { pop 20 string cvs exit } if
+        dup /booleantype eq { pop 5 string cvs exit } if
+        dup /nulltype eq { pop pop (null) exit } if
+        exch pop dup length string cvs 0 1 index length 4 sub getinterval (-) exch (-) cat cat exit
+    } loop
+} bind def
+
+/pdict { % dump dictionary
+    dup keys {cvas tolower exch cvas tolower exch} insertionsort {
+        2 copy get exch $===++ === ( ) print $===-- ===
+    } forall pop
+    (-pdict-) =
+} bind def
+
+userdict /$=== 0 put
+userdict /$===++ { /$=== $=== 1 add store } bind put
+userdict /$===-- { /$=== $=== 1 sub store } bind put
+/=== { % dump object (improved ==)
+    dup type { % case stmt
+        1 index isr not { cvts print pop exit } if % no read
         dup /dicttype eq {
             pop
-            (<<) print
-            ===inc
-            { exch ( ) print === ( ) print === } forall
-            ===dec
-            ( >>) print
+            $===++
+            ( >>) (<<) print exch
+            dup {
+                exch ( ) print === ( ) print
+                dup isr {
+                    2 copy ne { === }{ pop (-this-) print } ifelse % no recurse
+                }{
+                    === % no read
+                } ifelse
+            } forall pop
+            print
+            $===--
             exit
         } if
         dup /arraytype eq 1 index /packedarraytype eq or {
             pop
-            dup xcheck { (}) ({) }{ (]) ([) } ifelse print exch
-            ===inc
-            { ( ) print === } forall
-            ===dec
-            ( ) print print
+            dup xcheck {
+                ( }) ({) print exch
+                { ( ) print cvts print } forall
+            }{
+                $===++
+                ( ]) ([) print exch
+                { ( ) print === } forall
+                $===--
+            } ifelse
+            print
             exit
         } if
-        dup /stringtype eq { pop (\() print print (\)) print exit } if
-        dup /nametype eq { pop (/) print cvas print exit } if
-        dup /integertype eq { pop cvas print exit } if
-        dup /realtype eq { pop cvas print exit } if
-        dup /booleantype eq { pop cvas print exit } if
-        dup /nulltype eq { pop pop (null) print exit } if
-        cvas 0 1 index length 4 sub getinterval (-) print print (-) print pop exit % show type
+        pop cvts print exit % tokenise
     } loop
-    ===0eq { (\n) print } if
+    $=== 0 eq { (\n) print } if
     flush
 } bind def
 

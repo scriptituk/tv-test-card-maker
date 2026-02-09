@@ -3,6 +3,22 @@
 %================================================================================
 100 dict begin
 
+/validate {
+    dup xcheck {
+        pop pop % disregard executables
+    }{
+        exch dup parsece { exch pop (0) exch cat cat exch pop } if % custom element #0
+        (=) exch cvas cat dup isdef { % validate proc known
+            cvx exec not {
+                [ (arg validation: ) 3 index cvts ( ) 4 index cvts ] cata error
+                /typecheck signalerror
+            } if
+        }{ % unknown validate proc
+            cvn /undefined signalerror
+        } ifelse
+    } ifelse
+} bind def
+
 /isnull { type /nulltype eq } bind def
 /isboolean { type /booleantype eq } bind def
 /isname { type /nametype eq } bind def
@@ -44,22 +60,9 @@
 /isin255 { 0 255 isbetween } bind def
 /ishue { 0 360 isbetween } bind def
 /ispercent { 0 100 isbetween } bind def
-/isinGsz { 0 Gsz isbetween } bind def
+/isinGsz { 0 TCh 8 div isbetween } bind def % roughly
 /isinTCw { 0 TCw isbetween } bind def
 /isinTCh { 0 TCh isbetween } bind def
-
-/validate {
-    dup xcheck {
-        pop pop % disregard executables
-    }{
-        exch dup parsece { exch pop (0) exch cat cat exch pop } if % custom element #0
-        (=) exch cvas cat dup isdef { % validate proc known
-            cvx exec not { /typecheck signalerror } if
-        }{ % unknown validate proc
-            cvn /undefined signalerror
-        } ifelse
-    } ifelse
-} bind def
 
 % normal args
 /=Bac { dup 2 isarraylength exch /iscolour isarrayof and } bind def
@@ -143,7 +146,7 @@
 /=SWw { isinTCw } bind def
 /=SWx { isinTCw } bind def
 /=SW? { isboolean } bind def
-/=TC { isname } bind def
+/=TC { group exch known } bind def
 /=TCar { isnumber } bind def
 /=TCbc { iscolour } bind def
 /=TCdr { isinteger } bind def
@@ -221,6 +224,10 @@
 /=T0z { isinteger } bind def
 /=T0? { isboolean } bind def
 /=T0 { iscustom } bind def
+
+% MD args
+/=TC? { isboolean } bind def
+/=CB? { isboolean } bind def
 
 currentdict end
 %================================================================================
