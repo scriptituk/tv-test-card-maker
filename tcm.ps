@@ -11,13 +11,16 @@
 % easily refashioned and customised by CLI parameters and arguments files
 
 /procdict currentdict def
+true setpacking % make procs readonly
 /tcm-common.ps /ProcSet findresource procdict copy pop
 /tcm-init.ps /ProcSet findresource procdict copy pop
 /tcm-colour.ps /ProcSet findresource procdict copy pop
 /tcm-custom.ps /ProcSet findresource procdict copy pop
 /tcm-validate.ps /ProcSet findresource procdict copy pop
 /tcm-generic.ps /ProcSet findresource procdict copy pop
+/tcm-templates.ps /ProcSet findresource procdict copy pop
 /tcm-debug.ps /ProcSet findresource procdict copy pop
+false setpacking
 
 100 dict begin % args dict
 
@@ -27,17 +30,15 @@
     } if
 
     /TC /TCF-electronic arg % default pattern
-    { /TCg group TC get def } stopped { TC /undefined signalerror } if % check pattern
+    /TCg group TC get def
     TC cvas (-) cat (-) split dup 0 get cvn /TCp exch def 1 get cvn /TCv exch def
     /args isdef { /args dup load 0 TC put }{ TC } ifelse % set extends=TC
-    /tcm-templates.ps /ProcSet findresource procdict copy pop
     currentdict exch loadargs pop
     /TCMDEBUGARGS istrue { /TC TC def currentdict pdict } if
-
     << /PageSize [ TCw TCh ] /ImagingBBox null >> setpagedevice
 %   true setstrokeadjust
 
-    /TC? isdef not { /TC? true def } if % false for CEs only, no TC elements or watermark
+    /TC? isdef not { /TC? true def } if % false for no TC elements or watermark (CEs only)
     {
         /Blank peq { exit } if % blank canvas
         TC? not { exit } if % no elements painted

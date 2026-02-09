@@ -7,7 +7,7 @@
 
 ## Summary
 
-<a href='assets/video/tcm.png'><img src='assets/video/tcm-thumb.png' alt='TV Test Card Maker' align='right'></a>
+<a href='assets/tv-test-card-maker-full.png'><img src='assets/tv-test-card-maker.png' alt='TV Test Card Maker' align='right'></a>
 
 Accurate high-resolution and vector graphic replicas of vintage TV test patterns are hard to come by,
 and those created by drawing tools cannot be altered because master files are unavailable.
@@ -149,7 +149,8 @@ Much of the nitty gritty is contained in collapsible sections revealed in the [T
 &bull; [Retro&nbsp;RGB](#user-content-retro-rgb)
 &bull; [VOB&nbsp;commands](#user-content-vob-commands)
 &bull; [VOB&nbsp;explanation](#user-content-vob-explanation)
-&bull; [720&nbsp;vs&nbsp;704](#user-content-720-vs-704)
+&bull; [720&nbsp;vs&nbsp;704&nbsp;or&nbsp;702](#user-content-720-vs-704-or-702)
+&bull; [SECAM](#user-content-secam)
 &bull; [Authoring&nbsp;and&nbsp;burning](#user-content-authoring-and-burning)
 - [Test&nbsp;card&nbsp;sources](#test-card-sources)
   - [Originals](#originals)
@@ -415,16 +416,16 @@ All pattern elements can easily be adjusted or customised.
 The thumbnails link to larger animated images showing replica and original overlaid, for testing.\
 By default a replica icon ![](assets/icons/replica-16.svg) in the bottom-right corner watermarks the replica pattern.
 
-<kbd align='center'>&nbsp;<br>**TCA**<br>&nbsp;<br>[![TCA](assets/templates/TCA-thumb.png)](assets/templates/TCA-anim.png)</kbd>
-<kbd align='center'>&nbsp;<br>**TCC-early**<br>&nbsp;<br>[![TCC-early](assets/templates/TCC-early-thumb.png)](assets/templates/TCC-early-anim.png)</kbd>
-<kbd align='center'>&nbsp;<br>**TCC**<br>&nbsp;<br>[![TCC](assets/templates/TCC-thumb.png)](assets/templates/TCC-anim.png)</kbd>
-<kbd align='center'>&nbsp;<br>**TCD-early**<br>&nbsp;<br>[![TCD-early](assets/templates/TCD-early-thumb.png)](assets/templates/TCD-early-anim.png)</kbd>
-<kbd align='center'>&nbsp;<br>**TCD-improved**<br>&nbsp;<br>[![TCD-improved](assets/templates/TCD-improved-thumb.png)](assets/templates/TCD-improved-anim.png)</kbd>
-<kbd align='center'>&nbsp;<br>**TCE**<br>&nbsp;<br>[![TCE](assets/templates/TCE-thumb.png)](assets/templates/TCE-anim.png)</kbd>
-<kbd align='center'>&nbsp;<br>**TCC-625**<br>&nbsp;<br>[![TCC-625](assets/templates/TCC-625-thumb.png)](assets/templates/TCC-625-anim.png)</kbd>
-<kbd align='center'>&nbsp;<br>**TCF-early**<br>&nbsp;<br>[![TCF-early](assets/templates/TCF-early-thumb.png)](assets/templates/TCF-early-anim.png)</kbd>
-<kbd align='center'>&nbsp;<br>**TCF-optical**<br>&nbsp;<br>[![TCF-optical](assets/templates/TCF-optical-thumb.png)](assets/templates/TCF-optical-anim.png)</kbd>
-<kbd align='center'>&nbsp;<br>**TCF-electronic**<br>&nbsp;<br>[![TCF-electronic](assets/templates/TCF-electronic-thumb.png)](assets/templates/TCF-electronic-anim.png)</kbd>
+<kbd align='center'>&nbsp;<br>**TCA**<br>&nbsp;<br>[![TCA](assets/templates/TCA-thumb.svg)](assets/templates/TCA-anim.png)</kbd>
+<kbd align='center'>&nbsp;<br>**TCC-early**<br>&nbsp;<br>[![TCC-early](assets/templates/TCC-early-thumb.svg)](assets/templates/TCC-early-anim.png)</kbd>
+<kbd align='center'>&nbsp;<br>**TCC**<br>&nbsp;<br>[![TCC](assets/templates/TCC-thumb.svg)](assets/templates/TCC-anim.png)</kbd>
+<kbd align='center'>&nbsp;<br>**TCD-early**<br>&nbsp;<br>[![TCD-early](assets/templates/TCD-early-thumb.svg)](assets/templates/TCD-early-anim.png)</kbd>
+<kbd align='center'>&nbsp;<br>**TCD-improved**<br>&nbsp;<br>[![TCD-improved](assets/templates/TCD-improved-thumb.svg)](assets/templates/TCD-improved-anim.png)</kbd>
+<kbd align='center'>&nbsp;<br>**TCE**<br>&nbsp;<br>[![TCE](assets/templates/TCE-thumb.svg)](assets/templates/TCE-anim.png)</kbd>
+<kbd align='center'>&nbsp;<br>**TCC-625**<br>&nbsp;<br>[![TCC-625](assets/templates/TCC-625-thumb.svg)](assets/templates/TCC-625-anim.png)</kbd>
+<kbd align='center'>&nbsp;<br>**TCF-early**<br>&nbsp;<br>[![TCF-early](assets/templates/TCF-early-thumb.svg)](assets/templates/TCF-early-anim.png)</kbd>
+<kbd align='center'>&nbsp;<br>**TCF-optical**<br>&nbsp;<br>[![TCF-optical](assets/templates/TCF-optical-thumb.svg)](assets/templates/TCF-optical-anim.png)</kbd>
+<kbd align='center'>&nbsp;<br>**TCF-electronic**<br>&nbsp;<br>[![TCF-electronic](assets/templates/TCF-electronic-thumb.svg)](assets/templates/TCF-electronic-anim.png)</kbd>
 
 
 International and widescreen patterns may follow if called for
@@ -1358,16 +1359,16 @@ and render it as a [custom image](#custom-images) instead.
 ## Resolution
 
 > [!NOTE]
-> Resolution, [aspect ratio](#aspect-ratio) and [scaling](#scaling) depend on factors too involved to delve into here – whether analogue/digital, PAL/NTSC/SECAM, line count, line time, sampling rate etc.
+> Resolution, [aspect ratio](#aspect-ratio) and [scaling](#scaling) depend on factors too involved to delve into here – whether analog/digital, PAL/NTSC/SECAM, line count, line time, sampling rate etc.
   but there are experts on the VideoHelp Forum[^14] and elsewhere with detailed answers.
 
 
-In the vertical plane, analogue scan lines are inherently discrete.
+In the vertical plane, analog scan lines are inherently discrete.
 In the horizontal the intensity is continuous but cannot alternate faster than the scan rate and video bandwidth allow under the sampling theorem[^15].
-These constraints are specified by various standards, therefore analogue horizontal resolution can be approximated[^16].
+These constraints are specified by various standards, therefore analog horizontal resolution can be approximated[^16].
 The practical measure used is Television lines (TVL)[^17], explained in Alan Pemberton’s *Ponderings*[^18].
 
-In simulating analogue test cards digitally, TCM simply scales the active analogue line time to the width `TCw` and the active scan lines to the height `TCh`.
+In simulating analog test cards digitally, TCM simply scales the active analog line time to the width `TCw` and the active scan lines to the height `TCh`.
 This gives square unit pixels for 4:3 625-line replicas at the default 768x576 size but applies scaling for other values.
 If the aspect ratio `TCr` is distorted the _effective line time_ width does not change in order to maintain element shapes,
 see [aspect ratio](#aspect-ratio) and [time-base scaling](#user-content-time-based-scaling).
@@ -1392,11 +1393,11 @@ which presumably lose their intended significance.
 
 *Examples:* a 5:4 *TCA* and widescreen *TCD-improved* with altered text and square *TCF-electronic*
 
-[![5:4 ratio](assets/ar/ratio-54-thumb.png)](assets/ar/ratio-54.png)
+[![5:4 ratio](assets/ar/ratio-54-thumb.svg)](assets/ar/ratio-54.svg)
 &nbsp;
-[![widescreen ratio](assets/ar/ratio-ws-thumb.png)](assets/ar/ratio-ws.png)
+[![widescreen ratio](assets/ar/ratio-ws-thumb.svg)](assets/ar/ratio-ws.svg)
 &nbsp;
-[![square ratio](assets/ar/ratio-sq-thumb.png)](assets/ar/ratio-sq.png)
+[![square ratio](assets/ar/ratio-sq-thumb.svg)](assets/ar/ratio-sq.svg)
 
 ## Scaling
 
@@ -1441,7 +1442,7 @@ This unit is named `/Gsz` and the main scaling [operator](#user-content-operator
 
 TODO: note about 405/625 constants
 
-TODO: note about rise/fall times in simulating analogue test cards digitally
+TODO: note about rise/fall times in simulating analog test cards digitally
 
 ## Colours
 
@@ -1836,10 +1837,17 @@ Use option `-sEPSCrop` when converting from EPS to other formats with GS.
 Not supported directly.
 
 There are many PDF/EPS to SVG converters for download or online use.
-I use [pdf2svg] from MacPorts, available as a Windows binary at [pdf2svg-windows],
+I recommend [pdf2svg] from MacPorts, available as a Windows binary at [pdf2svg-windows],
 which simply delegates to [Poppler] and [Cairo],\
-preserving paths and even gradients without converting to bitmaps.
+preserving paths and even gradients without converting to bitmaps,\
 e.g. `pdf2svg myTC.pdf myTC.svg`
+
+Surprisingly, [MuPDF] from Artifex does a poor conversion of their own GS-generated PDFs, especially gradients.
+
+An excellent SVG optimiser is [svgcleaner]:
+
+- `svgcleaner --quiet --allow-bigger-file --multipass --indent 2 --trim-paths no --use-implicit-cmds no myTC.pdf pretty.svg` – makes a readable SVG where you can clearly see the graphic elements
+- `svgcleaner --quiet --multipass --apply-transform-to-paths yes --coordinates-precision 4 --properties-precision 4 --transforms-precision 6 --paths-coordinates-precision 6 myTC.pdf condensed.svg` – is good for shrinking test card SVGs
 
 Further info: [GS User Guide: High level devices](https://ghostscript.readthedocs.io/en/latest/Devices.html#high-level-devices)
 
@@ -2075,7 +2083,7 @@ Filters:
 - [`crop`](https://www.ffmpeg.org/ffmpeg-filters.html#crop) cuts out the episodes
 - crop rectangle obtained using [`cropdetect`](https://www.ffmpeg.org/ffmpeg-filters.html#cropdetect) on video source
 - [`zscale`](https://www.ffmpeg.org/ffmpeg-filters.html#zscale) to `ih*4/3` width corrects the aspect from 3:2 to 4:3 and convert to full range colour like the sRGB PNG source
-  (you can use [`scale`](https://www.ffmpeg.org/ffmpeg-filters.html#scale) of course but [`zscale`](https://www.ffmpeg.org/ffmpeg-filters.html#zscale) passes colour characteristics unchanged)
+  (you can use [`scale`](https://www.ffmpeg.org/ffmpeg-filters.html#scale) of course but [`zscale`](https://www.ffmpeg.org/ffmpeg-filters.html#zscale) passes the colorimetry unchanged)
 - the `spline36` scaling algorithm is good for downscaling sharp sources like test cards and animated content, as `lanczos` tends to introduce haloing/ringing artefacts
 - [`monochrome`](https://www.ffmpeg.org/ffmpeg-filters.html#monochrome) converts video to grey (it looks grey but we don’t know), omit for a colour video
 - [`cas`](https://www.ffmpeg.org/ffmpeg-filters.html#cas) sharpens video
@@ -2125,60 +2133,79 @@ See also an excellent post on FFmpeg color space at Canva Developers[^32].
 
 #### VOB commands
 
-FreeCalRec601 [build_vob.sh](https://github.com/danmons/FreeCalRec601/blob/master/build_vob.sh) builds VOBs using [FFmpeg],
-comparable to this Bash snippet:
+This Bash snippet is comparable to 
+FreeCalRec601 [build_vob.sh](https://github.com/danmons/FreeCalRec601/blob/master/build_vob.sh) code for building VOBs with [FFmpeg]:
 
 ```bash
+# options:
 vf=pal # or ntsc
-width=720 # or 704
+active=720 # 720 for digital viewer else 704 is assumed for analog overscan
+# make VOB
+[[ $active -eq 720 ]] && pad=null || pad='pad=round(iw*720/704/16)*16:ih:-1'
 if [[ $vf = pal ]]; then
-    cs=bt601-6-625 cp=bt470bg ct=gamma28 r=50 s=${width}x576
-else # ntsc
-    cs=bt601-6-525 cp=smpte170m ct=smpte170m r=60000/1001 s=${width}x480
+    cs=bt601-6-625 cp=bt470bg ct=gamma28 r=50 s=720x576 # pal
+else
+    cs=bt601-6-525 cp=smpte170m ct=smpte170m r=60000/1001 s=720x480 # ntsc
 fi
 ffmpeg -y -v warning -loop 1 -i myTC.png -i myTC.wav \
     -vf "
-        fps=$r, zscale=s=$s:f=spline36,
+        fps=$r, $pad, zscale=s=$s:f=spline36,
         colorspace=all=$cs:iall=bt709:itrc=srgb:irange=tv:range=tv,
         tinterlace=interleave_top:flags=low_pass_filter
     " \
-    -target $vf-dvd -s $s -flags +ildct+ilme \
+    -target $vf-dvd -flags +ildct+ilme \
     -colorspace $cp -color_primaries $cp -color_trc $ct \
     -video_format $vf -aspect 4:3 -shortest myTC.vob
 ```
 
-This makes an anamorphic 4:3 interlaced DVD VOB in PAL or NTSC standard of an image and audio.
+This makes an anamorphic 4:3 interlaced BT.601 DVD VOB of an image (or video) and audio.
+Options:
+
+- `vf` selects PAL or NTSC standard.
+- `active` selects full-width (720) or overscan (704) viewing:
+  choose 720 to play on a digital screen or 704 to play on an analog CRT TV.
+
+> ![Note](assets/icons/note-16.svg)\
+> Overscan shows as black side bars if played on a full-width device.
 
 #### VOB explanation
 
-- `vf`,`width`,`cs`,`cp`,`ct`,`s` shell variables for PAL/NTSC variants and width
+- `vf`,`active`,`cs`,`cp`,`ct`,`s` shell variables for video format and overscan values
 - `-loop` ([image2 demuxer](https://www.ffmpeg.org/ffmpeg-formats.html#image2-1)) loops the image frame
 - `-vf` video filters:
   - [`fps`](https://www.ffmpeg.org/ffmpeg-filters.html#fps) set the frame rate to twice required rate
     (or use [`framerate`](https://www.ffmpeg.org/ffmpeg-filters.html#framerate) to interpolate new frames when video input rate is lower than twice output rate)
-  - [`zscale`](https://www.ffmpeg.org/ffmpeg-filters.html#zscale) scale input for correct interlacing and size with no colour conversion
+  - [`pad`](https://www.ffmpeg.org/ffmpeg-filters.html#pad) pads the width for overscan if selected
+  - [`zscale`](https://www.ffmpeg.org/ffmpeg-filters.html#zscale) scale input for correct interlacing size with no colour conversion
   - [`colorspace`](https://www.ffmpeg.org/ffmpeg-filters.html#colorspace) converts the colour primaries, white point and gamma from bt709 (sRGB) to bt601 for the target
     (`irange=tv` because `colorspace` doesn’t support RGB input so inserts a limited range YUV conversion[^32])
   - [`tinterlace`](https://www.ffmpeg.org/ffmpeg-filters.html#tinterlace) makes the video interlaced, top field first, with vertical low-pass filtering (reduces interline twitter and Moiré artefacts)
 - `-target` ([main options](https://www.ffmpeg.org/ffmpeg.html#Main-options)) sets video and audio format options for the target output, `pal-dvd` or `ntsc-dvd`
-- `-s $s` override size, see [720 vs 704](#user-content-720-vs-704)
 - `-flags` ([generic codec options](https://www.ffmpeg.org/ffmpeg-codecs.html#Codec-Options)) sets interlace encoding flags (discrete cosine transform (DCT) and motion estimation)
 - `-color_primaries`, `-colorspace`, `-color_trc` ([generic codec options](https://www.ffmpeg.org/ffmpeg-codecs.html#Codec-Options)) sets colour encoding metadata
 - `-video_format` ([mpeg2 codec options](https://www.ffmpeg.org/ffmpeg-codecs.html#mpeg2)) format written into the sequence display extension
 - `-aspect` ([video options](https://www.ffmpeg.org/ffmpeg.html#Video-Options)) sets display aspect ratio (DAR)
 - `-shortest` ([advanced options](https://www.ffmpeg.org/ffmpeg.html#Advanced-options)) limits duration to the shortest output stream (audio here)
 
-#### 720 vs 704
+#### 720 vs 704 or 702
 
-There’s a bewildering amount of discussion about DVD aspect ratios and the 720 vs 704 debate.
-I am no expert but I gather digital sources like TCM are not subject to padding considerations.
-For analogue sources (702?) I think the options are either to pad wider then scale back[^33]
-(insert `pad=iw*720/704:ih:-1` before the `zscale` filter)
-or use the 704 width option of the DVD standard.
+There’s a bewildering amount of discussion about DVD aspect ratios and the 720 vs 704/702 debate.
+My understanding is square pixel digital sources like TCM are displayed in full on modern digital displays but cropped at the sides on a TV CRT due to analog overscan[^33].
+So the trick is to pad wider then scale back[^34] when making a DVD for analog playback.
 
-In practice, there is no noticeable difference between DVDs made with 720 and 704 width using the code above for a 768 (square pixel) source.
-If using the default 720, remove `-s $s` after the `target` option to avoid the `Multiple -s options…` warning.
+Digitising analog results in 702 pixels per line for PAL and 713.5 for NTSC[^33].
+MPEG-2 video uses 16x16 macroblocks[^35] so the numbers need to be divisible by 16.
+The closest multiple of 16 to 702 is 704 (rounded up) and to 713.5 is also 704 (rounded down).
+Hence 704 is a good compromise, and also a DVD standard, but 720 was chosen to accommodate both formats.
+Whether the DVD is made 720 or 704 wide makes no difference
+– as confirmed by a PAL AR Test DVD and discussion on VideoHelp[^36] –
+but the ffmpeg target preset is 720.
 
+
+#### SECAM
+
+SECAM shares the same scanning format as PAL, so a SECAM DVD is a PAL DVD.
+Apparently PAL plays on SECAM in black-and-white but SECAM colour modulation is out of scope here.
 
 #### Authoring and burning
 
@@ -2220,7 +2247,8 @@ Mac:\
 Windows:\
 `Oscdimg.exe -l"Volume Name" -u1 -j1 myDVDfs myDVD.iso`
 
-See [ISOs](assets/video) for built BT.601 DVD variants discussed here of the [overlay example](#overlays) which overlays a TCD-improved sRGB PNG over a BT.709 60fps progressive video.
+See [ISOs](assets/video) for built DVD variants discussed here of the [overlay example](#overlays)
+which overlays a *TCD-improved* sRGB PNG over a BT.709 60fps progressive video.
 
 Burning is usually a platform-dependent proprietary command.
 
@@ -2279,7 +2307,7 @@ and the cards, monoscopes and slides all differed slightly.
   – lots of patterns from a Vietnam artist
 - all manner of commercial outlets like Alamy, Adobe Stock etc. sell test cards of dubious authenticity
 
-In general, any analogue-era test pattern with uniform grey background or perfect typography or lacking telltale signs of handcrafted workmanship is likely to be a reconstruction.
+In general, any analog-era test pattern with uniform grey background or perfect typography or lacking telltale signs of handcrafted workmanship is likely to be a reconstruction.
 
 ## Graphical user interface
 
@@ -2325,7 +2353,7 @@ For detailed information see the [CardMaker Help](assets/cm/CardMaker-help.pdf) 
 This project is dedicated to Gordon J. King (G4VFV) whose lucid servicing handbooks
 helped nurture my teenage passion for practical electronics
 which led to an enjoyable and fulfilling career, including a training spell with the BBC.
-Back then, after persistently borrowing GJK’s books from the Horsham lending library,
+Back then, after persistently borrowing GJK’s books from the library,
 I managed to save enough money to buy my own (below).
 Even now they are a fascinating read, and many principles explained are relevant today.
 
@@ -2337,8 +2365,8 @@ Even now they are a fascinating read, and many principles explained are relevant
 This year (2025) I became aware that I had been living just two streets away from Mr&nbsp;King
 in Furzeham, Brixham, for 14 years until he died in 2010.
 That August soon after his funeral service at [St. Mary’s](https://youtu.be/OmLH3yhwXrQ) I joined the organist rota there, still unaware.
-Anyway, he mentored through his writings, covering the heyday of analogue electronics
-and milestone transitions from valve to semiconductor, monochrome to colour, analogue to digital…
+Anyway, he mentored through his writings, covering the heyday of analog electronics
+and milestone transitions from valve to semiconductor, monochrome to colour, analog to digital…
 RIP GJK.
 
 ### Tributes
@@ -2373,7 +2401,7 @@ RIP GJK.
 - [BBC Engineering Monographs](https://www.bbc.co.uk/rd/publications/engineering-monographs) – 115 downloadable editions from 1955 to 1980
 - [BBC Technical Instruction: Test Waveforms](https://www.bbceng.info/ti/non-eqpt/TI_P2_Part3_Test%20Waveforms.pdf) – 405-line waveforms (p.11) and 625 (p.17)
 - [A Broader Aspect](https://transdiffusion.org/2006/03/31/broader_aspect/) – Transdiffusion article on early television aspect ratios
-- [EBU Technical Recommendation R92-1999](https://tech.ebu.ch/docs/r/r092.pdf) – active picture area and centring in analogue and digital 625/50 television systems
+- [EBU Technical Recommendation R92-1999](https://tech.ebu.ch/docs/r/r092.pdf) – active picture area and centring in analog and digital 625/50 television systems
 - [Analog television](https://en.wikipedia.org/wiki/Analog_television) – Wikipedia
 - [Television Technical Theory: Unplugged](https://danalee.ca/ttt/) & [Analog Video](https://danalee.ca/ttt/analog_video.htm) – comprehensive insights by Dana M. Lee
 - [List of common display resolutions: Analog systems](https://en.wikipedia.org/wiki/List_of_common_display_resolutions#Analog_systems) – approximate dots x lines resolution
@@ -2382,7 +2410,7 @@ RIP GJK.
 - [Limiting of YUV Digital Video Signals](https://downloads.bbc.co.uk/rd/pubs/reports/1987-22.pdf) – a BBC Research Report
 - [YUV Color Calculator](https://res18h39.netlify.app/color) – colour conversion calculator
 - [BBC HD test signals](https://www.bbc.co.uk/blogs/bbcinternet/2008/12/a_christmas_present_from_the_h.html) – Andy Quested, BBC Internet Blog
-- [Capture-Cards and aspect-ratio for Dummies](http://www.arachnotron.nl/videocap/doc/Karl_cap_v1_en.pdf) – analogue digitisation guide by Der Karl
+- [Capture-Cards and aspect-ratio for Dummies](http://www.arachnotron.nl/videocap/doc/Karl_cap_v1_en.pdf) – analog digitisation guide by Der Karl
 
 ### Test cards
 
@@ -2437,11 +2465,12 @@ RIP GJK.
 - [Gifski] – high-quality GIF animation encoder using [pngquant]
 - [GIMP] – GNU Image Manipulation Program
 - [ImageMagick] – for editing and manipulating digital images
-- [Oxipng] – PNG/APNG compression optimizer
-- [pdf2svg] – simple PDF to SVG converter using [Poppler] and [Cairo]
+- [Oxipng] – PNG/APNG compression optimiser
+- [pdf2svg] – PDF to SVG converter using [Poppler] and [Cairo]
 - [pdf2svg-windows] – ditto for Windows
 - [Poppler] – PDF rendering library
 - [pngquant] – lossy compression of PNG images
+- [svgcleaner] – SVG optimiser
 - [xfade-easing] – video transition effects for FFmpeg Xfade filter by [scriptituk]
 
 ### Footnotes
@@ -2462,11 +2491,13 @@ RIP GJK.
 [Gifski]: https://gif.ski/
 [GIMP]: https://www.gimp.org/
 [ImageMagick]: https://imagemagick.org/
+[MuPDF]: https://mupdf.readthedocs.io/
 [Oxipng]: https://github.com/oxipng/oxipng
 [pdf2svg]: https://github.com/dawbarton/pdf2svg
 [pdf2svg-windows]: https://github.com/jalios/pdf2svg-windows
 [Poppler]: https://poppler.freedesktop.org/
 [pngquant]: https://pngquant.org/
+[svgcleaner]: https://github.com/RazrFalcon/svgcleaner/blob/master/docs/svgcleaner.adoc
 [xfade-easing]: https://github.com/scriptituk/xfade-easing
 
 [scriptituk]: https://github.com/scriptituk
@@ -2528,11 +2559,17 @@ RIP GJK.
 
 [^29]: [Ghostscript 9 Color Management](https://ghostscript.com/docs/GS9_Color_Management.pdf) – colour architecture in Ghostscript Release 9
 
-[^30]: [The Magic Roundabout Series 1 1965–68 (incomplete)](https://youtu.be/jS2IlF9GEco) – 5 episodes, not 224, because of lost media
+[^30]: [The Magic Roundabout Series 1 1965–68 (incomplete)](https://youtu.be/jS2IlF9GEco) – 5 of 224 episodes, mostly lost
 
-[^31]: [Rec.601/BT.601](https://en.wikipedia.org/wiki/Rec._601) – Wikipedia, ‘the bridge that joined the analogue and digital worlds’
+[^31]: [Rec.601/BT.601](https://en.wikipedia.org/wiki/Rec._601) – Wikipedia, ‘the bridge that joined the analog and digital worlds’
 
 [^32]: [A journey through color space with FFmpeg](https://www.canva.dev/blog/engineering/a-journey-through-colour-space-with-ffmpeg/) – excellent article by Sven Schindler, Canva
 
-[^33]: [Scaling interlaced video](https://ffmpeg.org/pipermail/ffmpeg-user/2014-March/020384.html) – Mark Himsley on FFmpeg-user
+[^33]: [Overscan](https://en.wikipedia.org/wiki/Overscan) – Wikipedia
+
+[^34]: [Scaling interlaced video](https://ffmpeg.org/pipermail/ffmpeg-user/2014-March/020384.html) – Mark Himsley on FFmpeg-user
+
+[^35]: [Macroblock](https://en.wikipedia.org/wiki/Macroblock) – Wikipedia
+
+[^36]: [Checking my DVD player’s aspect ratio](https://forum.videohelp.com/threads/353770-Checking-my-DVD-player-s-aspect-ratio/page2#post2227902) – jagabo on VideoHelp
 
