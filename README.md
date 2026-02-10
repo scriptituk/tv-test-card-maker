@@ -2114,7 +2114,7 @@ Making a DVD involves:
 1. creating the needed media files to DVD standards
 1. authoring and building the DVD file structure
 1. making an ISO image
-1. burning to a physical disk
+1. burning to a physical disk (platdform-dependent)
 
 <details><summary>DVD example</summary>
 <a name='dvd-example'></a>
@@ -2193,10 +2193,10 @@ There’s a bewildering amount of discussion about DVD aspect ratios and the 720
 My understanding is square pixel digital sources like TCM are displayed in full on modern digital displays but cropped at the sides on a TV CRT due to analog overscan[^33].
 So the trick is to pad wider then scale back[^34] when making a DVD for analog playback.
 
-Digitising analog results in 702 pixels per line for PAL and 713.5 for NTSC[^33].
-MPEG-2 video uses 16x16 macroblocks[^35] so the numbers need to be divisible by 16.
-The closest multiple of 16 to 702 is 704 (rounded up) and to 713.5 is also 704 (rounded down).
-Hence 704 is a good compromise, and also a DVD standard, but 720 was chosen to accommodate both formats.
+Digitising analog TV active line time at at 13.5 MHz for BT.601 results in 702 pixels per line for PAL and 713.5 for NTSC[^33].
+DVD encodes MPEG-2 video which uses 16x16 macroblocks[^35] so the size needs to be divisible by 16.
+The nearest multiple of 16 to 702 is 704 (rounding up) and to 713.5 is also 704 (rounding down).
+Hence 704 is a fair compromise, also a DVD standard, but 720 accommodates both formats within spec.
 Whether the DVD is made 720 or 704 wide makes no difference
 – as confirmed by a PAL AR Test DVD and discussion on VideoHelp[^36] –
 but the ffmpeg target preset is 720.
@@ -2204,8 +2204,14 @@ but the ffmpeg target preset is 720.
 
 #### SECAM
 
-SECAM shares the same scanning format as PAL, so a SECAM DVD is a PAL DVD.
-Apparently PAL plays on SECAM in black-and-white but SECAM colour modulation is out of scope here.
+SECAM shares the same scanning format as PAL, so a SECAM DVD is a PAL DVD,
+but they are otherwise only compatible for luminance.
+
+For chrominance, PAL and NTSC convey both colour difference signals simultaneously, phase-modulated
+(PAL with alternating phase, NTSC fixed),
+but SECAM interlaces alternating difference signals without phasing.
+
+So SECAM-only TVs without SCART need a SECAM RF modulator for colour, which is difficult.
 
 #### Authoring and burning
 
@@ -2236,21 +2242,20 @@ export VIDEO_FORMAT=PAL # or NTSC
 dvdauthor -o myDVDfs -x myDVD.xml
 ```
 
-To make an ISO image for this example from the CLI :
+To make a compliant DVD ISO image for this example from the CLI with UDF[^37] and Joliet[^38] file system support:
+
 
 Linux:\
 `mkisofs -V 'Volume Name' -dvd-video -udf -J -o myDVD.iso myDVDfs
 
 Mac:\
-`hdiutil makehybrid -default-volume-name 'Volume Name' -udf -iso -joliet -ov -o myDVD.iso myDVDfs
+`hdiutil makehybrid -default-volume-name 'Volume Name' -ov -o myDVD.iso myDVDfs
 
 Windows:\
 `Oscdimg.exe -l"Volume Name" -u1 -j1 myDVDfs myDVD.iso`
 
-See [ISOs](assets/video) for built DVD variants discussed here of the [overlay example](#overlays)
+See [ISOs](assets/video) for built ISO image variants discussed here of the [overlay example](#overlays)
 which overlays a *TCD-improved* sRGB PNG over a BT.709 60fps progressive video.
-
-Burning is usually a platform-dependent proprietary command.
 
 </details>
 
@@ -2424,7 +2429,7 @@ RIP GJK.
 
 ### Other test card projects
 
-- repo [danmons/FreeCalRec601](https://github.com/danmons/FreeCalRec601) – accurate Rec.601 SD calibration DVD and test pattern generator
+- repo [danmons/FreeCalRec601](https://github.com/danmons/FreeCalRec601) – accurate BT.601 SD calibration DVD and test pattern generator
 - repo [davecrump/vidsource](https://github.com/davecrump/vidsource) – [BATC](https://batc.org.uk/) Composite Video Source for [Raspberry Pi Zero](https://www.raspberrypi.com/products/raspberry-pi-zero/)
 - repo [sarodp/myatv](https://github.com/sarodp/myatv) – amateur TV test pattern generator from static JPEG images for Raspberry Pi
 - repo [georgik/esp32-monoscope-pattern](https://github.com/georgik/esp32-monoscope-pattern) – for [ESP32](https://www.espressif.com/en/products/socs/esp32), simulates classic test patterns with old TV effects
@@ -2572,4 +2577,8 @@ RIP GJK.
 [^35]: [Macroblock](https://en.wikipedia.org/wiki/Macroblock) – Wikipedia
 
 [^36]: [Checking my DVD player’s aspect ratio](https://forum.videohelp.com/threads/353770-Checking-my-DVD-player-s-aspect-ratio/page2#post2227902) – jagabo on VideoHelp
+
+[^37]: [Universal Disk Format](https://en.wikipedia.org/wiki/Universal_Disk_Format) – Wikipedia
+
+[^38]: [Joliet Windows format](https://en.wikipedia.org/wiki/ISO_9660#Joliet) – Wikipedia
 
