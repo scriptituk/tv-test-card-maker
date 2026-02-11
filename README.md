@@ -1837,10 +1837,9 @@ Use option `-sEPSCrop` when converting from EPS to other formats with GS.
 Not supported directly.
 
 There are many PDF/EPS to SVG converters for download or online use.
-I recommend [pdf2svg] from MacPorts, available as a Windows binary at [pdf2svg-windows],
-which simply delegates to [Poppler] and [Cairo],\
+I recommend [pdftocairo] from MacPorts which simply delegates to [Poppler] and [Cairo],\
 preserving paths and even gradients without converting to bitmaps,\
-e.g. `pdf2svg myTC.pdf myTC.svg`
+e.g. `pdftocairo -svg myTC.pdf myTC.svg`
 
 Surprisingly, [MuPDF] from Artifex does a poor conversion of their own GS-generated PDFs, especially gradients.
 
@@ -2193,7 +2192,7 @@ There’s a bewildering amount of discussion about DVD aspect ratios and the 720
 My understanding is square pixel digital sources like TCM are displayed in full on modern digital displays but cropped at the sides on a TV CRT due to analog overscan[^33].
 So the trick is to pad wider then scale back[^34] when making a DVD for analog playback.
 
-Digitising analog TV active line time at at 13.5 MHz for BT.601 results in 702 pixels per line for PAL and 713.5 for NTSC[^33].
+Digitising analog TV active line time at 13.5 MHz for BT.601 results in 702 pixels per line for PAL and 713.5 for NTSC[^33].
 DVD encodes MPEG-2 video which uses 16x16 macroblocks[^35] so the size needs to be divisible by 16.
 The nearest multiple of 16 to 702 is 704 (rounding up) and to 713.5 is also 704 (rounding down).
 Hence 704 is a fair compromise, also a DVD standard, but 720 accommodates both formats within spec.
@@ -2471,8 +2470,7 @@ RIP GJK.
 - [GIMP] – GNU Image Manipulation Program
 - [ImageMagick] – for editing and manipulating digital images
 - [Oxipng] – PNG/APNG compression optimiser
-- [pdf2svg] – PDF to SVG converter using [Poppler] and [Cairo]
-- [pdf2svg-windows] – ditto for Windows
+- [pdftocairo] – PDF to SVG/PNG/ converter using [Poppler] and [Cairo]
 - [Poppler] – PDF rendering library
 - [pngquant] – lossy compression of PNG images
 - [svgcleaner] – SVG optimiser
@@ -2498,8 +2496,7 @@ RIP GJK.
 [ImageMagick]: https://imagemagick.org/
 [MuPDF]: https://mupdf.readthedocs.io/
 [Oxipng]: https://github.com/oxipng/oxipng
-[pdf2svg]: https://github.com/dawbarton/pdf2svg
-[pdf2svg-windows]: https://github.com/jalios/pdf2svg-windows
+[pdftocairo]: https://www.mankier.com/1/pdftocairo
 [Poppler]: https://poppler.freedesktop.org/
 [pngquant]: https://pngquant.org/
 [svgcleaner]: https://github.com/RazrFalcon/svgcleaner/blob/master/docs/svgcleaner.adoc
