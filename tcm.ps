@@ -37,7 +37,6 @@ false setpacking
     /TCMDEBUGARGS istrue { /TC TC def currentdict pdict } if
     << /PageSize [ TCw TCh ] /ImagingBBox null >> setpagedevice
 %   true setstrokeadjust
-
     /TC? isdef not { /TC? true def } if % false for no TC elements or watermark (CEs only)
     {
         /Blank peq { exit } if % blank canvas
