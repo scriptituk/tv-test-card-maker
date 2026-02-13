@@ -501,14 +501,14 @@ Inheritance: `TCC-early` <— [`Blank`](#user-content-blank-arguments)
 | ---: | :---: | :--- |
 | ***/TC…*** |  | ***test card arguments*** |
 | `/TCbc` | `0.6` | background colour |
-| ***/G…*** | ![graticule](assets/elements/TCC-early-G.png) | ***graticule arguments*** |
+| ***/G…*** | ![graticule](assets/elements/TCC-early-G.svg) | ***graticule arguments*** |
 | `/Gsz` | `TCh 0.129 mul` | grid size: datum for all measurements |
 | `/Glw` | `Gsz 12 div` | grid linewidth |
 | `/Golw` | `0` | grid outline width: 0 for no outline (F/J/W/X pattern) |
 | `/Gps?` | `false` | true to shift grid phase by half a square |
 | `/Glc` | `/white` | grid line colour |
 | `/G?` | `true` | false for no graticule |
-| ***/SB…*** | ![streak box](assets/elements/TCC-early-SB.png) | ***streak box arguments*** |
+| ***/SB…*** | ![streak box](assets/elements/TCC-early-SB.svg) | ***streak box arguments*** |
 | `/SBow` | `2.66 xGsz` | streak box outer width |
 | `/SBoh` | `0.89 xGsz` | streak box outer height |
 | `/SBiw` | `1.75 xGsz` | streak box inner width |
@@ -516,7 +516,7 @@ Inheritance: `TCC-early` <— [`Blank`](#user-content-blank-arguments)
 | `/SBy` | `TCy 2.81 xGsz add` | streak box vertical centre |
 | `/SBc` | `[/black /white]` | streak box colours: [inner outer] |
 | `/SB?` | `true` | false for no streak box |
-| ***/PP…*** | ![pulse pane](assets/elements/TCC-early-PP.png) | ***pulse pane arguments*** |
+| ***/PP…*** | ![pulse pane](assets/elements/TCC-early-PP.svg) | ***pulse pane arguments*** |
 | `/PPw` | `2 xGsz Glw add` | pulse pane width |
 | `/PPh` | `3 xGsz Glw add` | pulse pane height |
 | `/PPx` | `TCx 2 xGsz sub` | pulse pane horizontal centre |
@@ -526,7 +526,7 @@ Inheritance: `TCC-early` <— [`Blank`](#user-content-blank-arguments)
 | `/NPw` | `0.25 us` | needle pulse linewidth |
 | `/NPh` | `1.8 xGsz` | needle pulse line height |
 | `/NPx` | `PPx 0.725 xGsz sub` | needle pulse line horizontal centre |
-| ***/ID…*** | ![ident designation](assets/elements/TCC-early-ID.png) | ***ident designation arguments*** |
+| ***/ID…*** | ![ident designation](assets/elements/TCC-early-ID.svg) | ***ident designation arguments*** |
 | `/IDs` | `(C)` | ident string: empty for no ident |
 | `/IDf` | `/GillSans` | ident font |
 | `/IDc` | `/white` | ident colour |
@@ -540,7 +540,7 @@ Inheritance: `TCC-early` <— [`Blank`](#user-content-blank-arguments)
 | `/Cr` | `1` | caption rectangle graticule rows |
 | `/Cc` | `2` | caption rectangle graticule columns |
 | `/Cch` | `1` | caption rectangle clip height scale factor |
-| ***/CC…*** | ![centre circles](assets/elements/TCC-early-CC.png) | ***centre circles arguments*** |
+| ***/CC…*** | ![centre circles](assets/elements/TCC-early-CC.svg) | ***centre circles arguments*** |
 | `/CCf?` | `true` | false for no fill (empty) |
 | `/CClw` | `0.1 xGsz` | centre circles stroke width |
 | `/CCr` | `2 xGsz` | white circle radius |
@@ -549,7 +549,7 @@ Inheritance: `TCC-early` <— [`Blank`](#user-content-blank-arguments)
 | `/CC?` | `true` | false for no circles |
 | ***/CP…*** |  | ***centre picture arguments*** |
 | `/CPi` | `null` | picture custom image element name, null for no image |
-| ***/SW…*** | ![step wedge](assets/elements/TCC-early-SW.png) | ***step wedge arguments*** |
+| ***/SW…*** | ![step wedge](assets/elements/TCC-early-SW.svg) | ***step wedge arguments*** |
 | `/SWx` | `TCx` | step wedge horizontal centre |
 | `/SWw` | `0.5 xGsz` | step wedge width |
 | `/SWoh` | `2.5 xGsz` | step wedge outer height |
@@ -557,7 +557,7 @@ Inheritance: `TCC-early` <— [`Blank`](#user-content-blank-arguments)
 | `/SWds` | `0` | step wedge dot size 0 for none, diameter or [width height] array |
 | `/SWdc` | `[0.2 1]` | step wedge dot colours: [bottom top] |
 | `/SW?` | `true` | false for no step wedge |
-| ***/FB…*** | ![frequency bars](assets/elements/TCC-early-FB.png) | ***frequency bars arguments*** |
+| ***/FB…*** | ![frequency bars](assets/elements/TCC-early-FB.svg) | ***frequency bars arguments*** |
 | `/FB2?` | `true` | true for 2 bars, false for 1 |
 | `/FBoh` | `PPh` | freq bar outer height |
 | `/FBow` | `SWw` | freq bar outer width |
@@ -570,7 +570,7 @@ Inheritance: `TCC-early` <— [`Blank`](#user-content-blank-arguments)
 | `/FBf` | `[ [1 4 0] [1.5 6 0] [2 8 0] [2.5 10 0] [3 12 0] ]` | frequencies: [MHz nbars antiphase] array |
 | `/FBt` | `null` | custom text element name for freq text template, null for no text |
 | `/FB?` | `true` | false for no frequency bars |
-| ***/CS…*** | ![corner stripes](assets/elements/TCC-early-CS.png) | ***corner stripes arguments*** |
+| ***/CS…*** | ![corner stripes](assets/elements/TCC-early-CS.svg) | ***corner stripes arguments*** |
 | `/CSa` | `1 TCr atan` | corner stripes angle from horizontal |
 | `/CSol` | `3.03 xGsz` | corner stripes outer length from corner |
 | `/CSow` | `Gsz` | corner stripes outer width |
@@ -585,7 +585,7 @@ Inheritance: `TCC-early` <— [`Blank`](#user-content-blank-arguments)
 | `/CBh` | `0` | colour bar height: 0 for no colour bars (fraction of border width) |
 | `/CBc` | `[]` | colour bar colours: [left to right] |
 | `/CBew` | `0` | colour bar end widths (fraction of uniform inner widths) |
-| ***/B…*** | ![border](assets/elements/TCC-early-B.png) | ***border arguments*** |
+| ***/B…*** | ![border](assets/elements/TCC-early-B.svg) | ***border arguments*** |
 | `/Bw` | `0.26 xGsz` | border width |
 | `/Bah` | `0` | border arrow height (fraction of border width, 0 for no arrows) |
 | `/Bac` | `[1 0]` | border arrow colours: [horizontal vertical] |
@@ -599,29 +599,29 @@ Inheritance: `TCC-early` <— [`Blank`](#user-content-blank-arguments)
 Inheritance: `TCC` <— [`TCC-early`](#user-content-tcc-early-arguments) <— [`Blank`](#user-content-blank-arguments)
 | arg | value | description |
 | ---: | :---: | :--- |
-| ***/G…*** | ![graticule](assets/elements/TCC-G.png) | ***graticule arguments*** |
+| ***/G…*** | ![graticule](assets/elements/TCC-G.svg) | ***graticule arguments*** |
 | `/Gsz` | `TCh 0.129 mul` | grid size: datum for all measurements |
-| ***/SB…*** | ![streak box](assets/elements/TCC-SB.png) | ***streak box arguments*** |
+| ***/SB…*** | ![streak box](assets/elements/TCC-SB.svg) | ***streak box arguments*** |
 | `/SBih` | `0.28 xGsz` | streak box inner height |
-| ***/ID…*** | ![ident designation](assets/elements/TCC-ID.png) | ***ident designation arguments*** |
+| ***/ID…*** | ![ident designation](assets/elements/TCC-ID.svg) | ***ident designation arguments*** |
 | `/IDf` | `/TCM-BBC_C-SemiBold` | ident font |
 | `/IDh` | `0.69 xGsz` | ident height |
 | `/IDx` | `TCx 0.02 xGsz sub` | ident horizontal centre |
-| ***/C…*** | ![caption](assets/elements/TCC-C.png) | ***caption arguments*** |
+| ***/C…*** | ![caption](assets/elements/TCC-C.svg) | ***caption arguments*** |
 | `/Ct` | `[/T-1]` | caption custom text element names: empty for no caption |
-| ***/SW…*** | ![step wedge](assets/elements/TCC-SW.png) | ***step wedge arguments*** |
+| ***/SW…*** | ![step wedge](assets/elements/TCC-SW.svg) | ***step wedge arguments*** |
 | `/SWoh` | `2.55 xGsz` | step wedge outer height |
 | `/SWw` | `0.52 xGsz` | step wedge width |
 | ***/NP…*** |  | ***needle pulse line arguments*** |
 | `/NPx` | `PPx 0.7 xGsz sub` | needle pulse line horizontal centre |
-| ***/CC…*** | ![centre circles](assets/elements/TCC-CC.png) | ***centre circles arguments*** |
+| ***/CC…*** | ![centre circles](assets/elements/TCC-CC.svg) | ***centre circles arguments*** |
 | `/CCor` | `CCr CClw 1.9 mul add` | outer circle radius: 0 for none |
-| ***/FB…*** | ![frequency bars](assets/elements/TCC-FB.png) | ***frequency bars arguments*** |
+| ***/FB…*** | ![frequency bars](assets/elements/TCC-FB.svg) | ***frequency bars arguments*** |
 | `/FBh` | `0.53 xGsz` | freq bars height |
 | `/FBp` | `0.02 xGsz` | freq bars padding |
-| ***/CS…*** | ![corner stripes](assets/elements/TCC-CS.png) | ***corner stripes arguments*** |
+| ***/CS…*** | ![corner stripes](assets/elements/TCC-CS.svg) | ***corner stripes arguments*** |
 | `/CSol` | `3.08 xGsz` | corner stripes outer length from corner |
-| ***/B…*** | ![border](assets/elements/TCC-B.png) | ***border arguments*** |
+| ***/B…*** | ![border](assets/elements/TCC-B.svg) | ***border arguments*** |
 | `/Bw` | `0.29 xGsz` | border width |
 | `/Bah` | `0.5` | border arrow height (fraction of border width, 0 for no arrows) |
 </details>
@@ -634,10 +634,10 @@ Inheritance: `TCC-625` <— [`TCC`](#user-content-tcc-arguments) <— [`TCC-earl
 | ---: | :---: | :--- |
 | ***/TC…*** |  | ***test card arguments*** |
 | `/TCbc` | `0.53` | background colour |
-| ***/G…*** | ![graticule](assets/elements/TCC-625-G.png) | ***graticule arguments*** |
+| ***/G…*** | ![graticule](assets/elements/TCC-625-G.svg) | ***graticule arguments*** |
 | `/Gsz` | `TCh 7.79 div` | grid size: datum for all measurements |
 | `/Glw` | `Gsz 12 div` | grid linewidth |
-| ***/SB…*** | ![streak box](assets/elements/TCC-625-SB.png) | ***streak box arguments*** |
+| ***/SB…*** | ![streak box](assets/elements/TCC-625-SB.svg) | ***streak box arguments*** |
 | `/SBy` | `TCy 2.8 xGsz add` | streak box vertical centre |
 | `/SBoh` | `0.89 xGsz` | streak box outer height |
 | `/SBow` | `2.68 xGsz` | streak box outer width |
@@ -646,19 +646,19 @@ Inheritance: `TCC-625` <— [`TCC`](#user-content-tcc-arguments) <— [`TCC-earl
 | `/NPw` | `0.2 us` | needle pulse linewidth |
 | ***/ID…*** |  | ***ident designation arguments*** |
 | `/IDs` | `()` | ident string: empty for no ident |
-| ***/C…*** | ![caption](assets/elements/TCC-625-C.png) | ***caption arguments*** |
+| ***/C…*** | ![caption](assets/elements/TCC-625-C.svg) | ***caption arguments*** |
 | `/Cc` | `7` | caption rectangle graticule columns |
 | `/Ct` | `[/T-3 /T-4]` | caption custom text element names: empty for no caption |
-| ***/CC…*** | ![centre circles](assets/elements/TCC-625-CC.png) | ***centre circles arguments*** |
+| ***/CC…*** | ![centre circles](assets/elements/TCC-625-CC.svg) | ***centre circles arguments*** |
 | `/CClw` | `0.12 xGsz` | centre circles stroke width |
 | `/CCr` | `2.01 xGsz` | white circle radius |
 | `/CCbr` | `CCr CClw add` | black circle radius: 0 for none |
 | `/CCor` | `CCr CClw 1.8 mul add` | outer circle radius: 0 for none |
-| ***/SW…*** | ![step wedge](assets/elements/TCC-625-SW.png) | ***step wedge arguments*** |
+| ***/SW…*** | ![step wedge](assets/elements/TCC-625-SW.svg) | ***step wedge arguments*** |
 | `/SWoh` | `2.67 xGsz` | step wedge outer height |
 | `/SWw` | `0.535 xGsz` | step wedge width |
 | `/SWc` | `[0 0.33 0.5 0.8 1]` | step wedge colours: [bottom to top] |
-| ***/FB…*** | ![frequency bars](assets/elements/TCC-625-FB.png) | ***frequency bars arguments*** |
+| ***/FB…*** | ![frequency bars](assets/elements/TCC-625-FB.svg) | ***frequency bars arguments*** |
 | `/FBow` | `0.6 xGsz` | freq bar outer width |
 | `/FBh` | `0.525 xGsz` | freq bars height |
 | `/FBg` | `0` | freq bars gap size (>0 for D/E) |
@@ -667,10 +667,10 @@ Inheritance: `TCC-625` <— [`TCC`](#user-content-tcc-arguments) <— [`TCC-earl
 | `/FBx` | `TCx 1.27 xGsz sub FBow div2 add` | freq bars horizontal centre |
 | `/FBf` | `[ [1.5 4 0] [2.5 7 0] [3.75 10 0] [4.5 12 0] [5.25 14 0] ]` | frequencies: [MHz nbars antiphase] array |
 | `/FBt` | `/T-1` | custom text element name for freq text template, null for no text |
-| ***/CS…*** | ![corner stripes](assets/elements/TCC-625-CS.png) | ***corner stripes arguments*** |
+| ***/CS…*** | ![corner stripes](assets/elements/TCC-625-CS.svg) | ***corner stripes arguments*** |
 | `/CSol` | `3.11 xGsz` | corner stripes outer length from corner |
 | `/CShf` | `1.3` | corner stripes horizontal fundamental MHz |
-| ***/B…*** | ![border](assets/elements/TCC-625-B.png) | ***border arguments*** |
+| ***/B…*** | ![border](assets/elements/TCC-625-B.svg) | ***border arguments*** |
 | `/Bw` | `0.29 xGsz` | border width |
 | `/Bah` | `1` | border arrow height (fraction of border width, 0 for no arrows) |
 | ***/X…*** |  | ***extra processing arguments*** |
@@ -683,17 +683,17 @@ Inheritance: `TCC-625` <— [`TCC`](#user-content-tcc-arguments) <— [`TCC-earl
 Inheritance: `TCD-early` <— [`TCC-early`](#user-content-tcc-early-arguments) <— [`Blank`](#user-content-blank-arguments)
 | arg | value | description |
 | ---: | :---: | :--- |
-| ***/G…*** | ![graticule](assets/elements/TCD-early-G.png) | ***graticule arguments*** |
+| ***/G…*** | ![graticule](assets/elements/TCD-early-G.svg) | ***graticule arguments*** |
 | `/Gsz` | `TCh 9 div` | grid size: datum for all measurements |
 | `/Glw` | `Gsz 0.1 mul` | grid linewidth |
 | `/Gps?` | `true` | true to shift grid phase by half a square |
-| ***/SB…*** | ![streak box](assets/elements/TCD-early-SB.png) | ***streak box arguments*** |
+| ***/SB…*** | ![streak box](assets/elements/TCD-early-SB.svg) | ***streak box arguments*** |
 | `/SBow` | `3.45 xGsz` | streak box outer width |
 | `/SBoh` | `0.9 xGsz` | streak box outer height |
 | `/SBiw` | `2.2 xGsz` | streak box inner width |
 | `/SBih` | `0.4 xGsz` | streak box inner height |
 | `/SBy` | `TCy 3 xGsz add` | streak box vertical centre |
-| ***/PP…*** | ![pulse pane](assets/elements/TCD-early-PP.png) | ***pulse pane arguments*** |
+| ***/PP…*** | ![pulse pane](assets/elements/TCD-early-PP.svg) | ***pulse pane arguments*** |
 | `/PPw` | `Gsz Glw add` | pulse pane width |
 | `/PPh` | `2.9 xGsz Glw add` | pulse pane height |
 | `/PPx` | `TCx 4 xGsz sub dup Gsz lt { Gsz add } if` | pulse pane horizontal centre |
@@ -701,28 +701,28 @@ Inheritance: `TCD-early` <— [`TCC-early`](#user-content-tcc-early-arguments) <
 | ***/NP…*** |  | ***needle pulse line arguments*** |
 | `/NPw` | `0.3 us` | needle pulse linewidth |
 | `/NPx` | `PPx` | needle pulse line horizontal centre |
-| ***/ID…*** | ![ident designation](assets/elements/TCD-early-ID.png) | ***ident designation arguments*** |
+| ***/ID…*** | ![ident designation](assets/elements/TCD-early-ID.svg) | ***ident designation arguments*** |
 | `/IDs` | `(D)` | ident string: empty for no ident |
 | `/IDf` | `/GillSans` | ident font |
 | `/IDh` | `0.52 xGsz` | ident height |
 | `/IDy` | `TCy 2.62 xGsz sub` | ident vertical centre |
 | `/IDx` | `TCx 0.02 xGsz add` | ident horizontal centre |
-| ***/C…*** | ![caption](assets/elements/TCD-early-C.png) | ***caption arguments*** |
+| ***/C…*** | ![caption](assets/elements/TCD-early-C.svg) | ***caption arguments*** |
 | `/Cy` | `TCy 3.5 xGsz sub` | caption vertical centre |
 | `/Cc` | `7` | caption rectangle graticule columns |
 | `/Cch` | `0.85` | caption rectangle clip height scale factor |
 | `/Ct` | `[/T-1 /T-2]` | caption custom text element names: empty for no caption |
-| ***/CC…*** | ![centre circles](assets/elements/TCD-early-CC.png) | ***centre circles arguments*** |
+| ***/CC…*** | ![centre circles](assets/elements/TCD-early-CC.svg) | ***centre circles arguments*** |
 | `/CClw` | `0.1 xGsz` | centre circles stroke width |
 | `/CCr` | `2.05 xGsz` | white circle radius |
 | `/CCbr` | `CCr CClw add` | black circle radius: 0 for none |
 | `/CCor` | `CCr CClw mul2 add` | outer circle radius: 0 for none |
-| ***/SW…*** | ![step wedge](assets/elements/TCD-early-SW.png) | ***step wedge arguments*** |
+| ***/SW…*** | ![step wedge](assets/elements/TCD-early-SW.svg) | ***step wedge arguments*** |
 | `/SWw` | `0.593 xGsz` | step wedge width |
 | `/SWoh` | `2.965 xGsz` | step wedge outer height |
 | `/SWc` | `[0 0.33 0.55 0.75 0.95]` | step wedge colours: [bottom to top] |
 | `/SWds` | `1.6 xGlw` | step wedge dot size 0 for none, diameter or [width height] array |
-| ***/FB…*** | ![frequency bars](assets/elements/TCD-early-FB.png) | ***frequency bars arguments*** |
+| ***/FB…*** | ![frequency bars](assets/elements/TCD-early-FB.svg) | ***frequency bars arguments*** |
 | `/FBow` | `Gsz Glw sub` | freq bar outer width |
 | `/FBh` | `0.53 xGsz` | freq bars height |
 | `/FBoh` | `1.8 xGsz` | freq bar outer height |
@@ -732,7 +732,7 @@ Inheritance: `TCD-early` <— [`TCC-early`](#user-content-tcc-early-arguments) <
 | `/FBc` | `[ 0.25 0.75 1 ]` | freq bars colours: [min max surround] |
 | `/FBs?` | `true` | true for sinusoidal frequency gratings, false for square |
 | `/FBf` | `[ [1 5 0] [1.5 7 1] [2 9 1] [2.5 12 0] [2.75 13 0] [3 14 0] ]` | frequencies: [MHz nbars antiphase] array |
-| ***/CS…*** | ![corner stripes](assets/elements/TCD-early-CS.png) | ***corner stripes arguments*** |
+| ***/CS…*** | ![corner stripes](assets/elements/TCD-early-CS.svg) | ***corner stripes arguments*** |
 | `/CSa` | `45` | corner stripes angle from horizontal |
 | `/CSol` | `3.31 xGsz` | corner stripes outer length from corner |
 | `/CSow` | `1.05 xGsz` | corner stripes outer width |
@@ -740,7 +740,7 @@ Inheritance: `TCD-early` <— [`TCC-early`](#user-content-tcc-early-arguments) <
 | `/CSep` | `1.2 xGlw` | corner stripes end padding |
 | `/CShf` | `1.0` | corner stripes horizontal fundamental MHz |
 | `/CSlw` | `CShf mhz div2 CSa sin mul` | corner stripes linewidth at normal aspect ratio |
-| ***/B…*** | ![border](assets/elements/TCD-early-B.png) | ***border arguments*** |
+| ***/B…*** | ![border](assets/elements/TCD-early-B.svg) | ***border arguments*** |
 | `/Bw` | `hGsz hGlw sub` | border width |
 | `/Bah` | `1` | border arrow height (fraction of border width, 0 for no arrows) |
 </details>
@@ -751,11 +751,11 @@ Inheritance: `TCD-early` <— [`TCC-early`](#user-content-tcc-early-arguments) <
 Inheritance: `TCD-improved` <— [`TCD-early`](#user-content-tcd-early-arguments) <— [`TCC-early`](#user-content-tcc-early-arguments) <— [`Blank`](#user-content-blank-arguments)
 | arg | value | description |
 | ---: | :---: | :--- |
-| ***/ID…*** | ![ident designation](assets/elements/TCD-improved-ID.png) | ***ident designation arguments*** |
+| ***/ID…*** | ![ident designation](assets/elements/TCD-improved-ID.svg) | ***ident designation arguments*** |
 | `/IDdr` | `0.07 xGsz` | ident adjacent dot radius: 0 for none |
-| ***/C…*** | ![caption](assets/elements/TCD-improved-C.png) | ***caption arguments*** |
+| ***/C…*** | ![caption](assets/elements/TCD-improved-C.svg) | ***caption arguments*** |
 | `/Ct` | `[/T-1 /T-2]` | caption custom text element names: empty for no caption |
-| ***/FB…*** | ![frequency bars](assets/elements/TCD-improved-FB.png) | ***frequency bars arguments*** |
+| ***/FB…*** | ![frequency bars](assets/elements/TCD-improved-FB.svg) | ***frequency bars arguments*** |
 | `/FBc` | `[ 0.15 0.85 1 ]` | freq bars colours: [min max surround] |
 </details>
 
@@ -767,20 +767,20 @@ Inheritance: `TCE` <— [`TCD-early`](#user-content-tcd-early-arguments) <— [`
 | ---: | :---: | :--- |
 | ***/TC…*** |  | ***test card arguments*** |
 | `/TCbc` | `0.5` | background colour |
-| ***/G…*** | ![graticule](assets/elements/TCE-G.png) | ***graticule arguments*** |
+| ***/G…*** | ![graticule](assets/elements/TCE-G.svg) | ***graticule arguments*** |
 | `/Glw` | `7 lines` | grid linewidth |
 | ***/NP…*** |  | ***needle pulse line arguments*** |
 | `/NPw` | `0.2 us` | needle pulse linewidth |
-| ***/ID…*** | ![ident designation](assets/elements/TCE-ID.png) | ***ident designation arguments*** |
+| ***/ID…*** | ![ident designation](assets/elements/TCE-ID.svg) | ***ident designation arguments*** |
 | `/IDs` | `(E)` | ident string: empty for no ident |
 | `/IDy` | `TCy 2.6 xGsz sub` | ident vertical centre |
-| ***/SW…*** | ![step wedge](assets/elements/TCE-SW.png) | ***step wedge arguments*** |
+| ***/SW…*** | ![step wedge](assets/elements/TCE-SW.svg) | ***step wedge arguments*** |
 | `/SWds` | `1.3 xGlw` | step wedge dot size 0 for none, diameter or [width height] array |
-| ***/FB…*** | ![frequency bars](assets/elements/TCE-FB.png) | ***frequency bars arguments*** |
+| ***/FB…*** | ![frequency bars](assets/elements/TCE-FB.svg) | ***frequency bars arguments*** |
 | `/FBh` | `0.55 xGsz` | freq bars height |
 | `/FBc` | `[ 0.25 0.75 0.75 ]` | freq bars colours: [min max surround] |
 | `/FBf` | `[ [1.5 5 0] [2.5 9 0] [3.5 11 0] [4 13 0] [4.5 15 0] [5.25 17 0] ]` | frequencies: [MHz nbars antiphase] array |
-| ***/CS…*** | ![corner stripes](assets/elements/TCE-CS.png) | ***corner stripes arguments*** |
+| ***/CS…*** | ![corner stripes](assets/elements/TCE-CS.svg) | ***corner stripes arguments*** |
 | `/CShf` | `1.5` | corner stripes horizontal fundamental MHz |
 </details>
 
@@ -790,19 +790,19 @@ Inheritance: `TCE` <— [`TCD-early`](#user-content-tcd-early-arguments) <— [`
 Inheritance: `TCF-early` <— [`TCE`](#user-content-tce-arguments) <— [`TCD-early`](#user-content-tcd-early-arguments) <— [`TCC-early`](#user-content-tcc-early-arguments) <— [`Blank`](#user-content-blank-arguments)
 | arg | value | description |
 | ---: | :---: | :--- |
-| ***/G…*** | ![graticule](assets/elements/TCF-early-G.png) | ***graticule arguments*** |
+| ***/G…*** | ![graticule](assets/elements/TCF-early-G.svg) | ***graticule arguments*** |
 | `/Glw` | `8 lines` | grid linewidth |
 | `/Golw` | `0.42 xGlw` | grid outline width: 0 for no outline (F/J/W/X pattern) |
-| ***/CP…*** | ![centre picture](assets/elements/TCF-early-CP.png) | ***centre picture arguments*** |
+| ***/CP…*** | ![centre picture](assets/elements/TCF-early-CP.svg) | ***centre picture arguments*** |
 | `/CPi` | `/I-1` | picture custom image element name, null for no image |
-| ***/SB…*** | ![streak box](assets/elements/TCF-early-SB.png) | ***streak box arguments*** |
+| ***/SB…*** | ![streak box](assets/elements/TCF-early-SB.svg) | ***streak box arguments*** |
 | `/SBow` | `3.45 xGsz` | streak box outer width |
 | `/SBoh` | `0.9 xGsz` | streak box outer height |
 | `/SBiw` | `2.1 xGsz` | streak box inner width |
 | `/SBih` | `0.45 xGsz` | streak box inner height |
-| ***/PP…*** | ![pulse pane](assets/elements/TCF-early-PP.png) | ***pulse pane arguments*** |
+| ***/PP…*** | ![pulse pane](assets/elements/TCF-early-PP.svg) | ***pulse pane arguments*** |
 | `/PP?` | `false` | false for no pulse panes or needle pulse lines |
-| ***/ID…*** | ![ident designation](assets/elements/TCF-early-ID.png) | ***ident designation arguments*** |
+| ***/ID…*** | ![ident designation](assets/elements/TCF-early-ID.svg) | ***ident designation arguments*** |
 | `/IDs` | `(F)` | ident string: empty for no ident |
 | `/IDf` | `/Helvetica-Narrow-Bold` | ident font |
 | `/IDh` | `0.38 xGsz` | ident height |
@@ -811,19 +811,19 @@ Inheritance: `TCF-early` <— [`TCE`](#user-content-tce-arguments) <— [`TCD-ea
 | `/IDdr` | `0` | ident adjacent dot radius: 0 for none |
 | ***/C…*** |  | ***caption arguments*** |
 | `/Ct` | `[]` | caption custom text element names: empty for no caption |
-| ***/CC…*** | ![centre circles](assets/elements/TCF-early-CC.png) | ***centre circles arguments*** |
+| ***/CC…*** | ![centre circles](assets/elements/TCF-early-CC.svg) | ***centre circles arguments*** |
 | `/CCf?` | `false` | false for no fill (empty) |
 | `/CClw` | `0.9 xGlw` | centre circles stroke width |
 | `/CCr` | `2.5 xGsz 0.8 xGlw sub` | white circle radius |
 | `/CCbr` | `0` | black circle radius: 0 for none |
 | `/CCor` | `0` | outer circle radius: 0 for none |
-| ***/SW…*** | ![step wedge](assets/elements/TCF-early-SW.png) | ***step wedge arguments*** |
+| ***/SW…*** | ![step wedge](assets/elements/TCF-early-SW.svg) | ***step wedge arguments*** |
 | `/SWw` | `Gsz Glw sub` | step wedge width |
 | `/SWx` | `lGx 2 xGsz add TCx 3 xGsz sub min` | step wedge horizontal centre |
 | `/SWc` | `[0 0.2 0.3 0.4 0.6 0.85]` | step wedge colours: [bottom to top] |
 | `/SWoh` | `4 xGsz Glw sub` | step wedge outer height |
 | `/SWds` | `1.2 xGlw` | step wedge dot size 0 for none, diameter or [width height] array |
-| ***/FB…*** | ![frequency bars](assets/elements/TCF-early-FB.png) | ***frequency bars arguments*** |
+| ***/FB…*** | ![frequency bars](assets/elements/TCF-early-FB.svg) | ***frequency bars arguments*** |
 | `/FB2?` | `false` | true for 2 bars, false for 1 |
 | `/FBow` | `SWw` | freq bar outer width |
 | `/FBh` | `SWoh SWc length div` | freq bars height |
@@ -835,13 +835,13 @@ Inheritance: `TCF-early` <— [`TCE`](#user-content-tce-arguments) <— [`TCD-ea
 | `/FBs?` | `false` | true for sinusoidal frequency gratings, false for square |
 | `/FBoh` | `FBh FBf length mul` | freq bar outer height |
 | `/FBt` | `/T-1` | custom text element name for freq text template, null for no text |
-| ***/CS…*** | ![corner stripes](assets/elements/TCF-early-CS.png) | ***corner stripes arguments*** |
+| ***/CS…*** | ![corner stripes](assets/elements/TCF-early-CS.svg) | ***corner stripes arguments*** |
 | `/CSol` | `2.73 xGsz` | corner stripes outer length from corner |
 | `/CSow` | `1.1 xGsz` | corner stripes outer width |
 | `/CSep` | `Glw` | corner stripes end padding |
 | ***/CB…*** |  | ***colour bar arguments*** |
 | `/CBh` | `0` | colour bar height: 0 for no colour bars (fraction of border width) |
-| ***/B…*** | ![border](assets/elements/TCF-early-B.png) | ***border arguments*** |
+| ***/B…*** | ![border](assets/elements/TCF-early-B.svg) | ***border arguments*** |
 | `/Bac` | `[1 1]` | border arrow colours: [horizontal vertical] |
 | `/Bcc` | `[ [ 250 19 30 ] [ 27 85 157 ] [ 40 107 47 ] [ 254 203 33 ] [ 17 133 222 ] ]` | castellation colours: empty or [left-red left-blue bottom-green right-yellow top-cyan] |
 </details>
@@ -852,23 +852,23 @@ Inheritance: `TCF-early` <— [`TCE`](#user-content-tce-arguments) <— [`TCD-ea
 Inheritance: `TCF-optical` <— [`TCF-early`](#user-content-tcf-early-arguments) <— [`TCE`](#user-content-tce-arguments) <— [`TCD-early`](#user-content-tcd-early-arguments) <— [`TCC-early`](#user-content-tcc-early-arguments) <— [`Blank`](#user-content-blank-arguments)
 | arg | value | description |
 | ---: | :---: | :--- |
-| ***/G…*** | ![graticule](assets/elements/TCF-optical-G.png) | ***graticule arguments*** |
+| ***/G…*** | ![graticule](assets/elements/TCF-optical-G.svg) | ***graticule arguments*** |
 | `/Glw` | `7 lines` | grid linewidth |
 | `/Golw` | `0.5 xGlw` | grid outline width: 0 for no outline (F/J/W/X pattern) |
-| ***/ID…*** | ![ident designation](assets/elements/TCF-optical-ID.png) | ***ident designation arguments*** |
+| ***/ID…*** | ![ident designation](assets/elements/TCF-optical-ID.svg) | ***ident designation arguments*** |
 | `/IDy` | `TCy 2.7 xGsz sub` | ident vertical centre |
-| ***/CB…*** | ![colour bar](assets/elements/TCF-optical-CB.png) | ***colour bar arguments*** |
+| ***/CB…*** | ![colour bar](assets/elements/TCF-optical-CB.svg) | ***colour bar arguments*** |
 | `/CBh` | `0.75` | colour bar height: 0 for no colour bars (fraction of border width) |
 | `/CBew` | `0.78` | colour bar end widths (fraction of uniform inner widths) |
 | `/CBc` | `[/white /yellow /cyan /green /magenta /red /blue /black]` | colour bar colours: [left to right] |
-| ***/C…*** | ![caption](assets/elements/TCF-optical-C.png) | ***caption arguments*** |
+| ***/C…*** | ![caption](assets/elements/TCF-optical-C.svg) | ***caption arguments*** |
 | `/Ct` | `[/T-1 /T-2]` | caption custom text element names: empty for no caption |
-| ***/SB…*** | ![streak box](assets/elements/TCF-optical-SB.png) | ***streak box arguments*** |
+| ***/SB…*** | ![streak box](assets/elements/TCF-optical-SB.svg) | ***streak box arguments*** |
 | `/SBih` | `0.4 xGsz` | streak box inner height |
 | `/SBiw` | `2.23 xGsz` | streak box inner width |
-| ***/CC…*** | ![centre circles](assets/elements/TCF-optical-CC.png) | ***centre circles arguments*** |
+| ***/CC…*** | ![centre circles](assets/elements/TCF-optical-CC.svg) | ***centre circles arguments*** |
 | `/CCr` | `2.5 xGsz 0.88 xGlw sub` | white circle radius |
-| ***/FB…*** | ![frequency bars](assets/elements/TCF-optical-FB.png) | ***frequency bars arguments*** |
+| ***/FB…*** | ![frequency bars](assets/elements/TCF-optical-FB.svg) | ***frequency bars arguments*** |
 | `/FBt` | `null` | custom text element name for freq text template, null for no text |
 </details>
 
@@ -878,42 +878,42 @@ Inheritance: `TCF-optical` <— [`TCF-early`](#user-content-tcf-early-arguments)
 Inheritance: `TCF-electronic` <— [`TCF-optical`](#user-content-tcf-optical-arguments) <— [`TCF-early`](#user-content-tcf-early-arguments) <— [`TCE`](#user-content-tce-arguments) <— [`TCD-early`](#user-content-tcd-early-arguments) <— [`TCC-early`](#user-content-tcc-early-arguments) <— [`Blank`](#user-content-blank-arguments)
 | arg | value | description |
 | ---: | :---: | :--- |
-| ***/G…*** | ![graticule](assets/elements/TCF-electronic-G.png) | ***graticule arguments*** |
+| ***/G…*** | ![graticule](assets/elements/TCF-electronic-G.svg) | ***graticule arguments*** |
 | `/Glw` | `5 lines` | grid linewidth |
 | `/Golw` | `0.65 xGlw` | grid outline width: 0 for no outline (F/J/W/X pattern) |
-| ***/CC…*** | ![centre circles](assets/elements/TCF-electronic-CC.png) | ***centre circles arguments*** |
+| ***/CC…*** | ![centre circles](assets/elements/TCF-electronic-CC.svg) | ***centre circles arguments*** |
 | `/CCr` | `2.5 xGsz 1.15 xGlw sub` | white circle radius |
 | `/CClw` | `1.33 xGlw` | centre circles stroke width |
-| ***/ID…*** | ![ident designation](assets/elements/TCF-electronic-ID.png) | ***ident designation arguments*** |
+| ***/ID…*** | ![ident designation](assets/elements/TCF-electronic-ID.svg) | ***ident designation arguments*** |
 | `/IDf` | `/Sanchez-Regular` | ident font |
 | `/IDh` | `0.39 xGsz` | ident height |
 | `/IDy` | `TCy 2.71 xGsz sub` | ident vertical centre |
-| ***/C…*** | ![caption](assets/elements/TCF-electronic-C.png) | ***caption arguments*** |
+| ***/C…*** | ![caption](assets/elements/TCF-electronic-C.svg) | ***caption arguments*** |
 | `/Ct` | `[/T-2 /T-3]` | caption custom text element names: empty for no caption |
 | `/Cch` | `1` | caption rectangle clip height scale factor |
-| ***/SB…*** | ![streak box](assets/elements/TCF-electronic-SB.png) | ***streak box arguments*** |
+| ***/SB…*** | ![streak box](assets/elements/TCF-electronic-SB.svg) | ***streak box arguments*** |
 | `/SBoh` | `0.87 xGsz` | streak box outer height |
 | `/SBih` | `0.39 xGsz` | streak box inner height |
 | `/SBiw` | `2.2 xGsz` | streak box inner width |
-| ***/CB…*** | ![colour bar](assets/elements/TCF-electronic-CB.png) | ***colour bar arguments*** |
+| ***/CB…*** | ![colour bar](assets/elements/TCF-electronic-CB.svg) | ***colour bar arguments*** |
 | `/CBh` | `1` | colour bar height: 0 for no colour bars (fraction of border width) |
 | `/CBew` | `0.5` | colour bar end widths (fraction of uniform inner widths) |
 | `/CBc` | `[/white /yellow /cyan /green /magenta /red /blue /black /white]` | colour bar colours: [left to right] |
-| ***/SW…*** | ![step wedge](assets/elements/TCF-electronic-SW.png) | ***step wedge arguments*** |
+| ***/SW…*** | ![step wedge](assets/elements/TCF-electronic-SW.svg) | ***step wedge arguments*** |
 | `/SWc` | `[0 47 93 139 183 232]` | step wedge colours: [bottom to top] |
 | `/SWoh` | `4 xGsz Golw 3 mul sub` | step wedge outer height |
 | `/SWw` | `Gsz hGlw sub Golw 1.5 mul sub` | step wedge width |
 | `/SWx` | `lGx 2 xGsz add TCx 3 xGsz sub min hGsz add hGlw sub SWw div2 sub` | step wedge horizontal centre |
 | `/SWds` | `[ 1.5 xGlw dup TCr div ]` | step wedge dot size 0 for none, diameter or [width height] array |
-| ***/FB…*** | ![frequency bars](assets/elements/TCF-electronic-FB.png) | ***frequency bars arguments*** |
+| ***/FB…*** | ![frequency bars](assets/elements/TCF-electronic-FB.svg) | ***frequency bars arguments*** |
 | `/FBf` | `[ [1.5 6 0] [2.5 10 0] [3.5 13 1] [4 15 0] [4.5 17 0] [5.25 20 0] ]` | frequencies: [MHz nbars antiphase] array |
 | `/FBs?` | `true` | true for sinusoidal frequency gratings, false for square |
 | `/FBt` | `null` | custom text element name for freq text template, null for no text |
-| ***/CS…*** | ![corner stripes](assets/elements/TCF-electronic-CS.png) | ***corner stripes arguments*** |
+| ***/CS…*** | ![corner stripes](assets/elements/TCF-electronic-CS.svg) | ***corner stripes arguments*** |
 | `/CSol` | `2.7 xGsz` | corner stripes outer length from corner |
 | `/CSow` | `1.05 xGsz` | corner stripes outer width |
 | `/CSep` | `1.5 xGlw` | corner stripes end padding |
-| ***/B…*** | ![border](assets/elements/TCF-electronic-B.png) | ***border arguments*** |
+| ***/B…*** | ![border](assets/elements/TCF-electronic-B.svg) | ***border arguments*** |
 | `/Bcc` | `[ [235 70 70] [70 70 235] [70 253 70] [253 253 70] [70 253 253] ]` | castellation colours: empty or [left-red left-blue bottom-green right-yellow top-cyan] |
 </details>
 
@@ -960,14 +960,14 @@ see [shape arguments](#user-content-shape-arguments-and-notes), [image arguments
 
 | arg | value | description |
 | :---: | :---: | :--- |
-| ***T12*** | ![T12](assets/ce/T12.png) | ***dark blue TCM title*** |
+| ***T12*** | ![T12](assets/ce/T12.svg) | ***dark blue TCM title*** |
 | `/T12s` | `(Test Card Maker)` | text string |
 | `/T12f` | `/Times,BoldItalic` | font name |
 | `/T12c` | `/MidnightBlue` | colour |
 | `/T12h` | `Gsz 3 div` | height |
 | `/T12y` | `TCh 0.8 xGsz sub` | horizontal centre |
 | `/T12z` | `30` | z-index |
-| ***S12*** | ![S12](assets/ce/S12.png) | ***sky blue filled ellipse with dark green stroke*** |
+| ***S12*** | ![S12](assets/ce/S12.svg) | ***sky blue filled ellipse with dark green stroke*** |
 | `/S12s` | `/Ellipse` | shape |
 | `/S12c` | `/LightSkyBlue` | fill colour |
 | `/S12k` | `/ForestGreen` | stroke colour |
@@ -977,7 +977,7 @@ see [shape arguments](#user-content-shape-arguments-and-notes), [image arguments
 | `/S12t` | `2 lines` | stroke thickness |
 | `/S12d` | `[5 xGlw Glw]` | stroke dash |
 | `/S12z` | `30` | z-index |
-| ***S20*** | ![S20](assets/ce/S20.png) | ***green filled Reuleaux triangles*** |
+| ***S20*** | ![S20](assets/ce/S20.svg) | ***green filled Reuleaux triangles*** |
 | `/S20s` | `/Polygon` | shape |
 | `/S20x` | `Gsz` | horizontal centre |
 | `/S20y` | `Gsz` | vertical centre |
@@ -990,14 +990,14 @@ see [shape arguments](#user-content-shape-arguments-and-notes), [image arguments
 | `/S20k` | `null` | no stroke |
 | `/S20q` | `/VB` | mirror in top quadrants |
 | `/S20z` | `30` | z-index |
-| ***S15*** | ![S15](assets/ce/S15.png) | ***yellow stroked circle*** |
+| ***S15*** | ![S15](assets/ce/S15.svg) | ***yellow stroked circle*** |
 | `/S15s` | `/Circle` | shape |
 | `/S15k` | `/Yellow` | stroke colour |
 | `/S15c` | `null` | no fill |
 | `/S15h` | `6 xGsz` | diameter |
 | `/S15t` | `CClw mul2` | stroke thickness |
 | `/S15z` | `10` | z-index |
-| ***S14*** | ![S14](assets/ce/S14.png) | ***red stroked polygon*** |
+| ***S14*** | ![S14](assets/ce/S14.svg) | ***red stroked polygon*** |
 | `/S14s` | `/Polygon` | shape |
 | `/S14n` | `11` | number of sides |
 | `/S14k` | `/red` | stroke colour |
@@ -1008,18 +1008,18 @@ see [shape arguments](#user-content-shape-arguments-and-notes), [image arguments
 | `/S14t` | `1 lines` | stroke thickness |
 | `/S14z` | `20` | z-index |
 | `/S14` | `/S15 merge` | merge in shape S15 args |
-| ***I11*** | ![I11](assets/ce/I11.png) | ***PNG8: 1965 curved text*** |
+| ***I11*** | ![I11](assets/ce/I11.svg) | ***PNG8: 1965 curved text*** |
 | `/I11f` | `(CE/1965.png)` | image filename |
 | `/I11y` | `TCy 1.2 xGsz add` | vertical centre |
 | `/I11w` | `5.3 xGsz` | width |
 | `/I11h` | `-1` | height |
 | `/I11z` | `10` | z-index |
-| ***I1*** | ![I1](assets/ce/I1.png) | ***PNG24: The Magic Roundabout*** |
+| ***I1*** | ![I1](assets/ce/I1.svg) | ***PNG24: The Magic Roundabout*** |
 | `/I1f` | `(CE/Magic-Roundabout.png)` | image filename |
 | `/I1h` | `CCr mul2 CClw sub` | image diameter |
 | `/I1w` | `0` | circle |
 | `/I1z` | `10` | z-index |
-| ***I2*** | ![I2](assets/ce/I2.png) | ***EPS: Art Nouveau by Dan X. Solo*** |
+| ***I2*** | ![I2](assets/ce/I2.svg) | ***EPS: Art Nouveau by Dan X. Solo*** |
 | `/I2f` | `(CE/ArtNouveauCornerOrnament-DXSolo.eps)` | image filename |
 | `/I2x` | `3.25 xGsz` | horizontal centre |
 | `/I2y` | `6.75 xGsz` | vertical centre |
@@ -1027,7 +1027,7 @@ see [shape arguments](#user-content-shape-arguments-and-notes), [image arguments
 | `/I2h` | `I2w` | height |
 | `/I2q` | `/NHVB` | mirror in other quadrants |
 | `/I2z` | `10` | z-index |
-| ***T10*** | ![T10](assets/ce/T10.png) | ***blue block-inverted CE caption with beige background*** |
+| ***T10*** | ![T10](assets/ce/T10.svg) | ***blue block-inverted CE caption with beige background*** |
 | `/T10s` | `(Custom Elements)` | text string |
 | `/T10f` | `/Helvetica-Bold` | font name |
 | `/T10h` | `0.4 xGsz` | height |
@@ -1043,49 +1043,49 @@ see [shape arguments](#user-content-shape-arguments-and-notes), [image arguments
 | `/T10v` | `0.5` | background bleed |
 | `/T10d` | `T10r` | background corner radius |
 | `/T10z` | `10` | z-index |
-| ***I4*** | ![I4](assets/ce/I4.png) | ***PNG8: Florence*** |
+| ***I4*** | ![I4](assets/ce/I4.svg) | ***PNG8: Florence*** |
 | `/I4f` | `(CE/Florence.png)` | image filename |
 | `/I4x` | `2.9 xGsz` | horizontal centre |
 | `/I4y` | `1.4 xGsz` | vertical centre |
 | `/I4h` | `2.4 xGsz` | height |
 | `/I4w` | `-1 xGsz` | width auto |
 | `/I4z` | `31` | z-index |
-| ***I5*** | ![I5](assets/ce/I5.png) | ***PNG8: Dougal*** |
+| ***I5*** | ![I5](assets/ce/I5.svg) | ***PNG8: Dougal*** |
 | `/I5f` | `(CE/Dougal.png)` | image filename |
 | `/I5x` | `1.8 xGsz` | horizontal centre |
 | `/I5y` | `0.95 xGsz` | vertical centre |
 | `/I5h` | `1.3 xGsz` | height |
 | `/I5w` | `-1 xGsz` | width auto |
 | `/I5z` | `30` | z-index |
-| ***I6*** | ![I6](assets/ce/I6.png) | ***PNG8: Dylan*** |
+| ***I6*** | ![I6](assets/ce/I6.svg) | ***PNG8: Dylan*** |
 | `/I6f` | `(CE/Dylan.png)` | image filename |
 | `/I6x` | `1.2 xGsz` | horizontal centre |
 | `/I6y` | `1.5 xGsz` | vertical centre |
 | `/I6h` | `2.7 xGsz` | height |
 | `/I6w` | `-1` | width auto |
 | `/I6z` | `31` | z-index |
-| ***I7*** | ![I7](assets/ce/I7.png) | ***PNG8: Ermintrude*** |
+| ***I7*** | ![I7](assets/ce/I7.svg) | ***PNG8: Ermintrude*** |
 | `/I7f` | `(CE/Ermintrude.png)` | image filename |
 | `/I7x` | `TCw 1.9 xGsz sub` | horizontal centre |
 | `/I7y` | `1.4 xGsz` | vertical centre |
 | `/I7w` | `3.8 xGsz` | width |
 | `/I7h` | `-1` | height auto |
 | `/I7z` | `29` | z-index |
-| ***I8*** | ![I8](assets/ce/I8.png) | ***PNG8: Brian*** |
+| ***I8*** | ![I8](assets/ce/I8.svg) | ***PNG8: Brian*** |
 | `/I8f` | `(CE/Brian.png)` | image filename |
 | `/I8x` | `TCw 1.4 xGsz sub` | horizontal centre |
 | `/I8y` | `1.1 xGsz` | vertical centre |
 | `/I8h` | `1.6 xGsz` | height |
 | `/I8w` | `-1` | width auto |
 | `/I8z` | `31` | z-index |
-| ***I9*** | ![I9](assets/ce/I9.png) | ***PNG8: Zebedee*** |
+| ***I9*** | ![I9](assets/ce/I9.svg) | ***PNG8: Zebedee*** |
 | `/I9f` | `(CE/Zebedee.png)` | image filename |
 | `/I9x` | `TCw 1.3 xGsz sub` | horizontal centre |
 | `/I9y` | `1.9 xGsz` | vertical centre |
 | `/I9h` | `1.9 xGsz` | height |
 | `/I9w` | `-1 xGsz` | width auto |
 | `/I9z` | `30` | z-index |
-| ***S3*** | ![S3](assets/ce/S3.png) | ***dark grey stroked rectangles*** |
+| ***S3*** | ![S3](assets/ce/S3.svg) | ***dark grey stroked rectangles*** |
 | `/S3s` | `/Rectangle` | shape |
 | `/S3k` | `/DarkGrey` | stroke colour |
 | `/S3c` | `null` | no fill |
@@ -1096,7 +1096,7 @@ see [shape arguments](#user-content-shape-arguments-and-notes), [image arguments
 | `/S3j` | `/R` | rounded corners |
 | `/S3q` | `/NH` | mirror horizontally |
 | `/S3z` | `20` | z-index |
-| ***S5-6*** | ![S5-6](assets/ce/S5-6.png) | ***red & cyan filled triangles*** |
+| ***S5-6*** | ![S5-6](assets/ce/S5-6.svg) | ***red & cyan filled triangles*** |
 | `/S5s` | `/Polygon` | shape |
 | `/S5n` | `3` | number of sides |
 | `/S5a` | `90` | rotate anticlockwise |
@@ -1116,7 +1116,7 @@ see [shape arguments](#user-content-shape-arguments-and-notes), [image arguments
 | `/S6y` | `S5x` | vertical centre |
 | `/S6q` | `/NV` | mirror vertically |
 | `/S6` | `/S5 merge` | merge in shape S5 args |
-| ***S1*** | ![S1](assets/ce/S1.png) | ***red stroked lines*** |
+| ***S1*** | ![S1](assets/ce/S1.svg) | ***red stroked lines*** |
 | `/S1s` | `/Line` | shape |
 | `/S1k` | `/Red` | stroke colour |
 | `/S1c` | `null` | no fill |
@@ -1126,7 +1126,7 @@ see [shape arguments](#user-content-shape-arguments-and-notes), [image arguments
 | `/S1t` | `Glw` | stroke thickness |
 | `/S1q` | `/NH` | mirror horizontally |
 | `/S1z` | `10` | z-index |
-| ***S10*** | ![S10](assets/ce/S10.png) | ***chocolate brown stroked rectangle*** |
+| ***S10*** | ![S10](assets/ce/S10.svg) | ***chocolate brown stroked rectangle*** |
 | `/S10s` | `/Rectangle` | shape |
 | `/S10k` | `/Chocolate` | stroke colour |
 | `/S10c` | `null` | no fill |
@@ -1134,7 +1134,7 @@ see [shape arguments](#user-content-shape-arguments-and-notes), [image arguments
 | `/S10w` | `11 xGsz` | width |
 | `/S10t` | `Glw` | stroke thickness |
 | `/S10z` | `20` | z-index |
-| ***T101-580*** | ![T101-580](assets/ce/T101-580.png) | ***border decoration*** |
+| ***T101-580*** | ![T101-580](assets/ce/T101-580.svg) | ***border decoration*** |
 | `/T#f` | `/ZapfDingbats` | font name |
 | `/T#s` | a character from ``(^_`acdef)`` | random dingbat from 4 fleurons, 3 snowflakes, 1 asterisk |
 | `/T#h` | `0.1 xGsz`to `0.22 xGsz` | random height |
