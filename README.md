@@ -2149,7 +2149,8 @@ else
 fi
 ffmpeg -y -v warning -loop 1 -i myTC.png -i myTC.wav \
     -vf "
-        fps=$r, $pad, zscale=s=$s:f=spline36,
+        format=yuv420p, fps=$r,
+        $pad, zscale=s=$s:f=spline36,
         colorspace=all=$cs:iall=bt709:itrc=srgb:irange=tv:range=tv,
         tinterlace=interleave_top:flags=low_pass_filter
     " \
@@ -2158,7 +2159,8 @@ ffmpeg -y -v warning -loop 1 -i myTC.png -i myTC.wav \
     -video_format $vf -aspect 4:3 -shortest myTC.vob
 ```
 
-This makes an anamorphic 4:3 interlaced BT.601 DVD VOB of an image (or video) and audio.
+This makes an anamorphic 4:3 interlaced BT.601 DVD VOB of an image and audio.
+For a video with audio use `ffmpeg -y -v warning -i myTC.mp4` (for a MP4).
 Options:
 
 - `vf` selects PAL or NTSC standard.
@@ -2170,30 +2172,31 @@ Options:
 
 #### VOB explanation
 
-- `vf`,`active`,`cs`,`cp`,`ct`,`s` shell variables for video format and overscan values
+- `vf`,`active`,`cs`,`cp`,`ct`,`r`,`s` shell variables for video format and overscan values
 - `-loop` ([image2 demuxer](https://www.ffmpeg.org/ffmpeg-formats.html#image2-1)) loops the image frame
 - `-vf` video filters:
-  - [`fps`](https://www.ffmpeg.org/ffmpeg-filters.html#fps) set the frame rate to twice required rate
-    (or use [`framerate`](https://www.ffmpeg.org/ffmpeg-filters.html#framerate) to interpolate new frames when video input rate is lower than twice output rate)
-  - [`pad`](https://www.ffmpeg.org/ffmpeg-filters.html#pad) pads the width for overscan if selected
+  - [`format`](https://www.ffmpeg.org/ffmpeg-filters.html#format) establishes pixel format for filter chain
+  - [`fps`](https://www.ffmpeg.org/ffmpeg-filters.html#fps) set the progressive frame rate to twice the interlaced field rate
+    (or use [`framerate`](https://www.ffmpeg.org/ffmpeg-filters.html#framerate) to interpolate new frames when input frame rate is less than twice field rate)
+  - [`pad`](https://www.ffmpeg.org/ffmpeg-filters.html#pad) pads the width for overscan, if selected
   - [`zscale`](https://www.ffmpeg.org/ffmpeg-filters.html#zscale) scale input for correct interlacing size with no colour conversion
   - [`colorspace`](https://www.ffmpeg.org/ffmpeg-filters.html#colorspace) converts the colour primaries, white point and gamma from bt709 (sRGB) to bt601 for the target
-    (`irange=tv` because `colorspace` doesn’t support RGB input so inserts a limited range YUV conversion[^32])
+    (`irange=tv` suppresses `colorspace` warning for image input[^33])
   - [`tinterlace`](https://www.ffmpeg.org/ffmpeg-filters.html#tinterlace) makes the video interlaced, top field first, with vertical low-pass filtering (reduces interline twitter and Moiré artefacts)
 - `-target` ([main options](https://www.ffmpeg.org/ffmpeg.html#Main-options)) sets video and audio format options for the target output, `pal-dvd` or `ntsc-dvd`
 - `-flags` ([generic codec options](https://www.ffmpeg.org/ffmpeg-codecs.html#Codec-Options)) sets interlace encoding flags (discrete cosine transform (DCT) and motion estimation)
 - `-color_primaries`, `-colorspace`, `-color_trc` ([generic codec options](https://www.ffmpeg.org/ffmpeg-codecs.html#Codec-Options)) sets colour encoding metadata
 - `-video_format` ([mpeg2 codec options](https://www.ffmpeg.org/ffmpeg-codecs.html#mpeg2)) format written into the sequence display extension
 - `-aspect` ([video options](https://www.ffmpeg.org/ffmpeg.html#Video-Options)) sets display aspect ratio (DAR)
-- `-shortest` ([advanced options](https://www.ffmpeg.org/ffmpeg.html#Advanced-options)) limits duration to the shortest output stream (audio here)
+- `-shortest` ([advanced options](https://www.ffmpeg.org/ffmpeg.html#Advanced-options)) limits duration to the shortest stream (audio here); use `-t time` to set a time duration instead
 
 #### 720 vs 704 or 702
 
 There’s a bewildering amount of discussion about DVD aspect ratios and the 720 vs 704/702 debate.
-My understanding is square pixel digital sources like TCM are displayed in full on modern digital displays but cropped at the sides on a TV CRT due to analog overscan[^33].
-So the trick is to pad wider then scale back[^34] when making a DVD for analog playback.
+My understanding is square pixel digital sources like TCM are displayed in full on modern digital displays but cropped at the sides on a TV CRT due to analog overscan[^34].
+So the trick is to pad wider then scale back[^33] when making a DVD for analog playback.
 
-Digitising analog TV active line time at 13.5 MHz for BT.601 results in 702 pixels per line for PAL and 713.5 for NTSC[^33].
+Digitising analog TV active line time at 13.5 MHz for BT.601 results in 702 pixels per line for PAL and 713.5 for NTSC[^34].
 DVD encodes MPEG-2 video which uses 16x16 macroblocks[^35] so the size needs to be divisible by 16.
 The nearest multiple of 16 to 702 is 704 (rounding up) and to 713.5 is also 704 (rounding down).
 Hence 704 is a fair compromise, also a DVD standard, but 720 accommodates both formats within spec.
@@ -2211,7 +2214,7 @@ For chrominance, PAL and NTSC convey both colour difference signals simultaneous
 (PAL with alternating phase, NTSC fixed),
 but SECAM interlaces alternating difference signals without phasing.
 
-So SECAM-only TVs without SCART need a SECAM RF modulator for colour, which is difficult.
+So SECAM-only TVs without component video SCART need a SECAM RF modulator for colour, which is difficult.
 
 #### Authoring and burning
 
@@ -2568,9 +2571,9 @@ RIP GJK.
 
 [^32]: [A journey through color space with FFmpeg](https://www.canva.dev/blog/engineering/a-journey-through-colour-space-with-ffmpeg/) – excellent article by Sven Schindler, Canva
 
-[^33]: [Overscan](https://en.wikipedia.org/wiki/Overscan) – Wikipedia
+[^33]: [Scaling interlaced video](https://ffmpeg.org/pipermail/ffmpeg-user/2014-March/020384.html) – Mark Himsley on FFmpeg-user
 
-[^34]: [Scaling interlaced video](https://ffmpeg.org/pipermail/ffmpeg-user/2014-March/020384.html) – Mark Himsley on FFmpeg-user
+[^34]: [Overscan](https://en.wikipedia.org/wiki/Overscan) – Wikipedia
 
 [^35]: [Macroblock](https://en.wikipedia.org/wiki/Macroblock) – Wikipedia
 
