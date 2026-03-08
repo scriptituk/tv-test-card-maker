@@ -1,0 +1,36 @@
+%!PS
+
+%================================================================================
+% Test Card Maker tool to set JPEG DPI
+%================================================================================
+
+% gs -q -dNOSAFER -dNODISPLAY -o out.jpg -dDPI=n -- jpeg-dpi.ps in.jpg
+
+false % no error
+/.sort where { pop }{ (Error: missing -dNOSAFER option) = pop true } ifelse
+/NODISPLAY where { pop }{ (Error: missing -dNODISPLAY option) = pop true } ifelse
+/OutputFile where { pop }{ (Error: missing -o option) = pop true } ifelse
+.shellarguments not count 3 lt or count -1 roll or {
+    (Usage:) =
+    (  gs -q -dNOSAFER -dNODISPLAY -o out.jpg -- jpeg-dpi.ps in.jpg) =
+    (for a DPI of n (default 72):) =
+    (  gs -q -dNOSAFER -dNODISPLAY -o out.jpg -dDPI=n -- jpeg-dpi.ps in.jpg) =
+    quit
+}{
+    /InputFile exch def
+    /IF InputFile (r) file def
+    /OF OutputFile (w) file def
+} ifelse
+/DPI where { pop }{ /DPI 72 def } ifelse
+
+18 string
+0 1 17 { IF read { 3 copy put pop pop }{ (Error: not a JPEG file) = quit } ifelse } for
+dup 6 4 getinterval (JFIF) ne { (Error: not a JPEG file) = quit } if
+OF exch 0 13 getinterval writestring
+OF 1 write % dpi
+2 { OF DPI 256 idiv write OF DPI 256 mod write } repeat % X,Y dpi
+{ IF read { OF exch write }{ exit } ifelse } loop
+IF closefile
+OF closefile
+quit
+

@@ -21,16 +21,16 @@ can be superimposed anywhere.
 As a novel PostScript[^1] application,
 TCM demonstrates precision control of vector graphic creation
 and some interesting coding paradigms that add structure and adaptability.
-Indeed the [implementation](#implementation) was key to the project rationale.
+Indeed the [implementation](#implementation) is key to the project rationale.
 
 Hopefully TCM may prove useful to retro TV enthusiasts and the amateur TV community
 and spark wider interest as a generic pattern maker.
-Aside from TV, it champions the benefits of PostScript for creating intricate graphics programmatically.
+Aside from TV, it champions the benefits of PostScript to create intricate graphics programmatically.
 
 This project is dedicated to the memory of **Gordon J. King** whose technical writings inspired so many budding electronics enthusiasts – see [dedication](#in-memoriam).
 
 
-Much of the nitty gritty is contained in collapsible sections revealed in the [Table of Contents](#user-content-table-of-contents).
+Much of the nitty gritty is contained in collapsible sections, as revealed in the [Table of Contents](#user-content-table-of-contents):
 
 <details open><summary>Table of Contents</summary>
 <a name='table-of-contents'></a>
@@ -103,7 +103,11 @@ Much of the nitty gritty is contained in collapsible sections revealed in the [T
 &bull; [Unit&nbsp;interval&nbsp;colour&nbsp;components](#user-content-unit-interval-colour-components)
 &bull; [Transparency](#user-content-transparency)
 &bull; [Gradients](#user-content-gradients)
-  - [Colour space](#user-content-colour-space)
+  - [Colour&nbsp;space](#colour-space)
+  - [Analog&nbsp;TV&nbsp;characteristics](#analog-tv-characteristics)
+&bull; [Transfer&nbsp;function](#transfer-function)
+&bull; [Gamma](#gamma)
+&bull; [Range](#range)
 - [Fonts](#fonts)
   - [Listing&nbsp;fonts](#user-content-listing-fonts)
 &bull; [Adding&nbsp;fonts](#user-content-adding-fonts)
@@ -116,8 +120,8 @@ Much of the nitty gritty is contained in collapsible sections revealed in the [T
 &bull; [Environment variables](#user-content-environment-variables)
 &bull; [Finding files](#user-content-finding-files)
     - [Rendering options](#user-content-rendering-options)
-&bull; [Interpolation](#user-content-interpolation)
-&bull; [Antialiasing](#user-content-antialiasing)
+&bull; [Distiller&nbsp;parameters](#user-content-distiller-parameters)
+&bull; [Rasterisation&nbsp;parameters](#user-content-rasterisation-parameters)
   - [Output&nbsp;formats](#output-formats)
     - [Vector formats](#user-content-vector-formats)
 &bull; [PDF](#user-content-pdf)
@@ -391,7 +395,7 @@ creates a high-resolution 300dpi 24-bit PNG 2916x2083 (2083=TCh*300dpi/72ppi), `
 
 ### Template
 
-The test card template `/TC` may be specified anyhow but 
+The test card template `/TC` may be specified as a GS 
 
 ### Examples
 
@@ -885,7 +889,7 @@ Inheritance: `TCF-electronic` <— [`TCF-optical`](#user-content-tcf-optical-arg
 | `/CCr` | `2.5 xGsz 1.15 xGlw sub` | white circle radius |
 | `/CClw` | `1.33 xGlw` | centre circles stroke width |
 | ***/ID…*** | ![ident designation](assets/elements/TCF-electronic-ID.svg) | ***ident designation arguments*** |
-| `/IDf` | `/Sanchez-Regular` | ident font |
+| `/IDf` | `/Sanchez-Regular-F` | ident font |
 | `/IDh` | `0.39 xGsz` | ident height |
 | `/IDy` | `TCy 2.71 xGsz sub` | ident vertical centre |
 | ***/C…*** | ![caption](assets/elements/TCF-electronic-C.svg) | ***caption arguments*** |
@@ -1320,7 +1324,7 @@ and render it as a [custom image](#custom-images) instead.
 | `/T#c` | `/Black` | colour |
 | `/T#x` | `TCx` | horizontal alignment anchor |
 | `/T#y` | `TCy` | vertical alignment anchor |
-| `/T#h` | `TCh 10 div` | maximum text height |
+| `/T#h` | `TCh 10 div` | maximum text height or block height |
 | `/T#w` | `0` | maximum text width: 0 for auto (unscaled), >0 for absolute, <0 to scale (negated) |
 | `/T#a` | `/C` | alignment: /C(entre) /L(eft) /R(ight) /J(ustify) /T(op) /B(ottom) /TJ /TL /TR /BL /BR (+ /JT etc.) |
 | `/T#t` | `0` | tracking between characters or blocks (fraction of height, auto if width>0 & Justify) |
@@ -1392,9 +1396,9 @@ Element positions should therefore be anchored relative to centrelines or edges 
 Widescreen aspects, being digital, retain 625-line [time-base scaling](#user-content-time-based-scaling) for frequency gratings, needle pulse widths and corner stripes,
 which presumably lose their intended significance.
 
-*Examples:* a 5:4 *TCA* and widescreen *TCD-improved* with altered text and square *TCF-electronic*
+*Examples:* a 5:4 *TCA*, widescreen *TCD-improved* with altered text, square *TCF-electronic*
 
-[![5:4 ratio](assets/ar/ratio-54-thumb.svg)](assets/ar/ratio-54.svg)
+[![5:4 ratio](assets/ar/ratio-5x4-thumb.svg)](assets/ar/ratio-5x4.svg)
 &nbsp;
 [![widescreen ratio](assets/ar/ratio-ws-thumb.svg)](assets/ar/ratio-ws.svg)
 &nbsp;
@@ -1447,15 +1451,14 @@ TODO: note about rise/fall times in simulating analog test cards digitally
 
 ## Colours
 
-Colour can be expressed as
+Colour arguments can be expressed as
 [greyscale](#user-content-greyscale),
-[RGB](#user-content-rgb),
-[YUV](#user-content-yuv),
-[HSL](#user-content-hsl),
-[HSB](#user-content-hsb) (HSV),
+[RGB](#user-content-rgb), [YUV](#user-content-yuv), [HSL](#user-content-hsl), [HSB](#user-content-hsb) (HSV),
 [unit interval](#user-content-unit-interval-colour-components) (UI)[^20]
-or [named](#user-content-named-colours) colours.
-There are special names for [chroma keying](#user-content-chroma-keying) and [random](#user-content-random-colour) colours.
+or [named](#user-content-named-colours) colours,
+includng [chroma keying](#user-content-chroma-keying) and [random](#user-content-random-colour) colour names.
+TCM outputs sRGB-based [colour space](#colour-space)
+with adjustable [transfer function](#transfer-function).
 
 <details><summary>Colour arguments</summary>
 <a name='colour-arguments'></a>
@@ -1472,8 +1475,8 @@ Grey shades are specified as a value from 0 to 255.
 
 > ![Note](assets/icons/note-16.svg)\
 > Regardless how a colour is specified,
-  if it produces grey then the PostScript colour space is set to Gray,
-  otherwise it is converted to RGB.\
+  if it produces grey then the PostScript device colour space is set to DeviceGray,
+  otherwise it is converted to DeviceRGB.\
   If colour is rendered to a grey/mono output device, e.g. `pnggray`, then GS emits a warning.
 
 ### RGB
@@ -1557,7 +1560,7 @@ Use `/RandomColour` or `/RandomGrey` (case-insensitive) for a randomly generated
 
 ### Unit interval colour components
 
-Whichever colour representation above is used, TCM has to convert all colour component values to the
+Whatever colour representation is used, TCM has to convert all colour component values to the
 unit interval[^20] (UI), i.e. real numbers between 0.0&nbsp;and&nbsp;1.0 inclusive,
 for PostScript to process.
 
@@ -1592,24 +1595,80 @@ Transparent PDF is an outstanding task.
 ### Gradients
 
 TCM provides sinusoidal shading between two colours across a span where called for.
-PS can paint any gradient, not necessarily continuous, by interpolation between samples or bounds.
+PS can paint any gradient, not necessarily continuous, by interpolating between samples or bounds.
 
 </details>
 
-<details><summary>Colour space</summary>
-<a name='colour-space'></a>
+### Colour space
 
-
-TCM uses PS DeviceRGB and DeviceGray colour spaces which, by default, GS renders as sRGB and sRGB-linearised grey respectively.
-
-Since GS release 9.0 the colour architecture uses the ICC[^28] format for colour management.
-Specifically, for DeviceRGB and DeviceGray, the GS Color Management document[^29] states:
+TCM uses PS device colour spaces `DeviceRGB` and `DeviceGray` which, subject to the `-sDEVICE` option, GS encodes with sRGB and sGray ICC[^28] profiles respectively (sGray is a greyscale equivalent of sRGB with the same ≈2.2 gamma curve).
+Specifically, the GS Color Management document[^29] states:
 
 > “The profile default_gray.icc is defined to provide output along the neutral axis with an sRGB linearization.
    The profile default_rgb.icc is the V2 sRGB ICC profile”
 
 
-</details>
+### Analog TV characteristics
+
+The response gamma of a CRT is ≈2.5, the five-halves power law[^30], but 2.4 is used for BT.601 digitisation.
+This is corrected for at the camera end which applies a gamma of 2.2<sup>-1</sup> to compensate for low-light viewing too.
+Today, Hybrid Log-Gamma (HLG) for High Dynamic Range (HDR) TV is compatible with Standard Dynamic Range (SDR)[^31],
+so 2.2 remains.
+
+However the gamma of modern display screens is typically ≈2.2, not 2.5, so midtones appear brighter.
+And full-range RGB is different from limited-range YP<sub>B</sub>P<sub>R</sub> video.
+
+With TCM you can specify a [transfer function](#transfer-function) to compensate for these effects.
+
+
+### Transfer function
+
+PostScript provides colour transfer functions, a.k.a. ‘curves’, as standard.
+TCM applies them if the following arguments are defined:
+
+- `/TCdg` decoding gamma – a positive gamma to emulate, default: sRGB gamma
+- `/TCbl` black level (brightness) – a colour value, default: 0 (black)
+- `/TCwl` white level (contrast) – a colour value, default: 1 (white)
+
+#### Gamma
+
+By default, TCM emits sRGB gamut with ≈2.2 gamma (sRGB gamma is actually a hybrid function).
+
+If `/TCdg` is defined and not 2.2, gamma is applied (before levels).
+It simply scales the default.
+
+So to emulate the CRT curve, use `/TCdg 2.5` to apply a 1.14 (2.5/2.2) gamma, or use GS option `-dTCdg=2.5`.
+
+*Examples:* (left to right) *TCF-optical* with gamma=1.8, gamma=2.2 (normal), gamma=2.5
+
+[![gamma 1.8](assets/tf/gamma-1p8-thumb.svg)](assets/tf/gamma-1p8.svg)
+&nbsp;
+[![normal](assets/tf/gamma-2p2-thumb.svg)](assets/tf/gamma-2p2.svg)
+&nbsp;
+[![gamma 2.5](assets/tf/gamma-2p5-thumb.svg)](assets/tf/gamma-2p5.svg)
+
+#### Range
+
+By default, TCM emits full-range RGB levels corresponding to 8-bit values 0–255.
+
+If `/TCbl` or `/TCwl` are defined, the range is restricted (after gamma).
+Level values are normal [colour arguments](#user-content-colour-arguments).
+
+So for limited-range, a.k.a. broadcast or TV range (16–235),
+set the black and white levels accordingly:
+`/TCbl 16 /TCwl 235`.
+
+To take peak white down to 95%: `/TCwl 0.95`
+
+To invert the colours for fun, swap the black and white levels: `/TCbl /white /TCwl /black`.
+
+*Examples:* (left to right) *TCF-optical* in limited-range, full-range (normal), negative
+
+[![TV range](assets/tf/range-16_235-thumb.svg)](assets/tf/range-16_235.svg)
+&nbsp;
+[![normal](assets/tf/gamma-2p2-thumb.svg)](assets/tf/gamma-2p2.svg)
+&nbsp;
+[![negative](assets/tf/range-1_0-thumb.svg)](assets/tf/range-1_0.svg)
 
 ## Fonts
 
@@ -1718,8 +1777,7 @@ TCM only uses a few GS options:
 - `-s` defines a name with a string value (without parenthesis)
 - `-d` defines a name with a numeric or name value or `true`, `false`, `null`
 - `-f` execute a file, used here for argument files
-- `-+` execute a file and create an array of following arguments
-- `--` end of options, execute following files
+- `--` execute a file and create an array of following arguments
 
 Further info: [GS User Guide: Command line options](https://ghostscript.readthedocs.io/en/latest/Use.html#command-line-options)
 
@@ -1781,36 +1839,44 @@ Further info: [GS User Guide: How Ghostscript finds files](https://ghostscript.r
 <a name='rendering-options'></a>
 
 
-See also [colour space](#user-content-colour-space).
+See also [colour space](#colour-space).
 
-#### Interpolation
+#### Distiller parameters
 
-By default, GS renders images using nearest neighbour scaling.
-To force images to be interpolated using bicubic scaling, use\
-`-dInterpolateControl=-1` which is slower.\
-However GS can only interpolate non-skewed images at 0&deg; and 180&deg; rotation.
+These control the PS and EPS vector output devices as well as PDF.
 
-For PDF and EPS rendering there are Distiller parameters:\
-`-dDownsampleXXXImages`\
-`-dXXXImageDownsampleThreshold`\
-`-dXXXImageDownsampleType`\
-`-dXXXImageResolution`\
-where `XXX` is `Color`, `Gray` or `Mono`.
-Whether `-dInterpolateControl` takes precedence is not documented.
+TCM uses the `-dPDFSETTINGS=/default` parameters internally plus the following overrides:
+
+- `-dColorImageResolution=150`
+- `-dGrayImageResolution=150`
+- `-dDownsampleColorImages`
+- `-dDownsampleGrayImages`
+- `-dColorImageDownsampleType=/Bicubic`
+- `-dGrayImageDownsampleType=/Bicubic`
+- `-dConvertCMYKImagesToRGB`
+- `-dTransferFunctionInfo=/Apply` (to behave like Acrobat Reader)
+- `-dCompatibilityLevel=1.5` (PDF)
+
+Set any `-dPDFSETTINGS=` configuration and distiller parameters to override these.
 
 Further info:
-[GS User Guide: -dInterpolateControl](https://ghostscript.readthedocs.io/en/latest/Use.html#dinterpolatecontrol-control-value),
+[GS PDF/PS Devices: PDFSETTINGS](https://ghostscript.readthedocs.io/en/latest/VectorDevices.html#controls-and-features-specific-to-postscript-and-pdf-input)
 [GS PDF/PS Devices: Distiller Parameters](https://ghostscript.readthedocs.io/en/latest/VectorDevices.html#distiller-parameters)
 
-#### Antialiasing
+#### Rasterisation parameters
 
-For high quality image rasterisations of text and graphics content, use subsample antialiasing:\
-`-dTextAlphaBits=4 -dGraphicsAlphaBits=4` (set by default for `pngalpha` device).
+These are mostly common for all raster image output devices.
 
-For best PNG and TIFF rendering, use a high resolution with downscaling:\
-`-r600 -dDownScaleFactor=2` gives an improved 300dpi image\
-`-r1200 -dDownScaleFactor=6` gives 200dpi image\
-this is the [recommended way](https://ghostscript.readthedocs.io/en/latest/Devices.html#png-file-format) to achieve antialiasing and gives better results than `-dTextAlphaBits=4 -dGraphicsAlphaBits=4` alone.
+TCM switches in the following parameters internally:
+
+- `-r576` (72×8, use high resolution with downscaling)
+- `-dDownScaleFactor 8` ([recommended way](https://ghostscript.readthedocs.io/en/latest/Devices.html#png-file-format) to achieve antialiasing)
+- `-dGraphicsAlphaBits=4` (subsample antialiasing)
+- `-dTextAlphaBits=4` (subsample antialiasing)
+- `-dJPEGQ=100` (`jpeg` device best quality)
+- `-sCompression=lzw` (`tiffscaled` devices)
+
+Set any `-r` value other than `1` to override this resolution and `DownScaleFactor`.
 
 </details>
 
@@ -1818,7 +1884,7 @@ this is the [recommended way](https://ghostscript.readthedocs.io/en/latest/Devic
 
 Use `-sDEVICE=` to select a driver for the output format.
 
-See also [rendering options](#user-content-rendering-options) and [colour space](#user-content-colour-space) regarding rendering.
+See also [rendering options](#user-content-rendering-options) and [colour space](#colour-space) regarding rendering.
 
 <details><summary>Vector formats</summary>
 <a name='vector-formats'></a>
@@ -1838,7 +1904,7 @@ Use option `-sEPSCrop` when converting from EPS to other formats with GS.
 Not supported directly.
 
 There are many PDF/EPS to SVG converters for download or online use.
-I recommend [pdftocairo] from MacPorts which simply delegates to [Poppler] and [Cairo],\
+I recommend [pdftocairo] from MacPorts which simply delegates to [Poppler] and [Cairo],
 preserving paths and even gradients without converting to bitmaps,\
 e.g. `pdftocairo -svg myTC.pdf myTC.svg`
 
@@ -1846,7 +1912,7 @@ Surprisingly, [MuPDF] from Artifex does a poor conversion of their own GS-genera
 
 An excellent SVG optimiser is [svgcleaner]:
 
-- `svgcleaner --quiet --allow-bigger-file --multipass --indent 2 --trim-paths no --use-implicit-cmds no myTC.pdf pretty.svg` – makes a readable SVG where you can clearly see the graphic elements
+- `svgcleaner --quiet --multipass --allow-bigger-file --indent 2 --trim-paths no --use-implicit-cmds no myTC.pdf pretty.svg` – makes a readable SVG where you can clearly see the graphic elements
 - `svgcleaner --quiet --multipass --apply-transform-to-paths yes --coordinates-precision 4 --properties-precision 4 --transforms-precision 6 --paths-coordinates-precision 6 myTC.pdf condensed.svg` – is good for shrinking test card SVGs
 
 Further info: [GS User Guide: High level devices](https://ghostscript.readthedocs.io/en/latest/Devices.html#high-level-devices)
@@ -1859,29 +1925,29 @@ Further info: [GS User Guide: High level devices](https://ghostscript.readthedoc
 
 #### PNG
 
-PNG is versatile and optionally lossless, good for transparent areas, and is the recommended GS format for high-quality images.
+PNG is the recommended GS format for high-quality images.
 
 PNG device summary
-- `sDEVICE=png16malpha` (with `-dDownScaleFactor`) for 32-bit RGBA colour with transparency
-- `sDEVICE=pngalpha` for 32-bit RGBA colour with transparency and default anti-aliasing
+- `sDEVICE=png16malpha` for 32-bit RGBA colour with transparency
 - `sDEVICE=png16m` for 24-bit RGB colour
 - `sDEVICE=pnggray` for grayscale
 - `sDEVICE=png256` for 8-bit indexed colour
-- `sDEVICE=png16` for 4-bit indexed colour
 
 Further info: [GS User Guide: PNG file format](https://ghostscript.readthedocs.io/en/latest/Devices.html#png-file-format)
 
 #### TIFF, BMP, PNM, JPEG
 
-The `tiffscaled` devices support the `DownScaleFactor` option:\
-`gs -q -IResource -sDEVICE=tiffscaled24 -r576 -dDownScaleFactor=8 -sCompression=lzw -o tcf.tiff tcm.ps`
+TIFF: use `sDEVICE=tiffscaled8` for greyscale, `sDEVICE=tiffscaled8` for colour (TCM sets LZW compression).
 
-JPEG is not intended for graphics but `-dJPEGQ=100` maximises the quality.
-Although undocumented, the `jpeg` device also supports `DownScaleFactor` but sets the DPI to the GS resolution, so\
-`gs -q -IResource -sDEVICE=jpeg -dJPEGQ=100 -r576 -dDownScaleFactor=8 -o tcf576.jpg tcm.ps`\
-for the default 576 pixel height makes a best-quality JPEG at 576 dpi downscaled from 6144x4608 internally (8x).
-For normal display resolution, change the JFIF density metadata to 72, e.g. with [ExifTool] (open source):\
-`exiftool -XResolution=72 -YResolution=72 -o tcf72.jpg tcf576.jpg`
+BMP: use `sDEVICE=bmpgray` for greyscale, `sDEVICE=bmp16m` for colour.
+
+PNM: use `sDEVICE=pgm` for greyscale, `sDEVICE=ppm` for colour, `.ppm` file extension.
+
+JPEG: use `sDEVICE=jpeg`.
+JPEG is not intended for graphics but TCM sets `-dJPEGQ=100` to maximise the quality.
+Although undocumented, the `jpeg` device supports `DownScaleFactor` but sets the DPI to the GS resolution,
+so for normal display resolution, change the DPI to 72 with `jpeg-dpi.ps` from this repo:\
+`gs -q -dNOSAFER -dNODISPLAY -o out.jpg -- jpeg-dpi.ps in.jpg`
 
 See [GS User Guide: Image file formats](https://ghostscript.readthedocs.io/en/latest/Devices.html#image-file-formats)
 for these and other raster formats Ghostscript can output directly.
@@ -1970,7 +2036,7 @@ and encode them with [gifski]:
 `-r 20 -pix_fmt yuv420p -f yuv4mpegpipe output.y4m` (ffmpeg output)\
 `gifski -q -r 20 -o output.gif output.y4m`\
 or\
-`-r 20 -pix_fmt yuv420p -f yuv4mpegpipe | gifski -q -r 20 -o output.gif -`
+`-r 20 -pix_fmt yuv420p -f yuv4mpegpipe - | gifski -q -r 20 -o output.gif -`
 
 Otherwise, include [`palettegen`](https://www.ffmpeg.org/ffmpeg-filters.html#palettegen) and [`paletteuse`](https://www.ffmpeg.org/ffmpeg-filters.html#paletteuse) in the filtergraph:
 
@@ -1989,8 +2055,7 @@ Optimise (if beneficial) with [Gifsicle].
 > Use ffmpeg options:\
   &bull; `-y` to overwrite output file\
   &bull; `-hide_banner` to suppress copyright and build information\
-  &bull; `-v warning` to show warnings and errors only (hides banner too)\
-  &bull; `-v error` to show errors only
+  &bull; `-v warning` to show warnings and errors only (hides banner too)
 
 ### Static test cards
 
@@ -2045,7 +2110,7 @@ pattern *TCD-improved* with transparent centre overlaying a mono video:
 
 ```bash
 gs -q -IResource -sDEVICE=png16malpha -r1200 -dDownScaleFactor=4 -o tcD.png \
-   -+ tcm.ps /TC /TCD-improved /CCf? false /SW? false /FB? false \
+   -- tcm.ps /TC /TCD-improved /CCf? false /SW? false /FB? false \
    /T-1s '(1965)' /T-2s '(The Magic Roundabout)'
 
 ffmpeg -y -v warning -i magic.mkv -i tcD.png -filter_complex '
@@ -2056,7 +2121,7 @@ ffmpeg -y -v warning -i magic.mkv -i tcD.png -filter_complex '
 ```
 
 The `gs` command `/CCf? /SW? /FB?` arguments switch off the centre circle fill, step wedge and frequency bars to make a transparent hole, and the `/T-1s /T-2s` arguments replace the caption text strings.
-As [recommended](#user-content-antialiasing), `-r1200 -dDownScaleFactor=4` creates a high resolution antialiased PNG.
+As [recommended](#user-content-rasterisation-parameters), `-r1200 -dDownScaleFactor=4` creates a high resolution antialiased PNG.
 
 The `ffmpeg` command scales and centres the video 260px high (centre circle radius `CCr` x 2) and the image 576px high,
 then overlays the two, producing a MP4 video complete with sound from the video.
@@ -2066,16 +2131,16 @@ The animation above actually uses other [ffmpeg filters](https://www.ffmpeg.org/
 ```bash
 ffmpeg -y -v warning -ss 13:5.1 -t 5 -i magic.mkv -i tcD.png -filter_complex '
     [0]crop=1584:1056:170:12, zscale=ih*4/3:ih:f=spline36:r=full,
-       monochrome, cas=0.75, normalize=smoothing=50, setsar=1/1, setdar=4/3,
+       monochrome, cas=0.75, normalize=smoothing=15, setsar=1/1, setdar=4/3,
        zscale=-2:260*504/768:f=spline36, pad=504:378:-1:-1[v];
     [1]zscale=504:378:f=spline36[i];
     [v][i]overlay[g];
-    ' -map [g]:v -r 20 -pix_fmt yuv420p -f yuv4mpegpipe | gifski -q -o magicD.gif -
+    ' -map [g]:v -r 20 -pix_fmt yuv420p -f yuv4mpegpipe - | gifski -q -o magicD.gif -
 ```
 
 #### Overlay explanation
 
-The `magic.mkv` source[^30] is a HD (BT.709) 1920x1080 60 fps progressive video with 3:2 aspect centred episodes.
+The `magic.mkv` source[^32] is a HD (BT.709) 1920x1080 60 fps progressive video with 3:2 aspect centred episodes.
 A 5 second clip is extracted 13 minutes 5.1 seconds in.
 
 Filters:
@@ -2124,16 +2189,16 @@ Making a DVD involves:
 
 First a word about colour reproduction because it is so convoluted.
 The project [FreeCalRec601](https://github.com/danmons/FreeCalRec601) by Dan Mons
-is a Rec.601/BT.601[^23][^31] DVD and test pattern generator for calibrating Standard Definition (SD) CRT displays from sRGB colour chunks made with ImageMagick.
-TCM images also have sRGB [colour space](#user-content-colour-space) when output by GS RGB devices,
+is a Rec.601/BT.601[^23][^33] DVD and test pattern generator for calibrating Standard Definition (SD) CRT displays from sRGB colour chunks made with ImageMagick.
+TCM images also have sRGB [colour space](#colour-space) when output by GS RGB devices,
 so we just deploy similar FFmpeg options for SD DVD conformance
 (FreeCalRec601 ISOs built from GS-made colour chunks are binary-identical – tested for TIFF and PNG).
-See also an excellent post on FFmpeg color space at Canva Developers[^32].
+See also an excellent post on FFmpeg color space at Canva Developers[^34].
 
 
 #### VOB commands
 
-This Bash snippet is comparable to 
+This Bash snippet is comparable to
 FreeCalRec601 [build_vob.sh](https://github.com/danmons/FreeCalRec601/blob/master/build_vob.sh) code for building VOBs with [FFmpeg]:
 
 ```bash
@@ -2181,7 +2246,7 @@ Options:
   - [`pad`](https://www.ffmpeg.org/ffmpeg-filters.html#pad) pads the width for overscan, if selected
   - [`zscale`](https://www.ffmpeg.org/ffmpeg-filters.html#zscale) scale input for correct interlacing size with no colour conversion
   - [`colorspace`](https://www.ffmpeg.org/ffmpeg-filters.html#colorspace) converts the colour primaries, white point and gamma from bt709 (sRGB) to bt601 for the target
-    (`irange=tv` suppresses `colorspace` warning for image input[^33])
+    (`irange=tv` suppresses `colorspace` warning for image input[^35])
   - [`tinterlace`](https://www.ffmpeg.org/ffmpeg-filters.html#tinterlace) makes the video interlaced, top field first, with vertical low-pass filtering (reduces interline twitter and Moiré artefacts)
 - `-target` ([main options](https://www.ffmpeg.org/ffmpeg.html#Main-options)) sets video and audio format options for the target output, `pal-dvd` or `ntsc-dvd`
 - `-flags` ([generic codec options](https://www.ffmpeg.org/ffmpeg-codecs.html#Codec-Options)) sets interlace encoding flags (discrete cosine transform (DCT) and motion estimation)
@@ -2193,15 +2258,15 @@ Options:
 #### 720 vs 704 or 702
 
 There’s a bewildering amount of discussion about DVD aspect ratios and the 720 vs 704/702 debate.
-My understanding is square pixel digital sources like TCM are displayed in full on modern digital displays but cropped at the sides on a TV CRT due to analog overscan[^34].
-So the trick is to pad wider then scale back[^33] when making a DVD for analog playback.
+My understanding is square pixel digital sources like TCM are displayed in full on modern digital displays but cropped at the sides on a TV CRT due to analog overscan[^36].
+So the trick is to pad wider then scale back[^35] when making a DVD for analog playback.
 
-Digitising analog TV active line time at 13.5 MHz for BT.601 results in 702 pixels per line for PAL and 713.5 for NTSC[^34].
-DVD encodes MPEG-2 video which uses 16x16 macroblocks[^35] so the size needs to be divisible by 16.
+Digitising analog TV active line time at 13.5 MHz for BT.601 results in 702 pixels per line for PAL and 713.5 for NTSC[^36].
+DVD encodes MPEG-2 video which uses 16x16 macroblocks[^37] so the size needs to be divisible by 16.
 The nearest multiple of 16 to 702 is 704 (rounding up) and to 713.5 is also 704 (rounding down).
 Hence 704 is a fair compromise, also a DVD standard, but 720 accommodates both formats within spec.
 Whether the DVD is made 720 or 704 wide makes no difference
-– as confirmed by a PAL AR Test DVD and discussion on VideoHelp[^36] –
+– as confirmed by a PAL AR Test DVD and discussion on VideoHelp[^38] –
 but the ffmpeg target preset is 720.
 
 
@@ -2245,7 +2310,7 @@ export VIDEO_FORMAT=PAL # or NTSC
 dvdauthor -o myDVDfs -x myDVD.xml
 ```
 
-To make a compliant DVD ISO image for this example from the CLI with UDF[^37] and Joliet[^38] file system support:
+To make a compliant DVD ISO image for this example from the CLI with UDF[^39] and Joliet[^40] file system support:
 
 
 Linux:\
@@ -2362,7 +2427,7 @@ This project is dedicated to Gordon J. King (G4VFV) whose lucid servicing handbo
 helped nurture my teenage passion for practical electronics
 which led to an enjoyable and fulfilling career, including a training spell with the BBC.
 Back then, after persistently borrowing GJK’s books from the library,
-I managed to save enough money to buy my own (below).
+I managed to save enough to buy my own (below).
 Even now they are a fascinating read, and many principles explained are relevant today.
 
 ![Radio and Audio Servicing Handbook](assets/gjk/Radio-and-Audio-Servicing-Handbook-ed2-thumb.png) &nbsp;
@@ -2450,6 +2515,7 @@ RIP GJK.
 - [Radios-TV](https://www.radios-tv.co.uk/) – Vintage radio & television blog and forum
 - [TV Forum](https://www.tvforum.co.uk/) – discussion forum, static archive since 2021
 - [Golborne Vintage Radio](https://www.golbornevintageradio.co.uk/) – forums on everything vintage
+- [The CRT Collective](https://www.facebook.com/groups/444560212348840/) – public Facebook group for CRT enthusiasts
 - [The Test Card Circle](https://www.testcardcircle.org.uk/) – for test card music enthusiasts
 
 ### PostScript links
@@ -2490,7 +2556,6 @@ RIP GJK.
 [Cairo]: https://cairographics.org/
 [DVDAuthor]: https://dvdauthor.sourceforge.net/
 [DVDStyler]: https://www.dvdstyler.org/
-[ExifTool]: https://exiftool.org/
 [FFmpeg]: https://www.ffmpeg.org/
 [FontForge]: https://fontforge.org/
 [Font-Validator]: https://github.com/HinTak/Font-Validator
@@ -2563,23 +2628,27 @@ RIP GJK.
 
 [^28]: [International Color Consortium](https://www.color.org/) – ICC specification
 
-[^29]: [Ghostscript 9 Color Management](https://ghostscript.com/docs/GS9_Color_Management.pdf) – colour architecture in Ghostscript Release 9
+[^29]: [Ghostscript Color Management](https://ghostscript.readthedocs.io/en/latest/GhostscriptColorManagement.html) – colour architecture in Ghostscript Release 9
 
-[^30]: [The Magic Roundabout Series 1 1965–68 (incomplete)](https://youtu.be/jS2IlF9GEco) – 5 of 224 episodes, mostly lost
+[^30]: [Poynton’s Gamma FAQ](https://www.poynton.ca/faq/gammafaq/GammaFAQ.pdf) – Charles Poynton, 1998
 
-[^31]: [Rec.601/BT.601](https://en.wikipedia.org/wiki/Rec._601) – Wikipedia, ‘the bridge that joined the analog and digital worlds’
+[^31]: [High Dynamic Range television and Hybrid Log-Gamma](https://www.bbc.co.uk/rd/projects/high-dynamic-range) – BBC R&D
 
-[^32]: [A journey through color space with FFmpeg](https://www.canva.dev/blog/engineering/a-journey-through-colour-space-with-ffmpeg/) – excellent article by Sven Schindler, Canva
+[^32]: [The Magic Roundabout Series 1 1965–68 (incomplete)](https://youtu.be/jS2IlF9GEco) – 5 of 224 episodes, mostly lost
 
-[^33]: [Scaling interlaced video](https://ffmpeg.org/pipermail/ffmpeg-user/2014-March/020384.html) – Mark Himsley on FFmpeg-user
+[^33]: [Rec.601/BT.601](https://en.wikipedia.org/wiki/Rec._601) – Wikipedia, ‘the bridge that joined the analog and digital worlds’
 
-[^34]: [Overscan](https://en.wikipedia.org/wiki/Overscan) – Wikipedia
+[^34]: [A journey through color space with FFmpeg](https://www.canva.dev/blog/engineering/a-journey-through-colour-space-with-ffmpeg/) – excellent article by Sven Schindler, Canva
 
-[^35]: [Macroblock](https://en.wikipedia.org/wiki/Macroblock) – Wikipedia
+[^35]: [Scaling interlaced video](https://ffmpeg.org/pipermail/ffmpeg-user/2014-March/020384.html) – Mark Himsley on FFmpeg-user
 
-[^36]: [Checking my DVD player’s aspect ratio](https://forum.videohelp.com/threads/353770-Checking-my-DVD-player-s-aspect-ratio/page2#post2227902) – jagabo on VideoHelp
+[^36]: [Overscan](https://en.wikipedia.org/wiki/Overscan) – Wikipedia
 
-[^37]: [Universal Disk Format](https://en.wikipedia.org/wiki/Universal_Disk_Format) – Wikipedia
+[^37]: [Macroblock](https://en.wikipedia.org/wiki/Macroblock) – Wikipedia
 
-[^38]: [Joliet Windows format](https://en.wikipedia.org/wiki/ISO_9660#Joliet) – Wikipedia
+[^38]: [Checking my DVD player’s aspect ratio](https://forum.videohelp.com/threads/353770-Checking-my-DVD-player-s-aspect-ratio/page2#post2227902) – jagabo on VideoHelp
+
+[^39]: [Universal Disk Format](https://en.wikipedia.org/wiki/Universal_Disk_Format) – Wikipedia
+
+[^40]: [Joliet Windows format](https://en.wikipedia.org/wiki/ISO_9660#Joliet) – Wikipedia
 

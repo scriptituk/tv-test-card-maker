@@ -28,15 +28,15 @@ false setpacking
     /arguments isdef { % have CLI arguments array
         { arguments { 2 copy validate def } forall } stopped { stop } if
     } if
-
     /TC /TCF-electronic arg % default pattern
     /TCg group TC get def
     TC cvas (-) cat (-) split dup 0 get cvn /TCp exch def 1 get cvn /TCv exch def
     /args isdef { /args dup load 0 TC put }{ TC } ifelse % set extends=TC
     currentdict exch loadargs pop
     /TCMDEBUGARGS istrue { /TC TC def currentdict pdict } if
-    << /PageSize [ TCw TCh ] /ImagingBBox null >> setpagedevice
+    initpd inittf
 %   true setstrokeadjust
+
     /TC? isdef not { /TC? true def } if % false for no TC elements or watermark (CEs only)
     {
         /Blank peq { exit } if % blank canvas
