@@ -70,6 +70,71 @@ setglobal
     /flipB [-1 0 0 -1 TCw TCh] def % flip both
 } def
 
+% page device
+
+/initpd {
+    << /PageSize [ TCw TCh ] /ImagingBBox null /InterpolateControl -1 >> setpagedevice
+    currentpagedevice /Name get
+    {
+        dup (eps2write) eq { pop (vector) } if
+        dup (ps2write) eq { pop (vector) } if
+        dup (pdfwrite) eq {
+            << /TransferFunctionInfo /Apply >> setdistillerparams % always apply like Adobe
+            /PDFSETTINGS isdef { exit } if % use PDFSETTINGS
+            << /CompatibilityLevel 1.5 >> setdistillerparams
+            pop (vector)
+        } if
+        dup (vector) eq { % default distiller parameters
+            <<
+                /ConvertCMYKImagesToRGB true
+                /ColorImageResolution 150
+                /GrayImageResolution 150
+                /DownsampleColorImages true
+                /DownsampleGrayImages true
+                /ColorImageDownsampleType /Bicubic
+                /GrayImageDownsampleType /Bicubic
+                /TransferFunctionInfo /Apply
+            >> setdistillerparams
+        } if
+        dup (jpeg) eq { << /JPEGQ 100 >> setpagedevice pop (raster) } if % best quality
+        dup (png) startswith { pop (raster) } if
+        dup (bmp) startswith { pop (raster) } if
+        dup (pgm) startswith { pop (raster) } if % grey
+        dup (pnm) startswith { pop (raster) } if % colour
+        dup (ppm) startswith { pop (raster) } if % = pnm (Mac Preview friendly)
+        dup (tiffscaled) startswith { << /Compression (lzw) >> setpagedevice pop (raster) } if
+        dup (raster) eq {
+            <<
+                /GraphicsAlphaBits 4
+                /TextAlphaBits 4
+                currentpagedevice /DownScaleFactor .knownget { 1 eq {
+                    /HWResolution [ 72 8 mul dup ]
+                    /DownScaleFactor 8
+                } if } if
+            >> setpagedevice
+        } if
+        exit
+    } loop pop
+} def
+
+% transfer function
+
+/inittf {
+    /TCdg 2.2 arg
+    /TCbl 0 arg
+    /TCwl 1 arg
+    mark
+    gsave
+        TCdg 2.2 ne { TCdg 2.2 div /exp load } if % gamma
+        TCbl colour currentgray TCwl colour currentgray 1 index sub dup 1 ne {
+            exch /mul load exch /add load % range
+        }{ pop pop } ifelse
+    grestore
+    counttomark packedarray cvx bind settransfer % TODO: (pdfwrite) range causes 'Page object was reserved for an Annotation destination'
+    pop
+%   currenttransfer ==
+} def
+
 % timings
 
 /TC1us { TCh TCar mul TClt div } bind def % 1 microsecond width at normal aspect ratio

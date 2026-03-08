@@ -577,7 +577,7 @@ CustomText { exch cvas 1 1 getinterval (T0) exch cat exch def } forall
 /Golw 0.65 xGlw arg
 /CCr 2.5 xGsz 1.15 xGlw sub arg
 /CClw 1.33 xGlw arg
-/IDf /Sanchez-Regular arg
+/IDf /Sanchez-Regular-F arg
 /IDh 0.39 xGsz arg
 /IDy TCy 2.71 xGsz sub arg
 /Ct [/T-2 /T-3] arg
@@ -622,6 +622,41 @@ CustomText { exch cvas 1 1 getinterval (T0) exch cat exch def } forall
 /T-3h 0.255 xGsz arg
 /T-3y TCy 3.74 xGsz sub arg
 /T-3 /T-2 merge
+
+} def
+
+%================================================================================
+
+/TCJ { /TCF-electronic % extends
+
+/CClw 6 lines arg
+/CCr 2.5 xGsz Glw CClw add div2 sub arg
+/IDs (J) arg
+/IDf /Helvetica-Bold-Jalt arg
+/IDh 0.35 xGsz arg
+/Ct [/T-5] arg
+
+% centre picture
+/I-1f /CH-J.png arg
+/I-1a 0 arg
+/I-1s 1.04 arg
+/I-1i 0 xGsz arg
+/I-1j 0 xGsz arg
+
+% caption text
+/T-5s (BBC) arg
+/T-5c 1 arg
+/T-5f /GillSans arg
+/T-5y Cy arg
+/T-5h 0.5 xGsz arg
+/T-5i true arg
+/T-5a /C arg
+/T-5t 0.16 arg
+/T-5p 0.13 arg
+/T-5o 1.6 arg
+/T-5m /C arg
+/T-5- true arg
+/T-5 /T0 merge
 
 } def
 

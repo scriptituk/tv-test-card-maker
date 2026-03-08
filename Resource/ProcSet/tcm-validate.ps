@@ -149,18 +149,21 @@
 /=TC { group exch known } bind def
 /=TCar { isnumber } bind def
 /=TCbc { iscolour } bind def
+/=TCbl { iscolour } bind def
+/=TCdg { 0 3 isbetween } bind def
 /=TCdr { isinteger } bind def
 /=TCfb { isinteger } bind def
 /=TCfr { 1 1000 isbetween } bind def
 /=TCh { isnumber } bind def
 /=TChr { isinteger } bind def
 /=TClb { isnumber } bind def
-/=TCll { isnumber } bind def
 /=TClt { isnumber } bind def
 /=TCnl { dup isinteger exch 10 10000 isbetween and } bind def
 /=TCr { 0.1 10 isbetween } bind def
+/=TCtv { isboolean } bind def
 /=TCvr { isinteger } bind def
 /=TCw { isnumber } bind def
+/=TCwl { iscolour } bind def
 /=Xwt { iscustom } bind def
 /=X? { isboolean } bind def
 
