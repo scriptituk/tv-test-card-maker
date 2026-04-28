@@ -430,6 +430,7 @@ By default a replica icon ![](assets/icons/replica-16.svg) in the bottom-right c
 <kbd align='center'>&nbsp;<br>**TCF-early**<br>&nbsp;<br>[![TCF-early](assets/templates/TCF-early-thumb.svg)](assets/templates/TCF-early-anim.png)</kbd>
 <kbd align='center'>&nbsp;<br>**TCF-optical**<br>&nbsp;<br>[![TCF-optical](assets/templates/TCF-optical-thumb.svg)](assets/templates/TCF-optical-anim.png)</kbd>
 <kbd align='center'>&nbsp;<br>**TCF-electronic**<br>&nbsp;<br>[![TCF-electronic](assets/templates/TCF-electronic-thumb.svg)](assets/templates/TCF-electronic-anim.png)</kbd>
+<kbd align='center'>&nbsp;<br>**TCJ**<br>&nbsp;<br>[![TCJ](assets/templates/TCJ-thumb.svg)](assets/templates/TCJ-anim.png)</kbd>
 
 
 International and widescreen patterns may follow if called for
@@ -556,9 +557,9 @@ Inheritance: `TCC-early` <— [`Blank`](#user-content-blank-arguments)
 | ***/SW…*** | ![step wedge](assets/elements/TCC-early-SW.svg) | ***step wedge arguments*** |
 | `/SWx` | `TCx` | step wedge horizontal centre |
 | `/SWw` | `0.5 xGsz` | step wedge width |
-| `/SWoh` | `2.5 xGsz` | step wedge outer height |
+| `/SWoh` | `2.5 xGsz` | step wedge overall height |
 | `/SWc` | `[0 0.3 0.5 0.7 1]` | step wedge colours: [bottom to top] |
-| `/SWds` | `0` | step wedge dot size 0 for none, diameter or [width height] array |
+| `/SWds` | `0` | step wedge dot size (diameter/width), 0 for none |
 | `/SWdc` | `[0.2 1]` | step wedge dot colours: [bottom top] |
 | `/SW?` | `true` | false for no step wedge |
 | ***/FB…*** | ![frequency bars](assets/elements/TCC-early-FB.svg) | ***frequency bars arguments*** |
@@ -575,12 +576,12 @@ Inheritance: `TCC-early` <— [`Blank`](#user-content-blank-arguments)
 | `/FBt` | `null` | custom text element name for freq text template, null for no text |
 | `/FB?` | `true` | false for no frequency bars |
 | ***/CS…*** | ![corner stripes](assets/elements/TCC-early-CS.svg) | ***corner stripes arguments*** |
+| `/CShf` | `0.9` | corner stripes horizontal fundamental MHz |
+| `/CSnl` | `10` | corner stripes number of lines |
 | `/CSa` | `1 TCr atan` | corner stripes angle from horizontal |
 | `/CSol` | `3.03 xGsz` | corner stripes outer length from corner |
 | `/CSow` | `Gsz` | corner stripes outer width |
-| `/CShf` | `0.9` | corner stripes horizontal fundamental MHz |
 | `/CSlw` | `CShf mhz div2 1 TCar atan sin mul` | corner stripes linewidth at normal aspect ratio |
-| `/CSnl` | `10` | corner stripes number of lines |
 | `/CSep` | `Glw` | corner stripes end padding |
 | `/CSbp` | `Glw` | corner stripes border padding (clipped) |
 | `/CSc` | `[/black /white]` | corner stripes colours: [grating surround] |
@@ -594,6 +595,7 @@ Inheritance: `TCC-early` <— [`Blank`](#user-content-blank-arguments)
 | `/Bah` | `0` | border arrow height (fraction of border width, 0 for no arrows) |
 | `/Bac` | `[1 0]` | border arrow colours: [horizontal vertical] |
 | `/Bcc` | `[]` | castellation colours: empty or [left-red left-blue bottom-green right-yellow top-cyan] |
+| `/Bbh` | `[]` | side block heights reative to 1080: empty or [left right] arrays |
 | `/B?` | `true` | false for no drawn border |
 </details>
 
@@ -614,7 +616,7 @@ Inheritance: `TCC` <— [`TCC-early`](#user-content-tcc-early-arguments) <— [`
 | ***/C…*** | ![caption](assets/elements/TCC-C.svg) | ***caption arguments*** |
 | `/Ct` | `[/T-1]` | caption custom text element names: empty for no caption |
 | ***/SW…*** | ![step wedge](assets/elements/TCC-SW.svg) | ***step wedge arguments*** |
-| `/SWoh` | `2.55 xGsz` | step wedge outer height |
+| `/SWoh` | `2.55 xGsz` | step wedge overall height |
 | `/SWw` | `0.52 xGsz` | step wedge width |
 | ***/NP…*** |  | ***needle pulse line arguments*** |
 | `/NPx` | `PPx 0.7 xGsz sub` | needle pulse line horizontal centre |
@@ -659,7 +661,7 @@ Inheritance: `TCC-625` <— [`TCC`](#user-content-tcc-arguments) <— [`TCC-earl
 | `/CCbr` | `CCr CClw add` | black circle radius: 0 for none |
 | `/CCor` | `CCr CClw 1.8 mul add` | outer circle radius: 0 for none |
 | ***/SW…*** | ![step wedge](assets/elements/TCC-625-SW.svg) | ***step wedge arguments*** |
-| `/SWoh` | `2.67 xGsz` | step wedge outer height |
+| `/SWoh` | `2.67 xGsz` | step wedge overall height |
 | `/SWw` | `0.535 xGsz` | step wedge width |
 | `/SWc` | `[0 0.33 0.5 0.8 1]` | step wedge colours: [bottom to top] |
 | ***/FB…*** | ![frequency bars](assets/elements/TCC-625-FB.svg) | ***frequency bars arguments*** |
@@ -723,9 +725,9 @@ Inheritance: `TCD-early` <— [`TCC-early`](#user-content-tcc-early-arguments) <
 | `/CCor` | `CCr CClw mul2 add` | outer circle radius: 0 for none |
 | ***/SW…*** | ![step wedge](assets/elements/TCD-early-SW.svg) | ***step wedge arguments*** |
 | `/SWw` | `0.593 xGsz` | step wedge width |
-| `/SWoh` | `2.965 xGsz` | step wedge outer height |
+| `/SWoh` | `2.965 xGsz` | step wedge overall height |
 | `/SWc` | `[0 0.33 0.55 0.75 0.95]` | step wedge colours: [bottom to top] |
-| `/SWds` | `1.6 xGlw` | step wedge dot size 0 for none, diameter or [width height] array |
+| `/SWds` | `1.6 xGlw` | step wedge dot size (diameter/width), 0 for none |
 | ***/FB…*** | ![frequency bars](assets/elements/TCD-early-FB.svg) | ***frequency bars arguments*** |
 | `/FBow` | `Gsz Glw sub` | freq bar outer width |
 | `/FBh` | `0.53 xGsz` | freq bars height |
@@ -745,7 +747,7 @@ Inheritance: `TCD-early` <— [`TCC-early`](#user-content-tcc-early-arguments) <
 | `/CShf` | `1.0` | corner stripes horizontal fundamental MHz |
 | `/CSlw` | `CShf mhz div2 CSa sin mul` | corner stripes linewidth at normal aspect ratio |
 | ***/B…*** | ![border](assets/elements/TCD-early-B.svg) | ***border arguments*** |
-| `/Bw` | `hGsz hGlw sub` | border width |
+| `/Bw` | `{ hGsz hGlw sub }` | border width |
 | `/Bah` | `1` | border arrow height (fraction of border width, 0 for no arrows) |
 </details>
 
@@ -779,7 +781,7 @@ Inheritance: `TCE` <— [`TCD-early`](#user-content-tcd-early-arguments) <— [`
 | `/IDs` | `(E)` | ident string: empty for no ident |
 | `/IDy` | `TCy 2.6 xGsz sub` | ident vertical centre |
 | ***/SW…*** | ![step wedge](assets/elements/TCE-SW.svg) | ***step wedge arguments*** |
-| `/SWds` | `1.3 xGlw` | step wedge dot size 0 for none, diameter or [width height] array |
+| `/SWds` | `1.3 xGlw` | step wedge dot size (diameter/width), 0 for none |
 | ***/FB…*** | ![frequency bars](assets/elements/TCE-FB.svg) | ***frequency bars arguments*** |
 | `/FBh` | `0.55 xGsz` | freq bars height |
 | `/FBc` | `[ 0.25 0.75 0.75 ]` | freq bars colours: [min max surround] |
@@ -825,8 +827,8 @@ Inheritance: `TCF-early` <— [`TCE`](#user-content-tce-arguments) <— [`TCD-ea
 | `/SWw` | `Gsz Glw sub` | step wedge width |
 | `/SWx` | `lGx 2 xGsz add TCx 3 xGsz sub min` | step wedge horizontal centre |
 | `/SWc` | `[0 0.2 0.3 0.4 0.6 0.85]` | step wedge colours: [bottom to top] |
-| `/SWoh` | `4 xGsz Glw sub` | step wedge outer height |
-| `/SWds` | `1.2 xGlw` | step wedge dot size 0 for none, diameter or [width height] array |
+| `/SWoh` | `4 xGsz Glw sub` | step wedge overall height |
+| `/SWds` | `1.2 xGlw` | step wedge dot size (diameter/width), 0 for none |
 | ***/FB…*** | ![frequency bars](assets/elements/TCF-early-FB.svg) | ***frequency bars arguments*** |
 | `/FB2?` | `false` | true for 2 bars, false for 1 |
 | `/FBow` | `SWw` | freq bar outer width |
@@ -848,6 +850,7 @@ Inheritance: `TCF-early` <— [`TCE`](#user-content-tce-arguments) <— [`TCD-ea
 | ***/B…*** | ![border](assets/elements/TCF-early-B.svg) | ***border arguments*** |
 | `/Bac` | `[1 1]` | border arrow colours: [horizontal vertical] |
 | `/Bcc` | `[ [ 250 19 30 ] [ 27 85 157 ] [ 40 107 47 ] [ 254 203 33 ] [ 17 133 222 ] ]` | castellation colours: empty or [left-red left-blue bottom-green right-yellow top-cyan] |
+| `/Bbh` | `[ [90 195 93 87] [90 105 164 68] ]` | side block heights reative to 1080: empty or [left right] arrays |
 </details>
 
 <details><summary><code>TCF-optical</code> arguments</summary>
@@ -905,10 +908,10 @@ Inheritance: `TCF-electronic` <— [`TCF-optical`](#user-content-tcf-optical-arg
 | `/CBc` | `[/white /yellow /cyan /green /magenta /red /blue /black /white]` | colour bar colours: [left to right] |
 | ***/SW…*** | ![step wedge](assets/elements/TCF-electronic-SW.svg) | ***step wedge arguments*** |
 | `/SWc` | `[0 47 93 139 183 232]` | step wedge colours: [bottom to top] |
-| `/SWoh` | `4 xGsz Golw 3 mul sub` | step wedge outer height |
+| `/SWoh` | `4 xGsz Golw 3 mul sub` | step wedge overall height |
 | `/SWw` | `Gsz hGlw sub Golw 1.5 mul sub` | step wedge width |
 | `/SWx` | `lGx 2 xGsz add TCx 3 xGsz sub min hGsz add hGlw sub SWw div2 sub` | step wedge horizontal centre |
-| `/SWds` | `[ 1.5 xGlw dup TCr div ]` | step wedge dot size 0 for none, diameter or [width height] array |
+| `/SWds` | `1.5 xGlw` | step wedge dot size (diameter/width), 0 for none |
 | ***/FB…*** | ![frequency bars](assets/elements/TCF-electronic-FB.svg) | ***frequency bars arguments*** |
 | `/FBf` | `[ [1.5 6 0] [2.5 10 0] [3.5 13 1] [4 15 0] [4.5 17 0] [5.25 20 0] ]` | frequencies: [MHz nbars antiphase] array |
 | `/FBs?` | `true` | true for sinusoidal frequency gratings, false for square |
@@ -919,6 +922,7 @@ Inheritance: `TCF-electronic` <— [`TCF-optical`](#user-content-tcf-optical-arg
 | `/CSep` | `1.5 xGlw` | corner stripes end padding |
 | ***/B…*** | ![border](assets/elements/TCF-electronic-B.svg) | ***border arguments*** |
 | `/Bcc` | `[ [235 70 70] [70 70 235] [70 253 70] [253 253 70] [70 253 253] ]` | castellation colours: empty or [left-red left-blue bottom-green right-yellow top-cyan] |
+| `/Bbh` | `[ [88 197 90 90] [88 110 162 75] ]` | side block heights reative to 1080: empty or [left right] arrays |
 </details>
 
 <details><summary><code>Blank</code> arguments</summary>
@@ -1211,7 +1215,7 @@ They are calculated to fit the unit square[^10] at the specified rotation then s
 Odd-sided polygons are oriented with a vertex at top-centre and horizontal base,
 placed using constant width Reuleaux[^11] curve fitting to normalise size and rotation within the bounds,
 therefore the centroid is offset from the specified centre as this animation shows (credit: *LEMeZza/Wikimedia Commons*).
-All shapes can be rotated and distorted, filled and/or stroked, and selectively [mirrored](#layering-and-mirroring) in all quadrants.
+Shapes can be rotated and distorted, filled and/or stroked, and selectively [mirrored](#layering-and-mirroring) in all quadrants.
 See also [colour arguments](#user-content-colour-arguments).
 
 For other shapes, consider using dingbat fonts and render as [custom text](#custom-text) instead.
@@ -1300,7 +1304,7 @@ Unlike custom shapes and text, images cannot be distorted, but like shapes they 
 ### Custom text
 
 Text can be aligned around the compass, justified, scaled, distorted to fit width,
-and block-inverted to replicate logos like ![BBC](assets/fonts/bbc-16.svg) (sometimes called cameo fonts).
+and [block-inverted](#user-content-block-inverted-fonts) to replicate logos like ![BBC](assets/fonts/bbc-16.svg) (sometimes called cameo fonts).
 There are many arguments to control block-inversion,
 including monospacing, padding, rounded corners, tracking.
 Text can also have an opaque background, optionally skewed and rounded.
@@ -1364,21 +1368,19 @@ and render it as a [custom image](#custom-images) instead.
 ## Resolution
 
 > [!NOTE]
-> Resolution, [aspect ratio](#aspect-ratio) and [scaling](#scaling) depend on factors too involved to delve into here – whether analog/digital, PAL/NTSC/SECAM, line count, line time, sampling rate etc.
-  but there are experts on the VideoHelp Forum[^14] and elsewhere with detailed answers.
-
+> Resolution, [aspect ratio](#aspect-ratio) and [scaling](#scaling) depend on factors too involved to delve into here – whether analog/digital, PAL/NTSC/SECAM, line count, line time, sampling rate etc. – see the VideoHelp Forum and elsewhere for detailed answers.
 
 In the vertical plane, analog scan lines are inherently discrete.
-In the horizontal the intensity is continuous but cannot alternate faster than the scan rate and video bandwidth allow under the sampling theorem[^15].
-These constraints are specified by various standards, therefore analog horizontal resolution can be approximated[^16].
-The practical measure used is Television lines (TVL)[^17], explained in Alan Pemberton’s *Ponderings*[^18].
+In the horizontal the intensity is continuous but cannot alternate faster than the scan rate and video bandwidth allow under the sampling theorem[^14].
+These constraints are specified by various standards, therefore analog horizontal resolution can be approximated[^15].
+The practical measure used is Television lines (TVL)[^16], explained in Alan Pemberton’s *Ponderings*[^17].
 
 In simulating analog test cards digitally, TCM simply scales the active analog line time to the width `TCw` and the active scan lines to the height `TCh`.
 This gives square unit pixels for 4:3 625-line replicas at the default 768x576 size but applies scaling for other values.
 If the aspect ratio `TCr` is distorted the _effective line time_ width does not change in order to maintain element shapes,
 see [aspect ratio](#aspect-ratio) and [time-base scaling](#user-content-time-based-scaling).
 
-TCM takes no account of Kell factor[^19] and rounds pattern size up to even numbers
+TCM takes no account of Kell factor[^18] and rounds pattern size up to even numbers
 to simplify the maths and facilitate digital video post-processing.
 So 625/50 has 575 active lines (25 frame blanking lines) but 576 is used (the default),
 and 405/50 has 377 active lines (14 frame blanking lines) and height 378.
@@ -1454,7 +1456,7 @@ TODO: note about rise/fall times in simulating analog test cards digitally
 Colour arguments can be expressed as
 [greyscale](#user-content-greyscale),
 [RGB](#user-content-rgb), [YUV](#user-content-yuv), [HSL](#user-content-hsl), [HSB](#user-content-hsb) (HSV),
-[unit interval](#user-content-unit-interval-colour-components) (UI)[^20]
+[unit interval](#user-content-unit-interval-colour-components) (UI)[^19]
 or [named](#user-content-named-colours) colours,
 includng [chroma keying](#user-content-chroma-keying) and [random](#user-content-random-colour) colour names.
 TCM outputs sRGB-based [colour space](#colour-space)
@@ -1491,8 +1493,8 @@ RGB can also be specified in hexadecimal #RRGGBB notation (case-insensitive) as 
 
 ### YUV
 
-YUV was invented for colour television[^21] but the number of standards nowadays is bewildering.
-The following are currently supported[^22]:
+YUV was invented for colour television[^20] but the number of standards nowadays is bewildering.
+The following are currently supported[^21]:
 
 - `YUVDSD`: limited YCbCr &rarr; full RGB, ITU-R BT.601, for digital SDTV
 - `YUVDHD`: limited YCbCr &rarr; full RGB, ITU-R BT.709, for digital HDTV
@@ -1503,7 +1505,7 @@ The following are currently supported[^22]:
 `YUV` defaults to `YUVDSD` about which Wikipedia has this to say:
 
 > This form of Y′CbCr is used primarily for older standard-definition television systems,
-  as it uses an RGB model that fits the phosphor emission characteristics of older CRTs[^23].
+  as it uses an RGB model that fits the phosphor emission characteristics of older CRTs[^22].
 
 <!-- Math in collapsed section bug: avoid $G_y$, see https://github.com/orgs/community/discussions/57950 -->
 To extend YUV conversions, add a matrix procedure like `YUVDSD` in [tcm-colour.ps](Resource/ProcSet/tcm-colour.ps)
@@ -1527,7 +1529,7 @@ Hue is an angle (0 to 360&deg;), and Saturation and Lightness are percentages (0
 
 ### HSB
 
-HSB colour, a.k.a. HSV[^24], is specified as an array of [Hue Saturation Brightness] values.\
+HSB colour, a.k.a. HSV[^23], is specified as an array of [Hue Saturation Brightness] values.\
 Hue is an angle (0 to 360&deg;), and Saturation and Brightness are percentages (0 to 100%).
 
 *Example:* `[310 60 90]HSB`
@@ -1537,7 +1539,7 @@ Hue is an angle (0 to 360&deg;), and Saturation and Brightness are percentages (
 
 ### Named colours
 
-All the standardised X11 colour names[^25] are supported.
+All the standardised X11 colour names[^24] are supported.
 Colour names are case-insensitive and must not contain spaces.
 Both `grey` and `gray` (US) are recognised.
 
@@ -1549,9 +1551,9 @@ Both `grey` and `gray` (US) are recognised.
 Colour names for chroma key compositing (case-insensitive) are:\
 `/GreenScreen` (`[0 177 64]`)\
 `/BlueScreen` (`[0 71 187]`)\
-these seem most common but `[8 39 245]` is given as blue standard by Gerriets[^26].
+these seem most common but `[8 39 245]` is given as blue standard by Gerriets[^25].
 
-Green screens are generally used now but blue screens were prominent in early television[^27].
+Green screens are generally used now but blue screens were prominent in early television[^26].
 
 
 ### Random colour
@@ -1561,7 +1563,7 @@ Use `/RandomColour` or `/RandomGrey` (case-insensitive) for a randomly generated
 ### Unit interval colour components
 
 Whatever colour representation is used, TCM has to convert all colour component values to the
-unit interval[^20] (UI), i.e. real numbers between 0.0&nbsp;and&nbsp;1.0 inclusive,
+unit interval[^19] (UI), i.e. real numbers between 0.0&nbsp;and&nbsp;1.0 inclusive,
 for PostScript to process.
 
 Therefore TCM also accepts UI values for all colour components, with automatic UI detection.
@@ -1601,8 +1603,8 @@ PS can paint any gradient, not necessarily continuous, by interpolating between 
 
 ### Colour space
 
-TCM uses PS device colour spaces `DeviceRGB` and `DeviceGray` which, subject to the `-sDEVICE` option, GS encodes with sRGB and sGray ICC[^28] profiles respectively (sGray is a greyscale equivalent of sRGB with the same ≈2.2 gamma curve).
-Specifically, the GS Color Management document[^29] states:
+TCM uses PS device colour spaces `DeviceRGB` and `DeviceGray` which, subject to the `-sDEVICE` option, GS encodes with sRGB and sGray ICC[^27] profiles respectively (sGray is a greyscale equivalent of sRGB with the same ≈2.2 gamma curve).
+Specifically, the GS Color Management document[^28] states:
 
 > “The profile default_gray.icc is defined to provide output along the neutral axis with an sRGB linearization.
    The profile default_rgb.icc is the V2 sRGB ICC profile”
@@ -1610,9 +1612,9 @@ Specifically, the GS Color Management document[^29] states:
 
 ### Analog TV characteristics
 
-The response gamma of a CRT is ≈2.5, the five-halves power law[^30], but 2.4 is used for BT.601 digitisation.
+The response gamma of a CRT is ≈2.5, the five-halves power law[^29], but 2.4 is used for BT.601 digitisation.
 This is corrected for at the camera end which applies a gamma of 2.2<sup>-1</sup> to compensate for low-light viewing too.
-Today, Hybrid Log-Gamma (HLG) for High Dynamic Range (HDR) TV is compatible with Standard Dynamic Range (SDR)[^31],
+Today, Hybrid Log-Gamma (HLG) for High Dynamic Range (HDR) TV is compatible with Standard Dynamic Range (SDR)[^30],
 so 2.2 remains.
 
 However the gamma of modern display screens is typically ≈2.2, not 2.5, so midtones appear brighter.
@@ -1701,6 +1703,7 @@ The filename must match the PS `FontName` in the file, which is often the filena
 If that fails, use a font inspector app:
 - Mac: Font Book –> File –> Validate File…
 - Linux: `fc-scan` dumps the `postscriptname`
+- Mac/Linux `otfinfo -p` from the [LCDF Typetools] package
 - Windows: install [Font-Validator]
 
 ### Editing fonts
@@ -1715,8 +1718,8 @@ And the GillSans-alt TTF is GillSans with altered weight for *TCA*, which also c
 
 Block-inverted fonts (a.k.a cameo) are hard to find
 so TCM fashions them in PostScript by modifying the glyphs
-(reversing paths and appending padded anticlockwise border).
-Consequently, any font can be block-inverted.
+(reversing paths and appending anticlockwise border).
+Consequently any font can be block-inverted.
 The `ItalicAngle` embedded in the font determines the default skew
 and characters can be monospaced with fixed width and tracking.
 See [Text arguments](#user-content-text-arguments-and-notes) for all block rendering argument details.
@@ -2140,7 +2143,7 @@ ffmpeg -y -v warning -ss 13:5.1 -t 5 -i magic.mkv -i tcD.png -filter_complex '
 
 #### Overlay explanation
 
-The `magic.mkv` source[^32] is a HD (BT.709) 1920x1080 60 fps progressive video with 3:2 aspect centred episodes.
+The `magic.mkv` source[^31] is a HD (BT.709) 1920x1080 60 fps progressive video with 3:2 aspect centred episodes.
 A 5 second clip is extracted 13 minutes 5.1 seconds in.
 
 Filters:
@@ -2189,11 +2192,11 @@ Making a DVD involves:
 
 First a word about colour reproduction because it is so convoluted.
 The project [FreeCalRec601](https://github.com/danmons/FreeCalRec601) by Dan Mons
-is a Rec.601/BT.601[^23][^33] DVD and test pattern generator for calibrating Standard Definition (SD) CRT displays from sRGB colour chunks made with ImageMagick.
+is a Rec.601/BT.601[^22][^32] DVD and test pattern generator for calibrating Standard Definition (SD) CRT displays from sRGB colour chunks made with ImageMagick.
 TCM images also have sRGB [colour space](#colour-space) when output by GS RGB devices,
 so we just deploy similar FFmpeg options for SD DVD conformance
 (FreeCalRec601 ISOs built from GS-made colour chunks are binary-identical – tested for TIFF and PNG).
-See also an excellent post on FFmpeg color space at Canva Developers[^34].
+See also an excellent post on FFmpeg color space at Canva Developers[^33].
 
 
 #### VOB commands
@@ -2204,9 +2207,9 @@ FreeCalRec601 [build_vob.sh](https://github.com/danmons/FreeCalRec601/blob/maste
 ```bash
 # options:
 vf=pal # or ntsc
-active=720 # 720 for digital viewer else 704 is assumed for analog overscan
+width=720 # 720 for digital viewer else 704 is assumed for analog
 # make VOB
-[[ $active -eq 720 ]] && pad=null || pad='pad=round(iw*720/704/16)*16:ih:-1'
+[[ $width -eq 720 ]] && pad=null || pad='pad=round(iw*720/704/16)*16:ih:-1'
 if [[ $vf = pal ]]; then
     cs=bt601-6-625 cp=bt470bg ct=gamma28 r=50 s=720x576 # pal
 else
@@ -2229,7 +2232,7 @@ For a video with audio use `ffmpeg -y -v warning -i myTC.mp4` (for a MP4).
 Options:
 
 - `vf` selects PAL or NTSC standard.
-- `active` selects full-width (720) or overscan (704) viewing:
+- `width` selects full-width (720) or active line width (704) viewing:
   choose 720 to play on a digital screen or 704 to play on an analog CRT TV.
 
 > ![Note](assets/icons/note-16.svg)\
@@ -2237,16 +2240,16 @@ Options:
 
 #### VOB explanation
 
-- `vf`,`active`,`cs`,`cp`,`ct`,`r`,`s` shell variables for video format and overscan values
+- `vf`,`width`,`cs`,`cp`,`ct`,`r`,`s` shell variables for video format values
 - `-loop` ([image2 demuxer](https://www.ffmpeg.org/ffmpeg-formats.html#image2-1)) loops the image frame
 - `-vf` video filters:
   - [`format`](https://www.ffmpeg.org/ffmpeg-filters.html#format) establishes pixel format for filter chain
   - [`fps`](https://www.ffmpeg.org/ffmpeg-filters.html#fps) set the progressive frame rate to twice the interlaced field rate
     (or use [`framerate`](https://www.ffmpeg.org/ffmpeg-filters.html#framerate) to interpolate new frames when input frame rate is less than twice field rate)
-  - [`pad`](https://www.ffmpeg.org/ffmpeg-filters.html#pad) pads the width for overscan, if selected
+  - [`pad`](https://www.ffmpeg.org/ffmpeg-filters.html#pad) pads the width to 720, if selected
   - [`zscale`](https://www.ffmpeg.org/ffmpeg-filters.html#zscale) scale input for correct interlacing size with no colour conversion
   - [`colorspace`](https://www.ffmpeg.org/ffmpeg-filters.html#colorspace) converts the colour primaries, white point and gamma from bt709 (sRGB) to bt601 for the target
-    (`irange=tv` suppresses `colorspace` warning for image input[^35])
+    (`irange=tv` suppresses `colorspace` warning for image input[^34])
   - [`tinterlace`](https://www.ffmpeg.org/ffmpeg-filters.html#tinterlace) makes the video interlaced, top field first, with vertical low-pass filtering (reduces interline twitter and Moiré artefacts)
 - `-target` ([main options](https://www.ffmpeg.org/ffmpeg.html#Main-options)) sets video and audio format options for the target output, `pal-dvd` or `ntsc-dvd`
 - `-flags` ([generic codec options](https://www.ffmpeg.org/ffmpeg-codecs.html#Codec-Options)) sets interlace encoding flags (discrete cosine transform (DCT) and motion estimation)
@@ -2257,15 +2260,13 @@ Options:
 
 #### 720 vs 704 or 702
 
-There’s a bewildering amount of discussion about DVD aspect ratios and the 720 vs 704/702 debate.
-My understanding is square pixel digital sources like TCM are displayed in full on modern digital displays but cropped at the sides on a TV CRT due to analog overscan[^36].
-So the trick is to pad wider then scale back[^35] when making a DVD for analog playback.
+There’s a bewildering amount of discussion about DVD aspect ratios and the 720 vs 704/702 debate[^35].
+My understanding is square pixel digital sources like TCM are displayed in full on modern digital displays but cropped at the sides on a TV CRT due to analog blanking.
+So the trick is to pad wider then scale back[^34] when making a DVD for analog playback.
 
-Digitising analog TV active line time at 13.5 MHz for BT.601 results in 702 pixels per line for PAL and 713.5 for NTSC[^36].
-DVD encodes MPEG-2 video which uses 16x16 macroblocks[^37] so the size needs to be divisible by 16.
-The nearest multiple of 16 to 702 is 704 (rounding up) and to 713.5 is also 704 (rounding down).
-Hence 704 is a fair compromise, also a DVD standard, but 720 accommodates both formats within spec.
-Whether the DVD is made 720 or 704 wide makes no difference
+DVD encodes MPEG-2 video with 16x16 macroblocks[^36], so the digital dimensions need to be divisible by 16.
+Analog to digital resolution is described elsewhere[^37] but the DVD standard allows for both 720 and 704 pixels to accommodate PAL and NTSC scans.
+Whether the DVD is made 720 or 704 pixels wide makes no difference
 – as confirmed by a PAL AR Test DVD and discussion on VideoHelp[^38] –
 but the ffmpeg target preset is 720.
 
@@ -2378,7 +2379,7 @@ and the cards, monoscopes and slides all differed slightly.
   – many thumbnail re-creations by artist Dave Jeffery
 - [DeviantArt LDD101](https://www.deviantart.com/ldd101/gallery)
   – lots of patterns from a Vietnam artist
-- all manner of commercial outlets like Alamy, Adobe Stock etc. sell test cards of dubious authenticity
+- all manner of commercial outlets like Alamy, Adobe Stock etc. sell test cards of dubious accuracy
 
 In general, any analog-era test pattern with uniform grey background or perfect typography or lacking telltale signs of handcrafted workmanship is likely to be a reconstruction.
 
@@ -2437,7 +2438,7 @@ Even now they are a fascinating read, and many principles explained are relevant
 
 This year (2025) I became aware that I had been living just two streets away from Mr&nbsp;King
 in Furzeham, Brixham, for 14 years until he died in 2010.
-That August soon after his funeral service at [St. Mary’s](https://youtu.be/OmLH3yhwXrQ) I joined the organist rota there, still unaware.
+Soon after his funeral service at [St. Mary’s](https://youtu.be/OmLH3yhwXrQ) that Summer I joined the organist rota there, still unaware.
 Anyway, he mentored through his writings, covering the heyday of analog electronics
 and milestone transitions from valve to semiconductor, monochrome to colour, analog to digital…
 RIP GJK.
@@ -2493,7 +2494,7 @@ RIP GJK.
 - [The Test Card Girl](https://youtu.be/t7yIXLx5on0) – AMTV documentary video: The Lasting Legacy of Test Card F
 - [Technical descriptions of UK test cards](https://web.archive.org/web/20160409090425/http://www.pembers.freeserve.co.uk/Test-Cards/Test-Card-Technical.html) – authoritative information by Alan Pemberton
 - [Tim Worthington: The Test Card](https://timworthington.blogspot.com/2013/11/the-fifty-fourth-annual-academy-salute.html) – a humorous take
-- see also [Test card sources](#test-card-sources) links above
+- see also [Test card sources](#test-card-sources) above
 
 ### Other test card projects
 
@@ -2505,10 +2506,12 @@ RIP GJK.
 - repo [jyun9504/tv-test-card](https://github.com/jyun9504/tv-test-card) – a widescreen Vue implementation
 - repo [lordxeorus/Test-Patterns](https://github.com/lordxeorus/Test-Patterns) – FFmpeg colour bars generation: EBU 100/75% for PAL and SMPTE for NTSC
 - [TV Testcard Generator](https://testcardgen.onrender.com/) – interactive online tool for quick TC generation on the [Render](https://render.com/) platform
+- [Programmable Colour Test Card Generator](https://www.bbcbasic.co.uk/tccgen/tccgen.html) – by Richard Russell (TCJ creator), the [programmer](https://www.bbcbasic.co.uk/tccgen/download.html) works on Windows 10 but the hardware unit is unavailable
 - [FML Test Card Maker](https://web.archive.org/web/20151010221017/http://www.oodletuz.fsnet.co.uk/soft/tcmaker.htm) – Windows tool, creates test cards and patterns from elements, see [CardMaker](#user-content-cardmaker)
 
 ### TV Community
 
+- [VideoHelp Forum](https://forum.videohelp.com/) – huge video knowledgebase since 1999
 - [British Amateur Television Club](https://batc.org.uk/) – promotes all aspects of television past and present
 - [British Vintage Wireless Society](https://www.bvws.org.uk/) – preservation of vintage radio and related equipment, history, technical data
 - [UK Vintage Radio Repair and Restoration](https://www.vintage-radio.net/) – discussion forum
@@ -2522,7 +2525,6 @@ RIP GJK.
 
 - [PostScript Language Reference Manual](https://www.adobe.com/jp/print/postscript/pdfs/PLRM.pdf) – Adobe Systems PLRM LanguageLevel 3
 - [ttf2pscid2](https://github.com/scriptituk/ttf2pscid2) – TTF to PostScript Type 2 CIDFont Converter by [scriptituk]
-- [Lettering Designer](https://www.tribalsigns.co.uk/shop/custom-lettering/72-custom-lettering.html) – PostScript generated signage developed by [scriptituk]
 
 ### Useful tools
 
@@ -2531,7 +2533,6 @@ RIP GJK.
 - [Cairo] – 2D graphics library
 - [DVDAuthor] – for authoring DVD file and directory structure
 - [DVDStyler] – cross-platform free DVD authoring, front end for [DVDAuthor]
-- [ExifTool] – for manipulating metadata in a wide variety of file types
 - [FFmpeg] – software suite that handles multimedia data
 - [FontForge] – comprehensive font editor
 - [Font-Validator] – initially developed by Microsoft, has cross-platform binary downloads
@@ -2539,6 +2540,7 @@ RIP GJK.
 - [Gifski] – high-quality GIF animation encoder using [pngquant]
 - [GIMP] – GNU Image Manipulation Program
 - [ImageMagick] – for editing and manipulating digital images
+- [LCDF Typetools] – font manipulation [tools](https://github.com/kohler/lcdf-typetools)
 - [Oxipng] – PNG/APNG compression optimiser
 - [pdftocairo] – PDF to SVG/PNG/ converter using [Poppler] and [Cairo]
 - [Poppler] – PDF rendering library
@@ -2563,6 +2565,7 @@ RIP GJK.
 [Gifski]: https://gif.ski/
 [GIMP]: https://www.gimp.org/
 [ImageMagick]: https://imagemagick.org/
+[LCDF Typetools]: https://www.lcdf.org/type/
 [MuPDF]: https://mupdf.readthedocs.io/
 [Oxipng]: https://github.com/oxipng/oxipng
 [pdftocairo]: https://www.mankier.com/1/pdftocairo
@@ -2598,53 +2601,53 @@ RIP GJK.
 
 [^13]: [Document Structuring Conventions](https://en.wikipedia.org/wiki/Document_Structuring_Conventions) – Wikipedia
 
-[^14]: [VideoHelp Forum](https://forum.videohelp.com/) – huge video knowledgebase since 1999
+[^14]: [Sampling theorem](https://en.wikipedia.org/wiki/Nyquist–Shannon_sampling_theorem) – Wikipedia
 
-[^15]: [Sampling theorem](https://en.wikipedia.org/wiki/Nyquist–Shannon_sampling_theorem) – Wikipedia
+[^15]: [List of common display resolutions](https://en.wikipedia.org/wiki/List_of_common_display_resolutions#Analog_systems) – Wikipedia
 
-[^16]: [List of common display resolutions](https://en.wikipedia.org/wiki/List_of_common_display_resolutions#Analog_systems) – Wikipedia
+[^16]: [Television lines (TVL)](https://en.wikipedia.org/wiki/Television_lines) – Wikipedia
 
-[^17]: [Television lines (TVL)](https://en.wikipedia.org/wiki/Television_lines) – Wikipedia
+[^17]: [Technical descriptions of UK test cards: Resolution](https://web.archive.org/web/20160409090425/http://www.pembers.freeserve.co.uk/Test-Cards/Test-Card-Technical.html#Resolution) – Alan Pemberton
 
-[^18]: [Technical descriptions of UK test cards: Resolution](https://web.archive.org/web/20160409090425/http://www.pembers.freeserve.co.uk/Test-Cards/Test-Card-Technical.html#Resolution) – Alan Pemberton
+[^18]: [Kell factor](https://en.wikipedia.org/wiki/Kell_factor) – Wikipedia
 
-[^19]: [Kell factor](https://en.wikipedia.org/wiki/Kell_factor) – Wikipedia
+[^19]: [Unit interval](https://en.wikipedia.org/wiki/Unit_interval) – Wikipedia
 
-[^20]: [Unit interval](https://en.wikipedia.org/wiki/Unit_interval) – Wikipedia
+[^20]: [Y′UV History](https://en.wikipedia.org/wiki/Y′UV#History) – Wikipedia
 
-[^21]: [Y′UV History](https://en.wikipedia.org/wiki/Y′UV#History) – Wikipedia
+[^21]: [YUV – RGB Conversion](https://archive.ph/okUB) – archived from equasys GmbH
 
-[^22]: [YUV – RGB Conversion](https://archive.ph/okUB) – archived from equasys GmbH
+[^22]: [ITU-R BT.601 conversion](https://en.wikipedia.org/wiki/YCbCr#ITU-R_BT.601_conversion) – Wikipedia
 
-[^23]: [ITU-R BT.601 conversion](https://en.wikipedia.org/wiki/YCbCr#ITU-R_BT.601_conversion) – Wikipedia
+[^23]: [HSL and HSV](https://en.wikipedia.org/wiki/HSL_and_HSV) – Wikipedia
 
-[^24]: [HSL and HSV](https://en.wikipedia.org/wiki/HSL_and_HSV) – Wikipedia
+[^24]: [X11 colour names](https://en.wikipedia.org/wiki/X11_color_names#Color_name_chart) – Wikipedia
 
-[^25]: [X11 colour names](https://en.wikipedia.org/wiki/X11_color_names#Color_name_chart) – Wikipedia
+[^25]: [Green screen / blue screen technique —> Color location](https://www.gerriets.com/gb/page/tv-and-studio-supplies/) – by PremiumBeat (Shutterstock)
 
-[^26]: [Green screen / blue screen technique —> Color location](https://www.gerriets.com/gb/page/tv-and-studio-supplies/) – by PremiumBeat (Shutterstock)
+[^26]: [Blue Screen vs Green Screen](https://www.premiumbeat.com/blog/blue-screen-vs-green-screen/) – Gerriets, specialist for stage and event equipment
 
-[^27]: [Blue Screen vs Green Screen](https://www.premiumbeat.com/blog/blue-screen-vs-green-screen/) – Gerriets, specialist for stage and event equipment
+[^27]: [International Color Consortium](https://www.color.org/) – ICC specification
 
-[^28]: [International Color Consortium](https://www.color.org/) – ICC specification
+[^28]: [Ghostscript Color Management](https://ghostscript.readthedocs.io/en/latest/GhostscriptColorManagement.html) – colour architecture in Ghostscript Release 9
 
-[^29]: [Ghostscript Color Management](https://ghostscript.readthedocs.io/en/latest/GhostscriptColorManagement.html) – colour architecture in Ghostscript Release 9
+[^29]: [Poynton’s Gamma FAQ](https://www.poynton.ca/faq/gammafaq/GammaFAQ.pdf) – Charles Poynton, 1998
 
-[^30]: [Poynton’s Gamma FAQ](https://www.poynton.ca/faq/gammafaq/GammaFAQ.pdf) – Charles Poynton, 1998
+[^30]: [High Dynamic Range television and Hybrid Log-Gamma](https://www.bbc.co.uk/rd/projects/high-dynamic-range) – BBC R&D
 
-[^31]: [High Dynamic Range television and Hybrid Log-Gamma](https://www.bbc.co.uk/rd/projects/high-dynamic-range) – BBC R&D
+[^31]: [The Magic Roundabout Series 1 1965–68 (incomplete)](https://youtu.be/jS2IlF9GEco) – 5 of 224 episodes, mostly lost
 
-[^32]: [The Magic Roundabout Series 1 1965–68 (incomplete)](https://youtu.be/jS2IlF9GEco) – 5 of 224 episodes, mostly lost
+[^32]: [Rec.601/BT.601](https://en.wikipedia.org/wiki/Rec._601) – Wikipedia, ‘the bridge that joined the analog and digital worlds’
 
-[^33]: [Rec.601/BT.601](https://en.wikipedia.org/wiki/Rec._601) – Wikipedia, ‘the bridge that joined the analog and digital worlds’
+[^33]: [A journey through color space with FFmpeg](https://www.canva.dev/blog/engineering/a-journey-through-colour-space-with-ffmpeg/) – excellent article by Sven Schindler, Canva
 
-[^34]: [A journey through color space with FFmpeg](https://www.canva.dev/blog/engineering/a-journey-through-colour-space-with-ffmpeg/) – excellent article by Sven Schindler, Canva
+[^34]: [Scaling interlaced video](https://ffmpeg.org/pipermail/ffmpeg-user/2014-March/020384.html) – Mark Himsley on FFmpeg-user
 
-[^35]: [Scaling interlaced video](https://ffmpeg.org/pipermail/ffmpeg-user/2014-March/020384.html) – Mark Himsley on FFmpeg-user
+[^35]: [What resolution for capturing AVI from a PAL VHS player?](https://forum.videohelp.com/threads/399424-What-resolution-for-capturing-AVI-from-a-PAL-VHS-player-720-or-768) – 704/720/768 on VideoHelp Forum
 
-[^36]: [Overscan](https://en.wikipedia.org/wiki/Overscan) – Wikipedia
+[^36]: [Macroblock](https://en.wikipedia.org/wiki/Macroblock) – Wikipedia
 
-[^37]: [Macroblock](https://en.wikipedia.org/wiki/Macroblock) – Wikipedia
+[^37]: [Analog to digital resolution](https://en.wikipedia.org/wiki/Overscan#Analog_to_digital_resolution_issues) – Wikipedia
 
 [^38]: [Checking my DVD player’s aspect ratio](https://forum.videohelp.com/threads/353770-Checking-my-DVD-player-s-aspect-ratio/page2#post2227902) – jagabo on VideoHelp
 
