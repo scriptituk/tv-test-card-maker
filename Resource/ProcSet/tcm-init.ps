@@ -24,9 +24,9 @@ setglobal
 % see https://www.anastigmatix.net/postscript/
 (ProcSet/anastigmatix.ps) runlibfile % combined Anastigmatix PostScript resources
 
-% seed random number generator (from a tempfile name, how else?)
+% seed random number generator
 
-/rands isdef { rands }{ null (r) .tempfile closefile 0 exch { 257 mul xor } forall } ifelse srand
+/rands isdef { rands }{ realtime } ifelse srand
 
 % stringize CLI arguments
 
@@ -154,7 +154,7 @@ setglobal
     /TCfr 25 arg % frame rate (half field rate)
     /TCar 4 3 div arg % aspect ratio
     /TClb 18.3 arg % line blanking microseconds
-    /TCfb 14 arg % frame blanking lines
+    /TCfb 15 arg % frame blanking lines
     /TClt 80.3 arg % active line time microseconds
     /TCvr 376 arg % vertical resolution (active scanning lines)
     /TChr 503 arg % approximate horizontal resolution (active dots)
@@ -184,7 +184,7 @@ setglobal
     /TCfr 29.97 arg % frame rate (30 mono)
     /TCar 4 3 div arg % aspect ratio
     /TClb 10.9 arg % line blanking microseconds
-    /TCfb 25 arg % frame blanking lines
+    /TCfb 20 arg % frame blanking lines
     /TClt 52.7 arg % approx active line time microseconds
     /TCvr 486 arg % vertical resolution (485 active scanning lines)
     /TChr 440 arg % approximate horizontal resolution (active dots)

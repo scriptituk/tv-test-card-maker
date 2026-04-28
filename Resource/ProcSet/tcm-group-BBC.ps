@@ -51,11 +51,11 @@
     % vertical lines
     TCx dup Gsz tilec sub hGlw sub TCy moveto
     [Glw Gsz Glw sub ] Gps? { hGsz }{ 0 } ifelse setdash
-    TCh setlinewidth TCw TCy lineto stroke
+    TCh Bw sub setlinewidth TCw TCy lineto stroke
     % horizontal lines
     TCx TCy dup Gsz tilec sub hGlw sub moveto
     [Glw Gsz Glw sub ] Gps? { 0 }{ hGsz } ifelse setdash
-    TCw setlinewidth TCx TCh lineto stroke
+    TCw Bw sub setlinewidth TCx TCh lineto stroke
     setnodash
 
     cliprestore
@@ -64,6 +64,9 @@
 /StreakBox {
     SBc 1 get colour TCx SBy SBow SBoh rectfillc
     SBc 0 get colour TCx SBy SBiw SBih rectfillc
+    /TCJ peq {
+        /green colour TCx SBy SBih 0.75 mul dup rectfillc
+    } if
 } def
 
 /GridOutline {
@@ -146,6 +149,7 @@
 /StepWedge {
     /sw_h SWoh SWc length div def
     /sw_o SWc sw_h 0 botstep def
+    /sw_d { SWds /TCF peq /electronic veq and { dup TCr div rectfillc }{ div2 0 360 arc fill } ifelse } def
     TCy sw_o sub
     SWc {
         colour
@@ -154,17 +158,19 @@
     } forall
     pop
     % dots
-    SWds isarray { % rectangle
-        SWds length 2 ge {
-            SWdc 1 get colour SWx TCy sw_o add SWds 0 get SWds 1 get rectfillc
-            SWdc 0 get colour SWx TCy sw_o sub SWds 0 get SWds 1 get rectfillc
-        } if
-    }{ % circle
-        SWds 0 gt {
-            SWdc 1 get colour SWx TCy sw_o add SWds div2 0 360 arc fill
-            SWdc 0 get colour SWx TCy sw_o sub SWds div2 0 360 arc fill
-        } if
-    } ifelse
+    SWds 0 gt {
+        TCy sw_o sub
+        SWdc {
+            dup isarray not { 1 array astore } if
+            SWx 1 index length 1 gt { SWw 6 div sub } if 3 1 roll
+            {
+                colour 2 copy sw_d
+                exch SWw 3 div add exch
+            } forall
+            pop pop TCy sw_o add
+        } forall
+        pop
+    } if
 } def
 
 /FrequencyBar { % frequencies matrix FrequencyBar -
@@ -305,37 +311,28 @@
     Bac 1 get [0 1 -1 0 TCw TCy] Arrow
 } def
 
-/Castellations { % fg centre Castellations -
+/Castellations { % fg centre transform Castellations -
     % TODO: rework this mess
     gsave concat
-    /d_len 1 index hGsz tilef qGsz [/TCD /TCE /TCF] peq { sub }{ add } ifelse def
-    dup 0 moveto d_len 0 rlineto dup 0 moveto d_len neg 0 rlineto stroke % bg
-    1 index currentgray eq {
-        pop pop
-    }{
-        1 index setgray % fg
+    /c_c exch def
+    /c_f exch def
+    /c_w Bw div2 def
+    /c_len c_c hGsz tilef qGsz [/TCD /TCE /TCF /TCJ] peq { sub }{ add } ifelse def
+    c_c c_w moveto c_len 0 rlineto c_c c_w moveto c_len neg 0 rlineto stroke % bg
+    c_f currentgray ne {
+        c_f setgray % fg
         [hGsz] [/TCC /TCG] peq { qGsz }{ 0.75 xGsz } ifelse setdash
-        dup 0 moveto d_len 0 rlineto dup 0 moveto d_len neg 0 rlineto stroke
+        c_c c_w moveto c_len 0 rlineto c_c c_w moveto c_len neg 0 rlineto stroke
         [/TCD /TCE /TCF /TCJ] peq { % arrow bg
-            setnodash exch setgray hGsz sub 0 moveto Gsz 0 rlineto stroke
-        }{
-            pop pop
-        } ifelse
-    } ifelse
+            setnodash c_f setgray c_c hGsz sub c_w moveto Gsz 0 rlineto stroke
+        } if
+    } if
     grestore
 } def
 
-/ColourBar {
-    /cw TCw CBc length 2 sub CBew mul2 add div def % colour width
-    /ew cw CBew mul def % end widths
-    Bw mul2 CBh mul setlinewidth
-    ew 0 TCh CBc { colour moveto 0 rlineto cw currentpoint stroke } forall
-    pop pop pop
-} def
-
 /BorderBW {
+    Bw setlinewidth
     white
-    Bw mul2 setlinewidth
     0 TCx [1 0 0 1 0 0] Castellations
     0 TCx [1 0 0 -1 0 TCh] Castellations
     black
@@ -354,35 +351,28 @@
 } def
 
 /BorderRGB {
-    % empirical measurements from test-card-f-reconstruction-003-01.png
-    /b_hs TCw 1435 div def % horizontal scale
-    /b_vs TCh 1076 div def % vertical scale
-    /b_lb 70 b_vs mul def % left-top/bottom blanks
-    /b_la [91 196 91 90 70] def % left top-half dims
-    /b_ra [91 105 162 70 110] def % right top-half dims
-    /b_ld { b_la exch get b_vs mul } def
-    /b_rd { b_ra exch get b_vs mul } def
-    /b_cw 28 b_hs mul def
-    /b_ch 37 b_vs mul def
+    /b_ld { Bbh 0 get exch get 1080 div TCh mul } def
+    /b_rd { Bbh 1 get exch get 1080 div TCh mul } def
+    /b_hw Bw div2 def
 
     % left
-    Bw mul2 setlinewidth
+    Bw setlinewidth
     black 0 TCy [0 1 1 0 0 0] Castellations
-    0 TCy 0 b_ld add moveto
+    b_hw TCy 0 b_ld add moveto
     Bcc 0 get colour 0 1 b_ld rlineto currentpoint stroke
     2 b_ld add
     moveto 0 3 b_ld rlineto stroke
-    0 TCy 0 b_ld sub moveto
+    b_hw TCy 0 b_ld sub moveto
     Bcc 1 get colour 0 1 b_ld neg rlineto currentpoint stroke
     2 b_ld sub
     moveto 0 3 b_ld neg rlineto stroke
     % right
     black 0 TCy [0 1 -1 0 TCw 0] Castellations
-    TCw TCy 0 b_rd add moveto
+    TCw b_hw sub TCy 0 b_rd add moveto
     white 0 1 b_rd rlineto currentpoint stroke
     2 b_rd add
     Bcc 3 get colour moveto 0 3 b_rd rlineto stroke
-    TCw TCy 0 b_rd sub moveto
+    TCw b_hw sub TCy 0 b_rd sub moveto
     white 0 1 b_rd neg rlineto currentpoint stroke
     2 b_rd sub
     Bcc 3 get colour moveto 0 3 b_rd neg rlineto stroke
@@ -393,14 +383,50 @@
     % colour bar
     CBh 0 gt {
         /TCF peq /optical veq and { Arrows } if % Fc colour bars hide top arrow
-        ColourBar
+       ColourBar
     } if
     % arrows
     /TCF peq /optical veq and not { Arrows } if
+    % TCJ extras
+    /TCJ peq {
+        % top/bottom lines
+        1 lines setlinewidth
+        white
+        0 0.5 lines moveto TCw 0 rlineto
+        0 TCh 0.5 lines sub moveto TCw 0 rlineto
+        stroke
+        black
+        /dash {
+            gsave concat
+            b_hw 0.5 lines moveto b_hw div2 neg 0 rlineto
+            TCx 1.5 xGsz sub 0.5 lines moveto b_hw div2 neg 0 rlineto
+            stroke
+            grestore
+        } def
+        flipN dash flipH dash flipB dash flipV dash
+        % sides
+        Glw 1.3 mul setlinewidth
+        currentlinewidth div2 TCy 0 b_ld add 1 b_ld add moveto
+        white 0 2 b_ld rlineto stroke
+        currentlinewidth div2 TCy 0 b_ld sub 1 b_ld sub moveto
+        magenta 0 2 b_ld neg rlineto stroke
+        TCw currentlinewidth div2 sub TCy 0 b_rd add 1 b_rd add moveto
+        white 0 2 b_rd rlineto stroke
+        TCw currentlinewidth div2 sub TCy 0 b_rd sub 1 b_rd sub moveto
+        magenta 0 2 b_rd neg rlineto stroke
+    } if
 } def
 
 /Border {
     Bcc length 0 eq { BorderBW }{ BorderRGB } ifelse
+} def
+
+/ColourBar {
+    /cw TCw CBc length 2 sub CBew mul2 add div def % colour width
+    /ew cw CBew mul def % end widths
+    Bw mul2 CBh mul setlinewidth
+    ew 0 TCh CBc { colour moveto 0 rlineto cw currentpoint stroke } forall
+    pop pop pop
 } def
 
 % utilities

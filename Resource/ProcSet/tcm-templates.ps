@@ -152,9 +152,9 @@ CustomText { exch cvas 1 1 getinterval (T0) exch cat exch def } forall
 % step wedge
 /SWx TCx arg % step wedge horizontal centre
 /SWw 0.5 xGsz arg % step wedge width
-/SWoh 2.5 xGsz arg % step wedge outer height
+/SWoh 2.5 xGsz arg % step wedge overall height
 /SWc [0 0.3 0.5 0.7 1] arg % step wedge colours: [bottom to top]
-/SWds 0 arg % step wedge dot size 0 for none, diameter or [width height] array
+/SWds 0 arg % step wedge dot size (diameter/width), 0 for none
 /SWdc [0.2 1] arg % step wedge dot colours: [bottom top]
 /SW? true arg % false for no step wedge
 % frequency bars (left)
@@ -171,12 +171,12 @@ CustomText { exch cvas 1 1 getinterval (T0) exch cat exch def } forall
 /FBt null arg % custom text element name for freq text template, null for no text
 /FB? true arg % false for no frequency bars
 % corner stripes (bottom-left)
+/CShf 0.9 arg % corner stripes horizontal fundamental MHz
+/CSnl 10 arg % corner stripes number of lines
 /CSa 1 TCr atan arg % corner stripes angle from horizontal
 /CSol 3.03 xGsz arg % corner stripes outer length from corner
 /CSow Gsz arg % corner stripes outer width
-/CShf 0.9 arg % corner stripes horizontal fundamental MHz
 /CSlw CShf mhz div2 1 TCar atan sin mul arg % corner stripes linewidth at normal aspect ratio
-/CSnl 10 arg % corner stripes number of lines
 /CSep Glw arg % corner stripes end padding
 /CSbp Glw arg % corner stripes border padding (clipped)
 /CSc [/black /white] arg % corner stripes colours: [grating surround]
@@ -190,6 +190,7 @@ CustomText { exch cvas 1 1 getinterval (T0) exch cat exch def } forall
 /Bah 0 arg % border arrow height (fraction of border width, 0 for no arrows)
 /Bac [1 0] arg % border arrow colours: [horizontal vertical]
 /Bcc [] arg % castellation colours: empty or [left-red left-blue bottom-green right-yellow top-cyan]
+/Bbh [] arg % side block heights reative to 1080: empty or [left right] arrays
 /B? true arg % false for no drawn border
 
 } def
@@ -360,7 +361,7 @@ CustomText { exch cvas 1 1 getinterval (T0) exch cat exch def } forall
 /CSep 1.2 xGlw arg
 /CShf 1.0 arg
 /CSlw CShf mhz div2 CSa sin mul arg
-/Bw hGsz hGlw sub arg
+/Bw { hGsz hGlw sub } arg
 /Bah 1 arg
 
 % caption text
@@ -502,6 +503,7 @@ CustomText { exch cvas 1 1 getinterval (T0) exch cat exch def } forall
 /CBh 0 arg
 /Bac [1 1] arg
 /Bcc [ [ 250 19 30 ] [ 27 85 157 ] [ 40 107 47 ] [ 254 203 33 ] [ 17 133 222 ] ] arg
+/Bbh [ [90 195 93 87] [90 105 164 68] ] arg
 
 % centre picture
 /I-1f /CH-F-optical.png arg
@@ -592,7 +594,7 @@ CustomText { exch cvas 1 1 getinterval (T0) exch cat exch def } forall
 /SWoh 4 xGsz Golw 3 mul sub arg
 /SWw Gsz hGlw sub Golw 1.5 mul sub arg
 /SWx lGx 2 xGsz add TCx 3 xGsz sub min hGsz add hGlw sub SWw div2 sub arg
-/SWds [ 1.5 xGlw dup TCr div ] arg
+/SWds 1.5 xGlw arg
 /FBf [ [1.5 6 0] [2.5 10 0] [3.5 13 1] [4 15 0] [4.5 17 0] [5.25 20 0] ] arg
 /FBs? true arg
 /FBt null arg
@@ -600,6 +602,7 @@ CustomText { exch cvas 1 1 getinterval (T0) exch cat exch def } forall
 /CSow 1.05 xGsz arg
 /CSep 1.5 xGlw arg
 /Bcc [ [235 70 70] [70 70 235] [70 253 70] [253 253 70] [70 253 253] ] arg
+/Bbh [ [88 197 90 90] [88 110 162 75] ] arg
 
 % centre picture
 /I-1f /CH-F-electronic.png arg
@@ -629,17 +632,26 @@ CustomText { exch cvas 1 1 getinterval (T0) exch cat exch def } forall
 
 /TCJ { /TCF-electronic % extends
 
+/SBow 3.5 xGsz arg
+/SBoh 0.89 xGsz arg
+/SBiw 2.17 xGsz arg
 /CClw 6 lines arg
 /CCr 2.5 xGsz Glw CClw add div2 sub arg
 /IDs (J) arg
-/IDf /Helvetica-Bold-Jalt arg
+/IDf /Puntodewa-Bold-J arg
 /IDh 0.35 xGsz arg
+/SWc [0.15 51 102 153 204 0.85] arg
+/SWdc [[SWc 0 get dup 0.93 mul exch 1.07 mul] [SWc 5 get dup 0.93 mul exch 1.07 mul]] arg
 /Ct [/T-5] arg
+/CSol 2.69 xGsz arg
+/CSow 1.03 xGsz arg
+/CSep 1.3 xGlw arg
+%/CSlw CShf mhz div2 1 TCar atan sin mul arg % corner stripes linewidth at normal aspect ratio
 
 % centre picture
 /I-1f /CH-J.png arg
 /I-1a 0 arg
-/I-1s 1.04 arg
+/I-1s 1.045 arg
 /I-1i 0 xGsz arg
 /I-1j 0 xGsz arg
 

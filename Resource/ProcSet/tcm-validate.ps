@@ -67,6 +67,7 @@
 % normal args
 /=Bac { dup 2 isarraylength exch /iscolour isarrayof and } bind def
 /=Bah { isui } bind def
+/=Bbh { dup 0 isarraylength exch dup 2 isarraylength exch /isarray isarrayof and or } bind def
 /=Bcc { dup 0 isarraylength exch dup 5 isarraylength exch /iscolour isarrayof and or } bind def
 /=Bw { isinGsz } bind def
 /=B? { isboolean } bind def
@@ -141,6 +142,7 @@
 /=SB? { isboolean } bind def
 /=SWc { /iscolour isarrayof } bind def
 /=SWdc { /iscolour isarrayof } bind def
+/=SWdc { isarray } bind def
 /=SWds { dup isnumber exch /isnumber isarrayof or } bind def
 /=SWoh { isinTCh } bind def
 /=SWw { isinTCw } bind def
